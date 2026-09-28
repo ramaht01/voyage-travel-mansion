@@ -6,7 +6,7 @@ function Navbar() {
 
   return (
     <header className="absolute left-0 top-0 z-50 w-full">
-      <nav className="border-b border-white/10 bg-slate-800 backdrop-blur-xl shadow-lg shadow-slate-950/10 animate-[navEnter_900ms_ease-out]">
+      <nav className="border-b border-white/10 bg-slate-800  shadow-lg  animate-[navEnter_1200ms_ease-out]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
           {/* Logo / Brand */}
           <a href="#home" className="group flex items-center">
@@ -74,7 +74,7 @@ function Navbar() {
   href="https://wa.me/27695877716"
   target="_blank"
   rel="noopener noreferrer"
-  className="hidden rounded-full bg-cyan-400 px-6 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-400/20 transition-all duration-500 ease-out hover:-translate-y-1 hover:bg-cyan-300 hover:shadow-xl hover:shadow-cyan-400/25 active:translate-y-0 md:block"
+  className="hidden rounded-full bg-cyan-400 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-cyan-400/20 transition-all duration-500 ease-out hover:-translate-y-1 hover:bg-cyan-300 hover:shadow-xl hover:shadow-cyan-400/25 active:translate-y-0 md:block hover:scale-110"
 >
   WhatsApp Us
 </a>
@@ -146,7 +146,7 @@ function Navbar() {
                 href="https://wa.me/27695877716"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 rounded-full bg-cyan-400 px-6 py-3 text-center text-sm font-bold text-slate-950 transition hover:bg-cyan-400"
+                className="mt-2 rounded-full bg-cyan-400 px-6 py-3 text-center text-sm font-bold text-white transition hover:bg-cyan-400"
               >
                 WhatsApp Us
               </a>
