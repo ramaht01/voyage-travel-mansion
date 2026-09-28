@@ -36,14 +36,12 @@ function AdminDashboard() {
   const [recentFlights, setRecentFlights] = useState<any[]>([]);
   const [recentVisas, setRecentVisas] = useState<any[]>([]);
 const [selectedFlight, setSelectedFlight] = useState<any | null>(null);
-const [selectedFlightId, setSelectedFlightId] = useState<string | null>(null);
     const [selectedVisa, setSelectedVisa] = useState<any | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [deleteFlightConfirm, setDeleteFlightConfirm] = useState(false);
 const [deleteVisaConfirm, setDeleteVisaConfirm] = useState(false);
 const [isLoading, setIsLoading] = useState(true);
 const [lastUpdated, setLastUpdated] = useState("");
-const [isRefreshing, setIsRefreshing] = useState(false);
 const filteredFlights = recentFlights.filter((request) => {
   const search = searchTerm.trim().toLowerCase();
 
@@ -329,7 +327,6 @@ useEffect(() => {
       type="button"
 onClick={() => {
   setSelectedFlight(request);
-  setSelectedFlightId(request._id);
 }}
       className="w-full rounded-xl border border-white/10 bg-slate-900/60 p-4 text-left transition duration-300 hover:-translate-y-0.5 hover:border-cyan-400/30 hover:bg-slate-900"
     >
@@ -432,7 +429,6 @@ onClick={() => {
       type="button"
       onClick={() => {
   setSelectedFlight(null);
-  setSelectedFlightId(null);
 }}
         className="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:bg-white/10 hover:text-white"
     >

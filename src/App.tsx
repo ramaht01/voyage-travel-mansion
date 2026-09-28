@@ -1,6 +1,5 @@
 import Navbar from "./components/Navbar";
 import Reveal from "./components/Reveal";
-import { useState } from "react";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminLogin from "./admin/AdminLogin";
 import uncleImage from "./assets/Uncle image.jpeg";
@@ -26,95 +25,7 @@ import {
 } from "lucide-react";
 
 function App() {
-  const [flightForm, setFlightForm] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    departure: "",
-    destination: "",
-    departureDate: "",
-    returnDate: "",
-    passengers: "",
-    tripType: "",
-    additionalRequirements: "",
-  });
 
-  const [visaForm, setVisaForm] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    destinationCountry: "",
-    visaType: "",
-    purpose: "",
-    intendedTravelDate: "",
-    additionalInformation: "",
-  });
-
-  const handleFlightSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(
-        "http://localhost:4020/api/flight-requests",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...flightForm,
-            passengers: Number(flightForm.passengers),
-            tripType:
-              flightForm.tripType.toLowerCase() === "one way"
-                ? "One Way"
-                : "Round Trip",
-          }),
-        },
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
-      }
-
-      console.log("Flight request submitted:", data);
-
-      alert("Your flight request has been submitted successfully!");
-    } catch (error) {
-      console.error("Flight submission error:", error);
-
-      alert("Sorry, we couldn't submit your flight request. Please try again.");
-    }
-  };
-
-  const handleVisaSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:4020/api/visa-requests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(visaForm),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
-      }
-
-      console.log("Visa request submitted:", data);
-
-      alert("Your visa assistance request has been submitted successfully!");
-    } catch (error) {
-      console.error("Visa submission error:", error);
-
-      alert("Sorry, we couldn't submit your visa request. Please try again.");
-    }
-  };
 
   if (window.location.pathname === "/admin") {
     const adminToken = localStorage.getItem("adminToken");
