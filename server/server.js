@@ -221,34 +221,41 @@ app.post("/api/flight-requests", async (req, res) => {
   try {
     const flightRequest = new FlightRequest(req.body);
 
-await sendEmail({
-  to: "561travelsandtours@gmail.com",
-  subject: "New Flight Booking Request - Voyage Travel Mansion",
-  htmlContent: `
-    <h2>New Flight Booking Request</h2>
+    const savedRequest = await flightRequest.save();
 
-    <p><strong>Full Name:</strong> ${savedRequest.fullName}</p>
-    <p><strong>Email:</strong> ${savedRequest.email}</p>
-    <p><strong>Phone / WhatsApp:</strong> ${savedRequest.phone}</p>
+    await sendEmail({
+      to: "561travelsandtours@gmail.com",
+      subject: "New Flight Booking Request - Voyage Travel Mansion",
+      htmlContent: `
+        <h2>New Flight Booking Request</h2>
 
-    <p><strong>Departure:</strong> ${savedRequest.departure}</p>
-    <p><strong>Destination:</strong> ${savedRequest.destination}</p>
+        <p><strong>Full Name:</strong> ${savedRequest.fullName}</p>
+        <p><strong>Email:</strong> ${savedRequest.email}</p>
+        <p><strong>Phone / WhatsApp:</strong> ${savedRequest.phone}</p>
 
-    <p><strong>Departure Date:</strong> ${savedRequest.departureDate}</p>
-    <p><strong>Return Date:</strong> ${savedRequest.returnDate || "Not provided"}</p>
+        <p><strong>Departure:</strong> ${savedRequest.departure}</p>
+        <p><strong>Destination:</strong> ${savedRequest.destination}</p>
 
-    <p><strong>Passengers:</strong> ${savedRequest.passengers}</p>
-    <p><strong>Trip Type:</strong> ${savedRequest.tripType}</p>
+        <p><strong>Departure Date:</strong> ${savedRequest.departureDate}</p>
+        <p><strong>Return Date:</strong> ${
+          savedRequest.returnDate || "Not provided"
+        }</p>
 
-    <p><strong>Additional Requirements:</strong><br>
-      ${savedRequest.additionalRequirements || "None"}
-    </p>
+        <p><strong>Passengers:</strong> ${savedRequest.passengers}</p>
+        <p><strong>Trip Type:</strong> ${savedRequest.tripType}</p>
 
-    <hr>
+        <p><strong>Additional Requirements:</strong><br>
+          ${savedRequest.additionalRequirements || "None"}
+        </p>
 
-    <p>This request was submitted through the Voyage Travel Mansion website.</p>
-  `,
-});
+        <hr>
+
+        <p>
+          This request was submitted through the
+          Voyage Travel Mansion website.
+        </p>
+      `,
+    });
 
     res.status(201).json({
       message: "Flight request submitted successfully",
