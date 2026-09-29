@@ -85,13 +85,13 @@ useEffect(() => {
   const fetchRequests = async () => {
     try {
       const [flightResponse, visaResponse] = await Promise.all([
-        fetch("http://localhost:4020/api/flight-requests", {
+        fetch(`${import.meta.env.VITE_API_URL}/api/flight-requests`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }),
 
-        fetch("http://localhost:4020/api/visa-requests", {
+        fetch(`${import.meta.env.VITE_API_URL}/api/flight-requests`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -511,7 +511,7 @@ onClick={() => {
 
   try {
     const response = await adminFetch(
-      `http://localhost:4020/api/flight-requests/${selectedFlight._id}`,
+      `${import.meta.env.VITE_API_URL}${selectedFlight._id}`,
       {
         method: "PATCH",
         headers: {
@@ -622,7 +622,7 @@ toast.success("Flight request updated successfully!");
     onClick={async () => {
       try {
         const response = await adminFetch(
-          `http://localhost:4020/api/flight-requests/${selectedFlight._id}`,
+          `${import.meta.env.VITE_API_URL}${selectedFlight._id}`,
           {
             method: "PATCH",
             headers: {
@@ -710,7 +710,7 @@ toast.success("Flight request updated successfully!");
           onClick={async () => {
             try {
               const response = await adminFetch(
-                `http://localhost:4020/api/flight-requests/${selectedFlight._id}`,
+              `${import.meta.env.VITE_API_URL}${selectedFlight._id}`,
                 {
                   method: "DELETE",
                 }
@@ -869,7 +869,7 @@ toast.success("Flight request updated successfully!");
 
       try {
         const response = await adminFetch(
-          `http://localhost:4020/api/visa-requests/${selectedVisa._id}`,
+         ` ${import.meta.env.VITE_API_URL}${selectedVisa._id}`,
           {
             method: "PATCH",
             headers: {
@@ -983,7 +983,7 @@ toast.success("Visa request updated successfully!");
     onClick={async () => {
       try {
         const response = await adminFetch(
-          `http://localhost:4020/api/visa-requests/${selectedVisa._id}`,
+          `${import.meta.env.VITE_API_URL}/api/flight-requests${selectedVisa._id}`,
           {
             method: "PATCH",
             headers: {
@@ -1069,7 +1069,7 @@ toast.success("Visa request updated successfully!");
           onClick={async () => {
             try {
               const response = await adminFetch(
-                `http://localhost:4020/api/visa-requests/${selectedVisa._id}`,
+                `${import.meta.env.VITE_API_URL}/api/flight-requests${selectedVisa._id}`,
                 {
                   method: "DELETE",
                 }

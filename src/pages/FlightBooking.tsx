@@ -30,7 +30,7 @@ const FlightBooking = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:4020/api/flight-requests",
+`${import.meta.env.VITE_API_URL}/api/flight-requests`,
         {
           method: "POST",
           headers: {

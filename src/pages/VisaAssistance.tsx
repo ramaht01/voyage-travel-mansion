@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 const VisaAssistance = () => {
-    const [visaEmailError, setVisaEmailError] = useState("");
+  const [visaEmailError, setVisaEmailError] = useState("");
   const [visaForm, setVisaForm] = useState({
     fullName: "",
     email: "",
@@ -14,28 +14,26 @@ const VisaAssistance = () => {
     additionalInformation: "",
   });
 
-  const handleVisaSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleVisaSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(visaForm.email)) {
-  setVisaEmailError(
-    "Please enter a valid Gmail address ending with @gmail.com."
-  );
-  return;
-}
+      setVisaEmailError(
+        "Please enter a valid Gmail address ending with @gmail.com.",
+      );
+      return;
+    }
 
     try {
       const response = await fetch(
-        "http://localhost:4020/api/visa-requests",
+        `${import.meta.env.VITE_API_URL}/api/visa-requests`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(visaForm),
-        }
+        },
       );
 
       const data = await response.json();
@@ -79,9 +77,9 @@ const VisaAssistance = () => {
           </h1>
 
           <p className="mt-5 text-base leading-8 text-slate-300">
-            Tell us about your destination, visa requirements, and travel
-            plans. Our team will review your request and guide you through
-            the application process.
+            Tell us about your destination, visa requirements, and travel plans.
+            Our team will review your request and guide you through the
+            application process.
           </p>
         </div>
 
@@ -136,41 +134,38 @@ const VisaAssistance = () => {
                 Gmail Address
               </label>
 
-             <input
-  id="visa-email"
-  type="email"
-  required
-  pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
-  title="Please enter a valid Gmail address ending with @gmail.com"
-  value={visaForm.email}
-  onChange={(e) => {
-    const value = e.target.value;
+              <input
+                id="visa-email"
+                type="email"
+                required
+                pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+                title="Please enter a valid Gmail address ending with @gmail.com"
+                value={visaForm.email}
+                onChange={(e) => {
+                  const value = e.target.value;
 
-    setVisaForm({
-      ...visaForm,
-      email: value,
-    });
+                  setVisaForm({
+                    ...visaForm,
+                    email: value,
+                  });
 
-    if (
-      value &&
-      !/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(value)
-    ) {
-      setVisaEmailError(
-        "Please enter a valid Gmail address ending with @gmail.com."
-      );
-    } else {
-      setVisaEmailError("");
-    }
-  }}
-  placeholder="you@gmail.com"
-  className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
-/>
+                  if (value && !/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(value)) {
+                    setVisaEmailError(
+                      "Please enter a valid Gmail address ending with @gmail.com.",
+                    );
+                  } else {
+                    setVisaEmailError("");
+                  }
+                }}
+                placeholder="you@gmail.com"
+                className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+              />
 
-{visaEmailError && (
-  <p className="mt-2 text-sm font-medium text-red-400">
-    {visaEmailError}
-  </p>
-)}
+              {visaEmailError && (
+                <p className="mt-2 text-sm font-medium text-red-400">
+                  {visaEmailError}
+                </p>
+              )}
             </div>
 
             {/* Phone */}
@@ -250,9 +245,7 @@ const VisaAssistance = () => {
                 <option value="Student Visa">Student Visa</option>
                 <option value="Work Visa">Work Visa</option>
                 <option value="Transit Visa">Transit Visa</option>
-                <option value="Family / Visit Visa">
-                  Family / Visit Visa
-                </option>
+                <option value="Family / Visit Visa">Family / Visit Visa</option>
                 <option value="Other">Other</option>
               </select>
             </div>
