@@ -1,3 +1,5 @@
+
+
 const dns = require("dns");
 
 dns.setDefaultResultOrder("ipv4first");
@@ -8,6 +10,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { sendEmail } = require("./emailService");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -218,7 +221,34 @@ app.post("/api/flight-requests", async (req, res) => {
   try {
     const flightRequest = new FlightRequest(req.body);
 
-    const savedRequest = await flightRequest.save();
+await sendEmail({
+  to: "561travelsandtours@gmail.com",
+  subject: "New Flight Booking Request - Voyage Travel Mansion",
+  htmlContent: `
+    <h2>New Flight Booking Request</h2>
+
+    <p><strong>Full Name:</strong> ${savedRequest.fullName}</p>
+    <p><strong>Email:</strong> ${savedRequest.email}</p>
+    <p><strong>Phone / WhatsApp:</strong> ${savedRequest.phone}</p>
+
+    <p><strong>Departure:</strong> ${savedRequest.departure}</p>
+    <p><strong>Destination:</strong> ${savedRequest.destination}</p>
+
+    <p><strong>Departure Date:</strong> ${savedRequest.departureDate}</p>
+    <p><strong>Return Date:</strong> ${savedRequest.returnDate || "Not provided"}</p>
+
+    <p><strong>Passengers:</strong> ${savedRequest.passengers}</p>
+    <p><strong>Trip Type:</strong> ${savedRequest.tripType}</p>
+
+    <p><strong>Additional Requirements:</strong><br>
+      ${savedRequest.additionalRequirements || "None"}
+    </p>
+
+    <hr>
+
+    <p>This request was submitted through the Voyage Travel Mansion website.</p>
+  `,
+});
 
     res.status(201).json({
       message: "Flight request submitted successfully",
