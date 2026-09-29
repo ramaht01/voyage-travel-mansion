@@ -364,7 +364,7 @@ toast.error("Something went wrong. Please try again.");
                 htmlFor="flight-requirements"
                 className="mb-2 block text-sm font-semibold text-white"
               >
-                Additional Requirements
+                Additional Requirements  <span className="text-slate-400">(Optional)</span>
               </label>
 
               <textarea

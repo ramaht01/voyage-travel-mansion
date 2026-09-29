@@ -312,7 +312,7 @@ const VisaAssistance = () => {
                 htmlFor="visa-information"
                 className="mb-2 block text-sm font-semibold text-white"
               >
-                Additional Information
+                Additional Information  <span className="text-slate-400">(Optional)</span>
               </label>
 
               <textarea
