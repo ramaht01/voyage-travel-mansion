@@ -138,7 +138,7 @@ const VisaAssistance = () => {
                 id="visa-email"
                 type="email"
                 required
-                pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+                pattern="^[a-zA-Z0-9._%+\-]+@gmail\.com$"
                 title="Please enter a valid Gmail address ending with @gmail.com"
                 value={visaForm.email}
                 onChange={(e) => {
@@ -312,7 +312,8 @@ const VisaAssistance = () => {
                 htmlFor="visa-information"
                 className="mb-2 block text-sm font-semibold text-white"
               >
-                Additional Information  <span className="text-slate-400">(Optional)</span>
+                Additional Information{" "}
+                <span className="text-slate-400">(Optional)</span>
               </label>
 
               <textarea

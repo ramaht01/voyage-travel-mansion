@@ -150,7 +150,7 @@ toast.error("Something went wrong. Please try again.");
   id="flight-email"
   type="email"
   required
-  pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+  pattern="^[a-zA-Z0-9._%+\-]+@gmail\.com$"
   title="Please enter a valid Gmail address ending with @gmail.com"
   value={flightForm.email}
   onChange={(e) => {
