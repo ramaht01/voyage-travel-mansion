@@ -121,6 +121,91 @@ app.post("/api/visa-requests", async (req, res) => {
 
     const savedRequest = await visaRequest.save();
 
+    console.log("SENDING AGENCY EMAIL...");
+
+    await sendEmail({
+  to: "561travelsandtours@gmail.com",
+  subject: "New Visa Assistance Request - Voyage Travel Mansion",
+  htmlContent: `
+    <h2>New Visa Assistance Request</h2>
+
+    <p><strong>Full Name:</strong> ${savedRequest.fullName}</p>
+    <p><strong>Email:</strong> ${savedRequest.email}</p>
+    <p><strong>Phone / WhatsApp:</strong> ${savedRequest.phone}</p>
+
+    <p><strong>Destination Country:</strong> ${
+      savedRequest.destinationCountry
+    }</p>
+
+    <p><strong>Visa Type:</strong> ${savedRequest.visaType}</p>
+    <p><strong>Purpose:</strong> ${savedRequest.purpose}</p>
+
+    <p><strong>Intended Travel Date:</strong> ${
+      savedRequest.intendedTravelDate
+    }</p>
+
+    <p><strong>Additional Information:</strong><br>
+      ${savedRequest.additionalInformation || "None"}
+    </p>
+
+    <hr>
+
+    <p>
+      This request was submitted through the
+      Voyage Travel Mansion website.
+    </p>
+  `,
+});
+
+console.log("SENDING AGENCY EMAIL...");
+
+await sendEmail({
+  to: savedRequest.email,
+  subject: "Your Visa Assistance Request Has Been Received",
+  htmlContent: `
+    <h2>Your Visa Assistance Request Has Been Received</h2>
+
+    <p>Dear ${savedRequest.fullName},</p>
+
+    <p>
+      Thank you for contacting Voyage Travel Mansion.
+      We have received your visa assistance request successfully.
+    </p>
+
+    <h3>Request Details</h3>
+
+    <p><strong>Destination Country:</strong> ${
+      savedRequest.destinationCountry
+    }</p>
+
+    <p><strong>Visa Type:</strong> ${savedRequest.visaType}</p>
+
+    <p><strong>Purpose:</strong> ${savedRequest.purpose}</p>
+
+    <p><strong>Intended Travel Date:</strong> ${
+      savedRequest.intendedTravelDate
+    }</p>
+
+    <p>
+      Our team will review your request and contact you regarding
+      the next steps.
+    </p>
+
+    <p>
+      Please note that this confirmation only confirms receipt of your
+      request. It does not constitute a visa approval or guarantee.
+    </p>
+
+    <hr>
+
+    <p>
+      <strong>Voyage Travel Mansion</strong><br>
+      561travelsandtours@gmail.com<br>
+      +27 69 587 7716
+    </p>
+  `,
+});
+
     res.status(201).json({
       message: "Visa request submitted successfully",
       request: savedRequest,
@@ -256,6 +341,50 @@ app.post("/api/flight-requests", async (req, res) => {
         </p>
       `,
     });
+
+    await sendEmail({
+  to: savedRequest.email,
+  subject: "Your Flight Booking Request Has Been Received",
+  htmlContent: `
+    <h2>Your Flight Booking Request Has Been Received</h2>
+
+    <p>Dear ${savedRequest.fullName},</p>
+
+    <p>
+      Thank you for contacting Voyage Travel Mansion.
+      We have received your flight booking request successfully.
+    </p>
+
+    <h3>Request Details</h3>
+
+    <p><strong>Departure:</strong> ${savedRequest.departure}</p>
+    <p><strong>Destination:</strong> ${savedRequest.destination}</p>
+    <p><strong>Departure Date:</strong> ${savedRequest.departureDate}</p>
+    <p><strong>Return Date:</strong> ${
+      savedRequest.returnDate || "Not provided"
+    }</p>
+    <p><strong>Passengers:</strong> ${savedRequest.passengers}</p>
+    <p><strong>Trip Type:</strong> ${savedRequest.tripType}</p>
+
+    <p>
+      Our team will review your request and contact you regarding
+      the next steps.
+    </p>
+
+    <p>
+      Please note that this confirmation does not mean that a flight
+      has been booked or ticketed.
+    </p>
+
+    <hr>
+
+    <p>
+      <strong>Voyage Travel Mansion</strong><br>
+      561travelsandtours@gmail.com<br>
+      +27 69 587 7716
+    </p>
+  `,
+});
 
     res.status(201).json({
       message: "Flight request submitted successfully",
