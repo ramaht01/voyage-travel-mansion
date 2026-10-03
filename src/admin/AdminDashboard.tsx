@@ -107,7 +107,7 @@ function AdminDashboard() {
             },
           }),
 
-          fetch(`${import.meta.env.VITE_API_URL}/api/flight-requests`, {
+          fetch(`${import.meta.env.VITE_API_URL}/api/visa-requests`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -132,6 +132,8 @@ function AdminDashboard() {
 
         setRecentFlights(flights);
         setRecentVisas(visas);
+        console.log("VISA REQUESTS FROM API:", visas);
+        console.log("FLIGHT REQUESTS FROM API:", flights);
 
         setFlightCount(flights.length);
         setVisaCount(visas.length);
@@ -1022,7 +1024,7 @@ function AdminDashboard() {
                   onClick={async () => {
                     try {
                       const response = await adminFetch(
-                  `${import.meta.env.VITE_API_URL}/api/visa-requests/${selectedVisa._id}`,
+                        `${import.meta.env.VITE_API_URL}/api/visa-requests/${selectedVisa._id}`,
                         {
                           method: "DELETE",
                         },
