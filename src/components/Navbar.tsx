@@ -13,7 +13,7 @@ function Navbar() {
             <img
               src={logo}
               alt="Voyage Travel Mansion"
-              className="h-14 w-14 rounded-full object-contain transition-all duration-500 ease-out group-hover:scale-105 group-hover:-rotate-1 group-hover:shadow-lg group-hover:shadow-cyan-400/20"
+              className="h-14 w-14 rounded-full  transition-all duration-500 ease-out group-hover:scale-105 group-hover:-rotate-1 group-hover:shadow-lg group-hover:shadow-cyan-400/20"
             />
           </a>
 
