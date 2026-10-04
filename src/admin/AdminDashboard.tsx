@@ -495,7 +495,7 @@ function AdminDashboard() {
 
                       try {
                         const response = await adminFetch(
-                          `${import.meta.env.VITE_API_URL}${selectedFlight._id}`,
+                         `${import.meta.env.VITE_API_URL}/api/flight-requests/${selectedFlight._id}`,
                           {
                             method: "PATCH",
                             headers: {
@@ -606,7 +606,7 @@ function AdminDashboard() {
                   onClick={async () => {
                     try {
                       const response = await adminFetch(
-                        `${import.meta.env.VITE_API_URL}${selectedFlight._id}`,
+                      `${import.meta.env.VITE_API_URL}/api/flight-requests/${selectedFlight._id}`,  
                         {
                           method: "PATCH",
                           headers: {
@@ -833,7 +833,7 @@ function AdminDashboard() {
 
                       try {
                         const response = await adminFetch(
-                          ` ${import.meta.env.VITE_API_URL}${selectedVisa._id}`,
+                          `${import.meta.env.VITE_API_URL}/api/visa-requests/${selectedVisa._id}`,  
                           {
                             method: "PATCH",
                             headers: {
