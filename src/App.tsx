@@ -113,7 +113,7 @@ function App() {
                 className="group rounded-full bg-cyan-400 px-8 py-4 text-center font-bold text-slate-950 shadow-lg shadow-cyan-400/20 transition duration-300 hover:-translate-y-1 hover:bg-cyan-300 animate-[heroText_1.2s_ease-out_0.7s_both]"
               >
                 <span className="flex items-center justify-center gap-3">
-                  Book a Flight
+                  Request a Flight Booking
                   <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
                     →
                   </span>
@@ -126,7 +126,7 @@ function App() {
                 className="group rounded-full border border-white/70 bg-slate-950/20 px-8 py-4 text-center font-bold text-white backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-cyan-400 hover:bg-white/10 animate-[heroText_1.2s_ease-out_0.7s_both]"
               >
                 <span className="flex items-center justify-center gap-3 text-gray-700">
-                  Visa Assistance
+                  Request Visa Assistance
                   <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
                     →
                   </span>
