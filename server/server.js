@@ -112,6 +112,12 @@ const FlightRequest = require("./models/FlightRequest");
 const VisaRequest = require("./models/VisaRequest");
 const InternationalTravelRequest = require("./models/InternationalTravelRequest");
 
+app.get("/api/international-travel-requests", (req, res) => {
+  res.json({
+    message: "International travel route is live!",
+  });
+});
+
 
 
 app.post("/api/international-travel-requests", async (req, res) => {
