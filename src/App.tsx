@@ -6,7 +6,7 @@ import uncleImage from "./assets/Uncle image.jpeg";
 import FlightBooking from "./pages/FlightBooking";
 import VisaAssistance from "./pages/VisaAssistance";
 import InternationalTravel from "./pages/InternationalTravel";
-import TravelInsurance from "./pages/TravelInsurance";
+
 import {
   Plane,
   ShieldCheck,
@@ -51,9 +51,7 @@ function App() {
   return <InternationalTravel />;
 }
 
-if (window.location.pathname === "/travel-insurance") {
-  return <TravelInsurance />;
-}
+
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
