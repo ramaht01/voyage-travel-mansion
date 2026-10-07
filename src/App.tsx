@@ -5,6 +5,8 @@ import AdminLogin from "./admin/AdminLogin";
 import uncleImage from "./assets/Uncle image.jpeg";
 import FlightBooking from "./pages/FlightBooking";
 import VisaAssistance from "./pages/VisaAssistance";
+import InternationalTravel from "./pages/InternationalTravel";
+import TravelInsurance from "./pages/TravelInsurance";
 import {
   Plane,
   ShieldCheck,
@@ -44,6 +46,14 @@ function App() {
   if (window.location.pathname === "/visa-assistance") {
     return <VisaAssistance />;
   }
+
+  if (window.location.pathname === "/international-travel") {
+  return <InternationalTravel />;
+}
+
+if (window.location.pathname === "/travel-insurance") {
+  return <TravelInsurance />;
+}
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
@@ -167,14 +177,12 @@ function App() {
               </div>
             </a>
 
-            {/* International Travel Planning */}
+ {/* International Travel Planning */}
 <div
   onClick={() => {
-    document
-      .getElementById("international-travel")
-      ?.scrollIntoView({ behavior: "smooth" });
+    window.location.href = "/international-travel";
   }}
-  className="group cursor-pointer rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-xl hover:shadow-cyan-400/10 active:translate-y-0"
+  className="group cursor-pointer rounded-3xl border border-white/10 bg-white/5 p-7 shadow-sm backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-xl hover:shadow-cyan-400/10 active:translate-y-0"
 >
   <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 transition-all duration-300 group-hover:scale-110 group-hover:bg-cyan-600 group-hover:text-white">
     <Globe2 size={30} strokeWidth={1.8} />
@@ -189,7 +197,7 @@ function App() {
     destinations and travel dates to flight options and trip requirements.
   </p>
 
-  <div className="mt-5 inline-flex items-center gap-2 font-semibold text-cyan-400 transition-transform duration-300 group-hover:translate-x-1">
+  <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-cyan-400/10 px-4 py-2 font-semibold text-cyan-400 transition-transform duration-300 group-hover:translate-x-1">
     Start a Request
     <span>→</span>
   </div>

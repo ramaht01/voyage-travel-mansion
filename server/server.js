@@ -110,9 +110,140 @@ app.get("/", (req, res) => {
 
 const FlightRequest = require("./models/FlightRequest");
 const VisaRequest = require("./models/VisaRequest");
+const InternationalTravelRequest = require("./models/InternationalTravelRequest");
 
 
 
+app.post("/api/international-travel-requests", async (req, res) => {
+  try {
+    const internationalTravelRequest =
+      new InternationalTravelRequest(req.body);
+
+    const savedRequest = await internationalTravelRequest.save();
+
+    console.log("SENDING INTERNATIONAL TRAVEL AGENCY EMAIL...");
+
+    await sendEmail({
+      to: "561travelsandtours@gmail.com",
+      subject:
+        "New International Travel Planning Request - Voyage Travel Mansion",
+      htmlContent: `
+        <h2>New International Travel Planning Request</h2>
+
+        <p><strong>Full Name:</strong> ${savedRequest.fullName}</p>
+        <p><strong>Email:</strong> ${savedRequest.email}</p>
+        <p><strong>Phone / WhatsApp:</strong> ${savedRequest.phone}</p>
+
+        <p><strong>Departure:</strong> ${
+          savedRequest.departure || "Not provided"
+        }</p>
+
+        <p><strong>Destination:</strong> ${
+          savedRequest.destination
+        }</p>
+
+        <p><strong>Travel Date:</strong> ${
+          savedRequest.travelDate || "Not provided"
+        }</p>
+
+        <p><strong>Return Date:</strong> ${
+          savedRequest.returnDate || "Not provided"
+        }</p>
+
+        <p><strong>Number of Travelers:</strong> ${
+          savedRequest.travelers
+        }</p>
+
+        <p><strong>Purpose of Travel:</strong> ${
+          savedRequest.tripPurpose
+        }</p>
+
+        <p><strong>Additional Requirements:</strong><br>
+          ${
+            savedRequest.additionalRequirements || "None"
+          }
+        </p>
+
+        <hr>
+
+        <p>
+          This request was submitted through the
+          Voyage Travel Mansion website.
+        </p>
+      `,
+    });
+
+    console.log("SENDING CUSTOMER CONFIRMATION EMAIL...");
+
+    await sendEmail({
+      to: savedRequest.email,
+      subject:
+        "Your International Travel Planning Request Has Been Received",
+      htmlContent: `
+        <h2>Your International Travel Planning Request Has Been Received</h2>
+
+        <p>Dear ${savedRequest.fullName},</p>
+
+        <p>
+          Thank you for contacting Voyage Travel Mansion.
+          We have received your international travel planning request
+          successfully.
+        </p>
+
+        <h3>Request Details</h3>
+
+        <p><strong>Departure:</strong> ${
+          savedRequest.departure || "Not provided"
+        }</p>
+
+        <p><strong>Destination:</strong> ${
+          savedRequest.destination
+        }</p>
+
+        <p><strong>Travel Date:</strong> ${
+          savedRequest.travelDate || "Not provided"
+        }</p>
+
+        <p><strong>Return Date:</strong> ${
+          savedRequest.returnDate || "Not provided"
+        }</p>
+
+        <p><strong>Number of Travelers:</strong> ${
+          savedRequest.travelers
+        }</p>
+
+        <p><strong>Purpose of Travel:</strong> ${
+          savedRequest.tripPurpose
+        }</p>
+
+        <p>
+          Our team will review your request and contact you regarding
+          the next steps for planning your journey.
+        </p>
+
+        <hr>
+
+        <p>
+          <strong>Voyage Travel Mansion</strong><br>
+          561travelsandtours@gmail.com<br>
+          +27 69 587 7716
+        </p>
+      `,
+    });
+
+    res.status(201).json({
+      message: "International travel request submitted successfully",
+      request: savedRequest,
+    });
+  } catch (error) {
+    console.error("International travel request error:", error);
+
+    res.status(400).json({
+      message: "Unable to submit international travel request",
+      error: error.message,
+    });
+  }
+});
 
 
 app.post("/api/visa-requests", async (req, res) => {
