@@ -6,7 +6,7 @@ function Navbar() {
 
   return (
     <header className="absolute left-0 top-0 z-50 w-full">
-      <nav className="   animate-[navEnter_1200ms_ease-out]">
+      <nav className="   text-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
           {/* Logo / Brand */}
           <a href="#home" className="group flex items-center">
@@ -44,6 +44,9 @@ function Navbar() {
             </a>
 
             <a
+            onClick={() => {
+                    window.location.href = "/flight-booking";
+                  }}
               href="#flight-booking"
               className="group relative text-sm font-semibold text-white transition duration-300 hover:text-white"
             >
@@ -52,6 +55,9 @@ function Navbar() {
             </a>
 
             <a
+             onClick={() => {
+                    window.location.href = "/visa-assistance";
+                  }}
               href="#visa"
               className="group relative text-sm font-semibold text-white transition duration-300 hover:text-white"
             >

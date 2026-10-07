@@ -157,7 +157,7 @@ function App() {
                   onClick={() => {
                     window.location.href = "/flight-booking";
                   }} 
-                  className="mt-8 flex items-center bg-blue-400 rounded-full p-3 gap-2 font-semibold text-cyan-400 "
+                  className="mt-8 flex items-center bg-teal-800 rounded-full p-3 gap-2 font-semibold text-cyan-400 "
                 >
                   Start a Request
                   <span className="text-xl transition-transform duration-300 group-hover:translate-x-1">
@@ -503,7 +503,7 @@ function App() {
                     window.location.href = "/flight-booking";
                   }}
     href="#flight-booking"
-    className="group inline-flex items-center gap-3 rounded-full bg-blue-600 px-8 py-4 font-bold text-white shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-2xl"
+    className="group inline-flex items-center gap-3 rounded-full bg-gray-600 px-8 py-4 font-bold text-white shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-2xl"
   >
     Start Your Travel Request
     <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
@@ -888,26 +888,26 @@ function App() {
               </div>
 
               <div className="mt-6 flex flex-col gap-4 sm:flex-row">
-                <a
-                  href="tel:+27695877716"
-                  className="group inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 px-6 py-3 font-bold text-slate-950 transition duration-300 hover:-translate-y-1 hover:border-cyan-400 hover:bg-white"
-                >
-                  Call Us
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
-                </a>
+  <a
+    href="tel:+27695877716"
+    className="group inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-6 py-3 font-bold text-slate-950 shadow-md transition duration-300 hover:-translate-y-1 hover:border-cyan-400 hover:bg-slate-50 hover:shadow-lg"
+  >
+    Call Us
+    <span className="transition-transform duration-300 group-hover:translate-x-1">
+      →
+    </span>
+  </a>
 
-                <a
-                  href="mailto:561travelsandtours@gmail.com"
-                  className="group inline-flex items-center justify-center gap-2 rounded-full shadow-xl  px-6 py-3 font-bold text-white transition duration-300 hover:-translate-y-1 hover:bg-slate-500"
-                >
-                  Send an Email
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
-                </a>
-              </div>
+  <a
+    href="mailto:561travelsandtours@gmail.com"
+    className="group inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3 font-bold text-white shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-slate-700 hover:shadow-2xl"
+  >
+    Send an Email
+    <span className="transition-transform duration-300 group-hover:translate-x-1">
+      →
+    </span>
+  </a>
+</div>
             </div>
           </div>
         </div>
