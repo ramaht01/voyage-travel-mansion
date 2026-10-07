@@ -180,7 +180,7 @@ function App() {
   onClick={() => {
     window.location.href = "/international-travel";
   }}
-  className="group cursor-pointer rounded-3xl border border-white/10 bg-white/5 p-7 shadow-sm backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-xl hover:shadow-cyan-400/10 active:translate-y-0"
+  className="group cursor-pointer rounded-3xl border border-white/10 bg-white/5 p-7 shadow-xl backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-xl hover:shadow-cyan-400/10 active:translate-y-0"
 >
   <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 transition-all duration-300 group-hover:scale-110 group-hover:bg-cyan-600 group-hover:text-white">
     <Globe2 size={30} strokeWidth={1.8} />

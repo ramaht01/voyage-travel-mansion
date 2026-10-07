@@ -295,7 +295,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               htmlFor="additionalRequirements"
               className="mb-2 block text-sm font-semibold text-white"
             >
-              Additional Travel Requirements
+              Additional Travel Requirements  <span className="text-slate-400">(Optional)</span>
             </label>
 
             <textarea
@@ -313,7 +313,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           <div className="lg:col-span-2">
             <button
               type="submit"
-              className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-cyan-500 px-8 py-4 font-bold text-slate-950 shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-cyan-400 hover:shadow-cyan-400/20"
+              className="group inline-flex w-67 items-center justify-center gap-3 rounded-full bg-cyan-500 px-8 py-4 font-bold text-slate-950 shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-cyan-400 hover:shadow-cyan-400/20"
             >
               Start My Travel Request
               <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
