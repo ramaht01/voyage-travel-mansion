@@ -167,6 +167,34 @@ function App() {
               </div>
             </a>
 
+            {/* International Travel Planning */}
+<div
+  onClick={() => {
+    document
+      .getElementById("international-travel")
+      ?.scrollIntoView({ behavior: "smooth" });
+  }}
+  className="group cursor-pointer rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-xl hover:shadow-cyan-400/10 active:translate-y-0"
+>
+  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 transition-all duration-300 group-hover:scale-110 group-hover:bg-cyan-600 group-hover:text-white">
+    <Globe2 size={30} strokeWidth={1.8} />
+  </div>
+
+  <h3 className="mt-7 text-xl font-bold">
+    International Travel Planning
+  </h3>
+
+  <p className="mt-3 leading-7 text-slate-300">
+    Get personalized assistance planning international journeys, from
+    destinations and travel dates to flight options and trip requirements.
+  </p>
+
+  <div className="mt-5 inline-flex items-center gap-2 font-semibold text-cyan-400 transition-transform duration-300 group-hover:translate-x-1">
+    Start a Request
+    <span>→</span>
+  </div>
+</div>
+
             {/* Visa Assistance Card */}
             <a
               href="#visa"
@@ -193,7 +221,7 @@ function App() {
                   onClick={() => {
                     window.location.href = "/visa-assistance";
                   }}
-                  className="mt-8 flex items-center bg-blue-600  text-white p-3 rounded-full gap-2 font-semibold text-cyan-500 "
+                  className="mt-8 flex items-center bg-blue-800  text-white p-3 rounded-full gap-2 font-semibold text-cyan-500 "
                 >
                   Get Assistance
                   <span className="text-xl transition-transform duration-300 group-hover:translate-x-2">
