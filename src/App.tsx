@@ -156,8 +156,8 @@ function App() {
                   type="button"
                   onClick={() => {
                     window.location.href = "/flight-booking";
-                  }}
-                  className="mt-8 flex items-center gap-2 font-semibold text-cyan-400 "
+                  }} 
+                  className="mt-8 flex items-center bg-blue-400 rounded-full p-3 gap-2 font-semibold text-cyan-400 "
                 >
                   Start a Request
                   <span className="text-xl transition-transform duration-300 group-hover:translate-x-1">
@@ -193,7 +193,7 @@ function App() {
                   onClick={() => {
                     window.location.href = "/visa-assistance";
                   }}
-                  className="mt-8 flex items-center gap-2 font-semibold text-cyan-500 "
+                  className="mt-8 flex items-center bg-blue-300 p-3 rounded-full gap-2 font-semibold text-cyan-500 "
                 >
                   Get Assistance
                   <span className="text-xl transition-transform duration-300 group-hover:translate-x-2">
@@ -497,17 +497,20 @@ function App() {
           </div>
 
           {/* CTA */}
-          <div className="mt-16 text-center">
-            <a
-              href="#flight-booking"
-              className="group inline-flex items-center gap-3 rounded-full  px-8 py-4 font-bold text-gray-400 shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-slate-500 hover:shadow-xl"
-            >
-              Start Your Travel Request
-              <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
-            </a>
-          </div>
+        <div className="mt-16 text-center">
+  <a
+          onClick={() => {
+                    window.location.href = "/flight-booking";
+                  }}
+    href="#flight-booking"
+    className="group inline-flex items-center gap-3 rounded-full bg-blue-600 px-8 py-4 font-bold text-white shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-2xl"
+  >
+    Start Your Travel Request
+    <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
+      →
+    </span>
+  </a>
+</div>
         </div>
       </section>
 
