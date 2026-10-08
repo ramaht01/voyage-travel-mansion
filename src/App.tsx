@@ -6,6 +6,8 @@ import uncleImage from "./assets/Uncle image.jpeg";
 import FlightBooking from "./pages/FlightBooking";
 import VisaAssistance from "./pages/VisaAssistance";
 import InternationalTravel from "./pages/InternationalTravel";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   Plane,
@@ -54,6 +56,7 @@ function App() {
 
 
   return (
+   <>
     <main className="min-h-screen bg-white text-slate-900">
       <Navbar />
 
@@ -550,7 +553,7 @@ function App() {
 
       {/* ABOUT US */}
       <section id="about" className="bg-white px-6 py-24 lg:px-8">
-        <div className="mx-auto max-w-7xl" />
+        <div className="mx-auto max-w-7xl"/>
 
         <div className="grid items-center gap-14 lg:grid-cols-2">
           {/* LEFT SIDE */}
@@ -1170,6 +1173,7 @@ function App() {
         </div>
       </footer>
     </main>
+   </>
   );
 }
 

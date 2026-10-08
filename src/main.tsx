@@ -8,7 +8,8 @@ import App from './App.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
-    <ToastContainer
+  
+<ToastContainer
   position="top-right"
   autoClose={4000}
   hideProgressBar={false}
@@ -16,7 +17,10 @@ createRoot(document.getElementById('root')!).render(
   closeOnClick
   pauseOnHover
   draggable
-  theme="light"
+  theme="dark"
+  toastClassName="voyage-toast"
+  progressClassName="voyage-toast-progress"
 />
+
   </StrictMode>,
 )
