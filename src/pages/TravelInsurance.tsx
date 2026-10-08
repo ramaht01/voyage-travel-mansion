@@ -26,7 +26,7 @@ export default function TravelInsurance() {
     additionalRequirements: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting] = useState(false);
 
   const updateField = (
     e: React.ChangeEvent<
