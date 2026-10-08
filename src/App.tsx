@@ -6,7 +6,6 @@ import uncleImage from "./assets/Uncle image.jpeg";
 import FlightBooking from "./pages/FlightBooking";
 import VisaAssistance from "./pages/VisaAssistance";
 import InternationalTravel from "./pages/InternationalTravel";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import {
