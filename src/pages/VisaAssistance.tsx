@@ -1,28 +1,71 @@
-import { useState } from "react";
+
+import { useState, type FormEvent } from "react";
 import { toast } from "react-toastify";
 
 const VisaAssistance = () => {
   const [visaEmailError, setVisaEmailError] = useState("");
+
   const [visaForm, setVisaForm] = useState({
     fullName: "",
     email: "",
     phone: "",
+    nationality: "",
+    countryOfResidence: "",
     destinationCountry: "",
     visaType: "",
     purpose: "",
     intendedTravelDate: "",
+    intendedStayDuration: "",
+    applicationStatus: "",
+    previousRefusal: "",
     additionalInformation: "",
   });
 
-  const handleVisaSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(visaForm.email)) {
+    if (
+      !visaForm.fullName.trim() ||
+      !visaForm.email.trim() ||
+      !visaForm.phone.trim() ||
+      !visaForm.nationality.trim() ||
+      !visaForm.countryOfResidence.trim() ||
+      !visaForm.destinationCountry.trim() ||
+      !visaForm.visaType ||
+      !visaForm.purpose ||
+      !visaForm.intendedTravelDate ||
+      !visaForm.applicationStatus ||
+      !visaForm.previousRefusal
+    ) {
+      toast.error("Please complete all required fields.");
+      return;
+    }
+
+    if (
+      !/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(visaForm.email)
+    ) {
       setVisaEmailError(
-        "Please enter a valid Gmail address ending with @gmail.com.",
+        "Please enter a valid Gmail address ending with @gmail.com."
       );
       return;
     }
+
+    setVisaEmailError("");
+
+    const visaDetails = [
+      `Applicant nationality: ${visaForm.nationality}`,
+      `Country of residence: ${visaForm.countryOfResidence}`,
+      `Intended length of stay: ${
+        visaForm.intendedStayDuration || "Not specified"
+      }`,
+      `Application progress: ${visaForm.applicationStatus}`,
+      `Previous visa refusal: ${visaForm.previousRefusal}`,
+      visaForm.additionalInformation.trim()
+        ? `Additional information: ${visaForm.additionalInformation.trim()}`
+        : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
 
     try {
       const response = await fetch(
@@ -32,17 +75,26 @@ const VisaAssistance = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(visaForm),
-        },
+          body: JSON.stringify({
+            fullName: visaForm.fullName,
+            email: visaForm.email,
+            phone: visaForm.phone,
+            destinationCountry: visaForm.destinationCountry,
+            visaType: visaForm.visaType,
+            purpose: visaForm.purpose,
+            intendedTravelDate: visaForm.intendedTravelDate,
+            additionalInformation: visaDetails,
+          }),
+        }
       );
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
+        throw new Error(
+          data.message || "Unable to submit visa assistance request."
+        );
       }
-
-      console.log("Visa request submitted:", data);
 
       toast.success("Visa request submitted successfully!");
 
@@ -50,158 +102,255 @@ const VisaAssistance = () => {
         fullName: "",
         email: "",
         phone: "",
+        nationality: "",
+        countryOfResidence: "",
         destinationCountry: "",
         visaType: "",
         purpose: "",
         intendedTravelDate: "",
+        intendedStayDuration: "",
+        applicationStatus: "",
+        previousRefusal: "",
         additionalInformation: "",
       });
     } catch (error) {
       console.error("Visa submission error:", error);
 
-      toast.error("Something went wrong. Please try again.");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again."
+      );
     }
   };
 
+  const inputClass =
+    "w-full rounded-xl border border-violet-200/10 bg-[#1c1428] px-4 py-3.5 text-white placeholder:text-violet-200/40 outline-none transition duration-300 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20";
+
+  const labelClass =
+    "mb-2 block text-sm font-semibold text-violet-50";
+
   return (
-    <main className="min-h-screen bg-slate-950 px-6 py-24 text-white">
+    <main className="min-h-screen bg-[#100b18] px-4 py-6 text-white sm:px-6 sm:py-10">
       <div className="mx-auto max-w-6xl">
-        {/* Heading */}
-        <div className="mb-12 max-w-3xl">
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-400">
-            Visa Assistance
-          </p>
+        {/* Top Navigation */}
+        <header className="mb-12 flex items-center justify-between gap-4">
+          <a
+            href="/"
+            className="text-lg font-extrabold tracking-tight text-white sm:text-xl"
+          >
+            Voyage <span className="text-violet-400">Travel Mansion</span>
+          </a>
 
-          <h1 className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Get Support With Your Visa Journey
-          </h1>
+          <a
+            href="/"
+            className="rounded-full border border-violet-200/15 px-4 py-2.5 text-sm font-semibold text-violet-100 transition hover:border-violet-400/60 hover:bg-violet-400/10"
+          >
+            ← Back to Home
+          </a>
+        </header>
 
-          <p className="mt-5 text-base leading-8 text-slate-300">
-            Tell us about your destination, visa requirements, and travel plans.
-            Our team will review your request and guide you through the
-            application process.
-          </p>
-        </div>
+        {/* Hero Section */}
+        <section className="relative mb-10 overflow-hidden rounded-[2rem] border border-violet-300/10 bg-gradient-to-br from-[#211331] via-[#181022] to-[#100b18] px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-violet-600/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 left-1/3 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />
 
-        {/* Visa Form */}
-        <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl sm:p-8 lg:p-10">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-white">
-              Visa Assistance Request
+          <div className="relative max-w-3xl">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-violet-300 sm:text-sm">
+              Visa Assistance
+            </p>
+
+            <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+              Your visa journey,
+              <span className="block text-violet-400">
+                guided with care.
+              </span>
+            </h1>
+
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-violet-100/70 sm:text-base sm:leading-8">
+              Whether you're planning a holiday, studying abroad, visiting
+              family, or travelling for business, tell us about your visa
+              needs so our team can guide you through the next steps.
+            </p>
+
+            <div className="mt-7 flex flex-wrap gap-3 text-sm text-violet-100/80">
+              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+                Personal guidance
+              </span>
+              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+                Multiple visa types
+              </span>
+              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+                Application support
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* Visa Request Form */}
+        <section className="overflow-hidden rounded-[2rem] border border-violet-200/10 bg-[#181120] shadow-2xl shadow-black/20">
+          <div className="border-b border-violet-200/10 px-6 py-7 sm:px-8 lg:px-10">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-violet-400">
+              Your application starts here
+            </p>
+
+            <h2 className="mt-3 text-2xl font-bold text-white sm:text-3xl">
+              Let's Understand Your Visa Needs
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-slate-400">
-              Complete the form below and our team will contact you with
-              guidance on your visa requirements.
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-violet-100/60">
+              Answer a few questions about your circumstances and travel
+              plans so our team can understand what assistance you need.
             </p>
           </div>
 
           <form
-            onSubmit={handleVisaSubmit}
-            className="grid gap-6 md:grid-cols-2"
+            onSubmit={handleSubmit}
+            className="grid gap-x-6 gap-y-6 px-6 py-8 sm:px-8 lg:grid-cols-2 lg:px-10 lg:py-10"
           >
-            {/* Full Name */}
-            <div>
-              <label
-                htmlFor="visa-name"
-                className="mb-2 block text-sm font-semibold text-white"
-              >
-                Full Name
-              </label>
+            {/* Section 1: Applicant Details */}
+            <div className="lg:col-span-2">
+              <h3 className="text-lg font-bold text-white">
+                01. Applicant Details
+              </h3>
+              <p className="mt-1 text-sm text-violet-100/50">
+                Tell us who is applying and how we can contact you.
+              </p>
+            </div>
 
+            <div>
+              <label htmlFor="visa-name" className={labelClass}>
+                Full Name *
+              </label>
               <input
                 id="visa-name"
                 type="text"
+                autoComplete="name"
                 required
                 value={visaForm.fullName}
                 onChange={(e) =>
-                  setVisaForm({
-                    ...visaForm,
-                    fullName: e.target.value,
-                  })
+                  setVisaForm({ ...visaForm, fullName: e.target.value })
                 }
                 placeholder="Enter your full name"
-                className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                className={inputClass}
               />
             </div>
 
-            {/* Email */}
             <div>
-              <label
-                htmlFor="visa-email"
-                className="mb-2 block text-sm font-semibold text-white"
-              >
-                Gmail Address
+              <label htmlFor="visa-email" className={labelClass}>
+                Gmail Address *
               </label>
-
               <input
                 id="visa-email"
                 type="email"
+                autoComplete="email"
                 required
-                pattern="^[a-zA-Z0-9._%+\-]+@gmail\.com$"
+                pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
                 title="Please enter a valid Gmail address ending with @gmail.com"
                 value={visaForm.email}
                 onChange={(e) => {
                   const value = e.target.value;
 
-                  setVisaForm({
-                    ...visaForm,
-                    email: value,
-                  });
+                  setVisaForm({ ...visaForm, email: value });
 
-                  if (value && !/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(value)) {
-                    setVisaEmailError(
-                      "Please enter a valid Gmail address ending with @gmail.com.",
-                    );
-                  } else {
-                    setVisaEmailError("");
-                  }
+                  setVisaEmailError(
+                    value &&
+                      !/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(value)
+                      ? "Please enter a valid Gmail address ending with @gmail.com."
+                      : ""
+                  );
                 }}
                 placeholder="you@gmail.com"
-                className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                aria-invalid={Boolean(visaEmailError)}
+                aria-describedby={
+                  visaEmailError ? "visa-email-error" : undefined
+                }
+                className={`${inputClass} ${
+                  visaEmailError
+                    ? "border-red-400 focus:border-red-400 focus:ring-red-400/20"
+                    : ""
+                }`}
               />
 
               {visaEmailError && (
-                <p className="mt-2 text-sm font-medium text-red-400">
+                <p
+                  id="visa-email-error"
+                  className="mt-2 text-sm font-medium text-red-400"
+                >
                   {visaEmailError}
                 </p>
               )}
             </div>
 
-            {/* Phone */}
             <div>
-              <label
-                htmlFor="visa-phone"
-                className="mb-2 block text-sm font-semibold text-white"
-              >
-                Phone / WhatsApp
+              <label htmlFor="visa-phone" className={labelClass}>
+                Phone / WhatsApp *
               </label>
-
               <input
                 id="visa-phone"
                 type="tel"
+                autoComplete="tel"
                 required
                 value={visaForm.phone}
                 onChange={(e) =>
-                  setVisaForm({
-                    ...visaForm,
-                    phone: e.target.value,
-                  })
+                  setVisaForm({ ...visaForm, phone: e.target.value })
                 }
-                placeholder="+27..."
-                className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                placeholder="Include your country code"
+                className={inputClass}
               />
             </div>
 
-            {/* Destination Country */}
             <div>
-              <label
-                htmlFor="visa-country"
-                className="mb-2 block text-sm font-semibold text-white"
-              >
-                Destination Country
+              <label htmlFor="visa-nationality" className={labelClass}>
+                Nationality *
               </label>
+              <input
+                id="visa-nationality"
+                type="text"
+                required
+                value={visaForm.nationality}
+                onChange={(e) =>
+                  setVisaForm({ ...visaForm, nationality: e.target.value })
+                }
+                placeholder="e.g. Nigerian"
+                className={inputClass}
+              />
+            </div>
 
+            <div className="lg:col-span-2">
+              <label htmlFor="visa-residence" className={labelClass}>
+                Country of Current Residence *
+              </label>
+              <input
+                id="visa-residence"
+                type="text"
+                required
+                value={visaForm.countryOfResidence}
+                onChange={(e) =>
+                  setVisaForm({
+                    ...visaForm,
+                    countryOfResidence: e.target.value,
+                  })
+                }
+                placeholder="Which country do you currently live in?"
+                className={inputClass}
+              />
+            </div>
+
+            {/* Section 2: Visa Requirements */}
+            <div className="mt-3 lg:col-span-2">
+              <h3 className="text-lg font-bold text-white">
+                02. Destination & Visa Requirements
+              </h3>
+              <p className="mt-1 text-sm text-violet-100/50">
+                Help us understand where you're going and why.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="visa-country" className={labelClass}>
+                Destination Country *
+              </label>
               <input
                 id="visa-country"
                 type="text"
@@ -214,30 +363,22 @@ const VisaAssistance = () => {
                   })
                 }
                 placeholder="e.g. United Kingdom"
-                className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                className={inputClass}
               />
             </div>
 
-            {/* Visa Type */}
             <div>
-              <label
-                htmlFor="visa-type"
-                className="mb-2 block text-sm font-semibold text-white"
-              >
-                Visa Type
+              <label htmlFor="visa-type" className={labelClass}>
+                Type of Visa Required *
               </label>
-
               <select
                 id="visa-type"
                 required
                 value={visaForm.visaType}
                 onChange={(e) =>
-                  setVisaForm({
-                    ...visaForm,
-                    visaType: e.target.value,
-                  })
+                  setVisaForm({ ...visaForm, visaType: e.target.value })
                 }
-                className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                className={inputClass}
               >
                 <option value="">Select visa type</option>
                 <option value="Tourist Visa">Tourist Visa</option>
@@ -246,55 +387,148 @@ const VisaAssistance = () => {
                 <option value="Work Visa">Work Visa</option>
                 <option value="Transit Visa">Transit Visa</option>
                 <option value="Family / Visit Visa">Family / Visit Visa</option>
-                <option value="Other">Other</option>
+                <option value="Other">Other / Not Sure Yet</option>
               </select>
             </div>
 
-            {/* Purpose */}
             <div>
-              <label
-                htmlFor="visa-purpose"
-                className="mb-2 block text-sm font-semibold text-white"
-              >
-                Purpose of Travel
+              <label htmlFor="visa-purpose" className={labelClass}>
+                Main Purpose of Travel *
               </label>
-
               <select
                 id="visa-purpose"
                 required
                 value={visaForm.purpose}
                 onChange={(e) =>
-                  setVisaForm({
-                    ...visaForm,
-                    purpose: e.target.value,
-                  })
+                  setVisaForm({ ...visaForm, purpose: e.target.value })
                 }
-                className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                className={inputClass}
               >
                 <option value="">Select purpose</option>
-                <option value="Tourism">Tourism</option>
+                <option value="Tourism">Tourism / Holiday</option>
                 <option value="Business">Business</option>
-                <option value="Study">Study</option>
-                <option value="Work">Work</option>
+                <option value="Study">Study / Education</option>
+                <option value="Work">Employment</option>
                 <option value="Family / Visit">Family / Visit</option>
                 <option value="Transit">Transit</option>
                 <option value="Other">Other</option>
               </select>
             </div>
 
-            {/* Intended Travel Date */}
             <div>
-              <label
-                htmlFor="visa-travel-date"
-                className="mb-2 block text-sm font-semibold text-white"
-              >
-                Intended Travel Date
+              <label htmlFor="visa-duration" className={labelClass}>
+                Expected Length of Stay
               </label>
+              <select
+                id="visa-duration"
+                value={visaForm.intendedStayDuration}
+                onChange={(e) =>
+                  setVisaForm({
+                    ...visaForm,
+                    intendedStayDuration: e.target.value,
+                  })
+                }
+                className={inputClass}
+              >
+                <option value="">Select duration</option>
+                <option value="Less than 2 weeks">Less than 2 weeks</option>
+                <option value="2 weeks to 1 month">2 weeks to 1 month</option>
+                <option value="1 to 3 months">1 to 3 months</option>
+                <option value="3 to 6 months">3 to 6 months</option>
+                <option value="More than 6 months">More than 6 months</option>
+                <option value="Not sure">Not sure yet</option>
+              </select>
+            </div>
 
+            {/* Section 3: Application Progress */}
+            <div className="mt-3 lg:col-span-2">
+              <h3 className="text-lg font-bold text-white">
+                03. Your Application Progress
+              </h3>
+              <p className="mt-1 text-sm text-violet-100/50">
+                This helps us understand the stage you're at.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="visa-status" className={labelClass}>
+                Where Are You in the Process? *
+              </label>
+              <select
+                id="visa-status"
+                required
+                value={visaForm.applicationStatus}
+                onChange={(e) =>
+                  setVisaForm({
+                    ...visaForm,
+                    applicationStatus: e.target.value,
+                  })
+                }
+                className={inputClass}
+              >
+                <option value="">Select application stage</option>
+                <option value="Just getting started">
+                  Just getting started
+                </option>
+                <option value="Need help preparing documents">
+                  Need help preparing documents
+                </option>
+                <option value="Ready to apply">Ready to apply</option>
+                <option value="Application already submitted">
+                  Application already submitted
+                </option>
+                <option value="Need help with a refused application">
+                  Previous application refused
+                </option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="visa-refusal" className={labelClass}>
+                Has a Visa Application Been Refused Before? *
+              </label>
+              <select
+                id="visa-refusal"
+                required
+                value={visaForm.previousRefusal}
+                onChange={(e) =>
+                  setVisaForm({
+                    ...visaForm,
+                    previousRefusal: e.target.value,
+                  })
+                }
+                className={inputClass}
+              >
+                <option value="">Please select</option>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="Prefer to discuss privately">
+                  Prefer to discuss privately
+                </option>
+              </select>
+            </div>
+
+            {/* Section 4: Travel Date */}
+            <div className="mt-3 lg:col-span-2">
+              <h3 className="text-lg font-bold text-white">
+                04. Intended Travel Date
+              </h3>
+              <p className="mt-1 text-sm text-violet-100/50">
+                When are you hoping to travel? This helps us understand
+                your intended timeline.
+              </p>
+            </div>
+
+            <div className="lg:col-span-2">
+              <label htmlFor="visa-travel-date" className={labelClass}>
+                Intended Travel Date *
+              </label>
               <input
                 id="visa-travel-date"
                 type="date"
                 required
+                min={new Date().toISOString().split("T")[0]}
                 value={visaForm.intendedTravelDate}
                 onChange={(e) =>
                   setVisaForm({
@@ -302,20 +536,28 @@ const VisaAssistance = () => {
                     intendedTravelDate: e.target.value,
                   })
                 }
-                className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                className={inputClass}
               />
             </div>
 
-            {/* Additional Information */}
-            <div className="md:col-span-2">
-              <label
-                htmlFor="visa-information"
-                className="mb-2 block text-sm font-semibold text-white"
-              >
-                Additional Information{" "}
-                <span className="text-slate-400">(Optional)</span>
-              </label>
+            {/* Section 5: Additional Information */}
+            <div className="mt-3 lg:col-span-2">
+              <h3 className="text-lg font-bold text-white">
+                05. Additional Information
+              </h3>
+              <p className="mt-1 text-sm text-violet-100/50">
+                Share any questions or relevant details you'd like
+                our team to know.
+              </p>
+            </div>
 
+            <div className="lg:col-span-2">
+              <label htmlFor="visa-information" className={labelClass}>
+                Tell Us More
+                <span className="ml-2 font-normal text-violet-200/50">
+                  (Optional)
+                </span>
+              </label>
               <textarea
                 id="visa-information"
                 rows={5}
@@ -326,22 +568,36 @@ const VisaAssistance = () => {
                     additionalInformation: e.target.value,
                   })
                 }
-                placeholder="Tell us anything else we should know about your visa request..."
-                className="w-full resize-none rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                placeholder="Mention any questions, special circumstances, or assistance you need. Please don't enter passport numbers or other sensitive document details here."
+                className={`${inputClass} resize-y`}
               />
             </div>
 
             {/* Submit */}
-            <div className="md:col-span-2">
+            <div className="pt-2 lg:col-span-2">
               <button
                 type="submit"
-                className="w-78 rounded-xl bg-cyan-500 px-6 py-4 text-sm font-bold text-slate-950 transition-all duration-300 hover:-translate-y-1 hover:bg-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20"
+                className="group flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-violet-950/30 transition duration-300 hover:-translate-y-0.5 hover:from-violet-400 hover:to-fuchsia-400 hover:shadow-violet-500/20 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:ring-offset-2 focus:ring-offset-[#181120] sm:w-auto sm:min-w-64"
               >
                 Submit Visa Assistance Request
+                <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
               </button>
+
+              <p className="mt-4 text-xs leading-6 text-violet-100/50">
+                Our team will review your enquiry and guide you on the
+                next steps. Submitting this form does not guarantee visa
+                approval or replace official immigration advice.
+              </p>
             </div>
           </form>
-        </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="py-8 text-center text-xs text-violet-100/40">
+          Voyage Travel Mansion · Your trusted partner for better journeys.
+        </footer>
       </div>
     </main>
   );

@@ -1,5 +1,3 @@
-
-
 const dns = require("dns");
 
 dns.setDefaultResultOrder("ipv4first");
@@ -54,15 +52,13 @@ app.post("/api/admin/login", async (req, res) => {
     }
 
     const submittedEmail = email.trim().toLowerCase();
-    const configuredEmail = process.env.ADMIN_EMAIL
-      .trim()
-      .toLowerCase();
+    const configuredEmail = process.env.ADMIN_EMAIL.trim().toLowerCase();
 
     const emailMatches = submittedEmail === configuredEmail;
 
     const passwordMatches = await bcrypt.compare(
       password,
-      process.env.ADMIN_PASSWORD_HASH
+      process.env.ADMIN_PASSWORD_HASH,
     );
 
     console.log("Admin login check:", {
@@ -84,7 +80,7 @@ app.post("/api/admin/login", async (req, res) => {
       process.env.JWT_SECRET,
       {
         expiresIn: "7d",
-      }
+      },
     );
 
     res.status(200).json({
@@ -100,8 +96,6 @@ app.post("/api/admin/login", async (req, res) => {
   }
 });
 
-
-
 app.get("/", (req, res) => {
   res.json({
     message: "Voyage Travel Mansion backend is running!",
@@ -111,19 +105,111 @@ app.get("/", (req, res) => {
 const FlightRequest = require("./models/FlightRequest");
 const VisaRequest = require("./models/VisaRequest");
 const InternationalTravelRequest = require("./models/InternationalTravelRequest");
+const InsuranceRequest = require("./models/InsuranceRequest");
 
-app.get("/api/international-travel-requests", (req, res) => {
-  res.json({
-    message: "International travel route is live!",
-  });
+app.get(
+  "/api/international-travel-requests",
+  requireAdmin,
+  async (req, res) => {
+    try {
+      const requests = await InternationalTravelRequest.find().sort({
+        createdAt: -1,
+      });
+
+      res.status(200).json(requests);
+    } catch (error) {
+      console.error("Error fetching international travel requests:", error);
+
+      res.status(500).json({
+        message: "Unable to fetch international travel requests",
+      });
+    }
+  },
+);
+
+app.get("/api/insurance-requests", requireAdmin, async (req, res) => {
+  try {
+    const requests = await InsuranceRequest.find().sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json(requests);
+  } catch (error) {
+    console.error("Error fetching insurance requests:", error);
+
+    res.status(500).json({
+      message: "Unable to fetch insurance requests",
+    });
+  }
 });
 
+app.patch("/api/insurance-requests/:id", requireAdmin, async (req, res) => {
+  try {
+    const updatedRequest = await InsuranceRequest.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: req.body.status,
+        notes: req.body.notes,
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    if (!updatedRequest) {
+      return res.status(404).json({
+        message: "Insurance request not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Insurance request updated successfully",
+      request: updatedRequest,
+    });
+  } catch (error) {
+    console.error("Insurance request update error:", error);
+
+    res.status(400).json({
+      message: "Unable to update insurance request",
+      error: error.message,
+    });
+  }
+});
+
+
+app.delete(
+  "/api/insurance-requests/:id",
+  requireAdmin,
+  async (req, res) => {
+    try {
+      const deletedRequest = await InsuranceRequest.findByIdAndDelete(
+        req.params.id
+      );
+
+      if (!deletedRequest) {
+        return res.status(404).json({
+          message: "Insurance request not found",
+        });
+      }
+
+      res.status(200).json({
+        message: "Insurance request deleted successfully",
+      });
+    } catch (error) {
+      console.error("Insurance request deletion error:", error);
+
+      res.status(500).json({
+        message: "Unable to delete insurance request",
+      });
+    }
+  }
+);
 
 
 app.post("/api/international-travel-requests", async (req, res) => {
   try {
-    const internationalTravelRequest =
-      new InternationalTravelRequest(req.body);
+    const internationalTravelRequest = new InternationalTravelRequest(req.body);
 
     const savedRequest = await internationalTravelRequest.save();
 
@@ -144,9 +230,7 @@ app.post("/api/international-travel-requests", async (req, res) => {
           savedRequest.departure || "Not provided"
         }</p>
 
-        <p><strong>Destination:</strong> ${
-          savedRequest.destination
-        }</p>
+        <p><strong>Destination:</strong> ${savedRequest.destination}</p>
 
         <p><strong>Travel Date:</strong> ${
           savedRequest.travelDate || "Not provided"
@@ -156,18 +240,12 @@ app.post("/api/international-travel-requests", async (req, res) => {
           savedRequest.returnDate || "Not provided"
         }</p>
 
-        <p><strong>Number of Travelers:</strong> ${
-          savedRequest.travelers
-        }</p>
+        <p><strong>Number of Travelers:</strong> ${savedRequest.travelers}</p>
 
-        <p><strong>Purpose of Travel:</strong> ${
-          savedRequest.tripPurpose
-        }</p>
+        <p><strong>Purpose of Travel:</strong> ${savedRequest.tripPurpose}</p>
 
         <p><strong>Additional Requirements:</strong><br>
-          ${
-            savedRequest.additionalRequirements || "None"
-          }
+          ${savedRequest.additionalRequirements || "None"}
         </p>
 
         <hr>
@@ -183,8 +261,7 @@ app.post("/api/international-travel-requests", async (req, res) => {
 
     await sendEmail({
       to: savedRequest.email,
-      subject:
-        "Your International Travel Planning Request Has Been Received",
+      subject: "Your International Travel Planning Request Has Been Received",
       htmlContent: `
         <h2>Your International Travel Planning Request Has Been Received</h2>
 
@@ -202,9 +279,7 @@ app.post("/api/international-travel-requests", async (req, res) => {
           savedRequest.departure || "Not provided"
         }</p>
 
-        <p><strong>Destination:</strong> ${
-          savedRequest.destination
-        }</p>
+        <p><strong>Destination:</strong> ${savedRequest.destination}</p>
 
         <p><strong>Travel Date:</strong> ${
           savedRequest.travelDate || "Not provided"
@@ -214,13 +289,9 @@ app.post("/api/international-travel-requests", async (req, res) => {
           savedRequest.returnDate || "Not provided"
         }</p>
 
-        <p><strong>Number of Travelers:</strong> ${
-          savedRequest.travelers
-        }</p>
+        <p><strong>Number of Travelers:</strong> ${savedRequest.travelers}</p>
 
-        <p><strong>Purpose of Travel:</strong> ${
-          savedRequest.tripPurpose
-        }</p>
+        <p><strong>Purpose of Travel:</strong> ${savedRequest.tripPurpose}</p>
 
         <p>
           Our team will review your request and contact you regarding
@@ -251,6 +322,78 @@ app.post("/api/international-travel-requests", async (req, res) => {
   }
 });
 
+app.post("/api/insurance-requests", async (req, res) => {
+  try {
+    const {
+      fullName,
+      email,
+      phone,
+      destination,
+      departureDate,
+      returnDate,
+      travelers,
+      coverageType,
+      additionalRequirements,
+    } = req.body;
+
+    const insuranceRequest = new InsuranceRequest({
+      fullName,
+      email,
+      phone,
+      destination,
+      departureDate,
+      returnDate,
+      travelers: Number(travelers),
+      insuranceType: coverageType,
+      additionalRequirements,
+    });
+
+    const savedRequest = await insuranceRequest.save();
+
+    await sendEmail({
+      to: "561travelsandtours@gmail.com",
+      subject: "New Travel Insurance Request - Voyage Travel Mansion",
+      htmlContent: `
+        <h2>New Travel Insurance Request</h2>
+        <p><strong>Name:</strong> ${savedRequest.fullName}</p>
+        <p><strong>Email:</strong> ${savedRequest.email}</p>
+        <p><strong>Phone:</strong> ${savedRequest.phone}</p>
+        <p><strong>Destination:</strong> ${savedRequest.destination}</p>
+        <p><strong>Departure Date:</strong> ${savedRequest.departureDate || "Not provided"}</p>
+        <p><strong>Return Date:</strong> ${savedRequest.returnDate || "Not provided"}</p>
+        <p><strong>Travelers:</strong> ${savedRequest.travelers}</p>
+        <p><strong>Type of Assistance:</strong> ${savedRequest.insuranceType}</p>
+        <p><strong>Additional Information:</strong><br>${savedRequest.additionalRequirements || "None"}</p>
+      `,
+    });
+
+    await sendEmail({
+      to: savedRequest.email,
+      subject: "Your Travel Insurance Request Has Been Received",
+      htmlContent: `
+        <h2>Travel Insurance Request Received</h2>
+        <p>Dear ${savedRequest.fullName},</p>
+        <p>Thank you for contacting Voyage Travel Mansion. We have received your request for travel insurance assistance.</p>
+        <p>Our team will review your details and contact you about the next steps.</p>
+        <p><strong>Voyage Travel Mansion</strong><br>
+        561travelsandtours@gmail.com<br>
+        +27 69 587 7716</p>
+      `,
+    });
+
+    res.status(201).json({
+      message: "Travel insurance request submitted successfully",
+      request: savedRequest,
+    });
+  } catch (error) {
+    console.error("Travel insurance request error:", error);
+
+    res.status(400).json({
+      message: "Unable to submit travel insurance request",
+      error: error.message,
+    });
+  }
+});
 
 app.post("/api/visa-requests", async (req, res) => {
   try {
@@ -261,9 +404,9 @@ app.post("/api/visa-requests", async (req, res) => {
     console.log("SENDING AGENCY EMAIL...");
 
     await sendEmail({
-  to: "561travelsandtours@gmail.com",
-  subject: "New Visa Assistance Request - Voyage Travel Mansion",
-  htmlContent: `
+      to: "561travelsandtours@gmail.com",
+      subject: "New Visa Assistance Request - Voyage Travel Mansion",
+      htmlContent: `
     <h2>New Visa Assistance Request</h2>
 
     <p><strong>Full Name:</strong> ${savedRequest.fullName}</p>
@@ -292,14 +435,14 @@ app.post("/api/visa-requests", async (req, res) => {
       Voyage Travel Mansion website.
     </p>
   `,
-});
+    });
 
-console.log("SENDING AGENCY EMAIL...");
+    console.log("SENDING AGENCY EMAIL...");
 
-await sendEmail({
-  to: savedRequest.email,
-  subject: "Your Visa Assistance Request Has Been Received",
-  htmlContent: `
+    await sendEmail({
+      to: savedRequest.email,
+      subject: "Your Visa Assistance Request Has Been Received",
+      htmlContent: `
     <h2>Your Visa Assistance Request Has Been Received</h2>
 
     <p>Dear ${savedRequest.fullName},</p>
@@ -341,7 +484,7 @@ await sendEmail({
       +27 69 587 7716
     </p>
   `,
-});
+    });
 
     res.status(201).json({
       message: "Visa request submitted successfully",
@@ -382,12 +525,12 @@ app.patch("/api/visa-requests/:id", requireAdmin, async (req, res) => {
       req.params.id,
       {
         status: req.body.status,
-          notes: req.body.notes,
+        notes: req.body.notes,
       },
       {
         new: true,
         runValidators: true,
-      }
+      },
     );
 
     if (!updatedRequest) {
@@ -410,11 +553,47 @@ app.patch("/api/visa-requests/:id", requireAdmin, async (req, res) => {
   }
 });
 
+app.patch(
+  "/api/international-travel-requests/:id",
+  requireAdmin,
+  async (req, res) => {
+    try {
+      const updatedRequest = await InternationalTravelRequest.findByIdAndUpdate(
+        req.params.id,
+        {
+          status: req.body.status,
+          notes: req.body.notes,
+        },
+        {
+          new: true,
+          runValidators: true,
+        },
+      );
+
+      if (!updatedRequest) {
+        return res.status(404).json({
+          message: "International travel request not found",
+        });
+      }
+
+      res.status(200).json({
+        message: "International travel request updated successfully",
+        request: updatedRequest,
+      });
+    } catch (error) {
+      console.error("International travel request update error:", error);
+
+      res.status(400).json({
+        message: "Unable to update international travel request",
+        error: error.message,
+      });
+    }
+  },
+);
+
 app.delete("/api/visa-requests/:id", requireAdmin, async (req, res) => {
   try {
-    const deletedRequest = await VisaRequest.findByIdAndDelete(
-      req.params.id
-    );
+    const deletedRequest = await VisaRequest.findByIdAndDelete(req.params.id);
 
     if (!deletedRequest) {
       return res.status(404).json({
@@ -436,8 +615,33 @@ app.delete("/api/visa-requests/:id", requireAdmin, async (req, res) => {
   }
 });
 
+app.delete(
+  "/api/international-travel-requests/:id",
+  requireAdmin,
+  async (req, res) => {
+    try {
+      const deletedRequest = await InternationalTravelRequest.findByIdAndDelete(
+        req.params.id,
+      );
 
+      if (!deletedRequest) {
+        return res.status(404).json({
+          message: "International travel request not found",
+        });
+      }
 
+      res.status(200).json({
+        message: "International travel request deleted successfully",
+      });
+    } catch (error) {
+      console.error("International travel request deletion error:", error);
+
+      res.status(500).json({
+        message: "Unable to delete international travel request",
+      });
+    }
+  },
+);
 
 app.post("/api/flight-requests", async (req, res) => {
   try {
@@ -480,9 +684,9 @@ app.post("/api/flight-requests", async (req, res) => {
     });
 
     await sendEmail({
-  to: savedRequest.email,
-  subject: "Your Flight Booking Request Has Been Received",
-  htmlContent: `
+      to: savedRequest.email,
+      subject: "Your Flight Booking Request Has Been Received",
+      htmlContent: `
     <h2>Your Flight Booking Request Has Been Received</h2>
 
     <p>Dear ${savedRequest.fullName},</p>
@@ -521,7 +725,7 @@ app.post("/api/flight-requests", async (req, res) => {
       +27 69 587 7716
     </p>
   `,
-});
+    });
 
     res.status(201).json({
       message: "Flight request submitted successfully",
@@ -562,12 +766,12 @@ app.patch("/api/flight-requests/:id", requireAdmin, async (req, res) => {
       req.params.id,
       {
         status: req.body.status,
-         notes: req.body.notes,
+        notes: req.body.notes,
       },
       {
         new: true,
         runValidators: true,
-      }
+      },
     );
 
     if (!updatedRequest) {
@@ -592,9 +796,7 @@ app.patch("/api/flight-requests/:id", requireAdmin, async (req, res) => {
 
 app.delete("/api/flight-requests/:id", requireAdmin, async (req, res) => {
   try {
-    const deletedRequest = await FlightRequest.findByIdAndDelete(
-      req.params.id
-    );
+    const deletedRequest = await FlightRequest.findByIdAndDelete(req.params.id);
 
     if (!deletedRequest) {
       return res.status(404).json({
@@ -616,18 +818,16 @@ app.delete("/api/flight-requests/:id", requireAdmin, async (req, res) => {
   }
 });
 
-
-
 mongoose
   .connect(process.env.MONGO_URI)
-.then(() => {
-  console.log("MongoDB connected successfully");
-  console.log("Database:", mongoose.connection.name);
+  .then(() => {
+    console.log("MongoDB connected successfully");
+    console.log("Database:", mongoose.connection.name);
 
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-})
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
   .catch((error) => {
     console.error("MongoDB connection failed:", error.message);
   });

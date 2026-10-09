@@ -117,29 +117,25 @@ function App() {
             </div>
           </div>
         </section>
-        ```tsx
+
         {/* START YOUR JOURNEY */}
         <section
           id="services"
-          className="relative overflow-hidden bg-[#100b18] px-6 py-24 text-white"
+          className="relative mt-24 overflow-hidden bg-white px-6 py-24 text-slate-900"
         >
-          {/* Purple background glow */}
-          <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-purple-600/10 blur-3xl" />
-          <div className="pointer-events-none absolute -right-40 bottom-10 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl" />
-
-          <div className="relative z-10 mx-auto max-w-7xl">
+          <div className="mx-auto max-w-7xl">
             {/* Section heading */}
             <div className="mx-auto mb-14 max-w-3xl text-center">
-              <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-violet-300">
+              <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-cyan-600">
                 START YOUR JOURNEY
               </p>
 
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                 Your next journey{" "}
-                <span className="text-violet-300">starts here.</span>
+                <span className="text-cyan-600">starts here.</span>
               </h2>
 
-              <p className="mx-auto mt-5 max-w-2xl leading-7 text-slate-300">
+              <p className="mx-auto mt-5 max-w-2xl leading-7 text-slate-600">
                 From flight bookings to international travel planning, visa
                 assistance and travel insurance, we help make every journey
                 easier to plan.
@@ -151,32 +147,27 @@ function App() {
               {/* Flight Booking */}
               <a
                 href="/flight-booking"
-                className="group overflow-hidden rounded-3xl border border-violet-200/10 bg-[#21152f] shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-violet-300/50 hover:shadow-2xl hover:shadow-purple-950/40"
+                className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
               >
-                <div className="relative h-52 overflow-hidden">
+                <div className="h-52 overflow-hidden">
                   <img
                     src="/flight-card.jpeg"
                     alt="Airplane flying above the clouds"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#21152f] via-[#21152f]/20 to-transparent" />
                 </div>
 
                 <div className="p-6">
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-400/15 text-violet-300">
-                    <Plane size={24} />
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="text-xl font-bold text-slate-900">
                     Flight Booking
                   </h3>
 
-                  <p className="mt-3 text-sm leading-6 text-slate-300">
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
                     Find convenient flight options for your next trip with
                     support throughout your booking request.
                   </p>
 
-                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-violet-300 transition-all group-hover:gap-3">
+                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
                     Start a Request <span>→</span>
                   </div>
                 </div>
@@ -185,32 +176,27 @@ function App() {
               {/* International Travel Planning */}
               <a
                 href="/international-travel"
-                className="group overflow-hidden rounded-3xl border border-violet-200/10 bg-[#21152f] shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-violet-300/50 hover:shadow-2xl hover:shadow-purple-950/40"
+                className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
               >
-                <div className="relative h-52 overflow-hidden">
+                <div className="h-52 overflow-hidden">
                   <img
                     src="/international-travel.jpeg"
                     alt="Travel documents prepared for an international journey"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#21152f] via-[#21152f]/20 to-transparent" />
                 </div>
 
                 <div className="p-6">
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-400/15 text-violet-300">
-                    <Globe2 size={24} />
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="text-xl font-bold text-slate-900">
                     International Travel Planning
                   </h3>
 
-                  <p className="mt-3 text-sm leading-6 text-slate-300">
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
                     Get help organizing international journeys, destinations and
                     important travel arrangements.
                   </p>
 
-                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-violet-300 transition-all group-hover:gap-3">
+                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
                     Plan Your Trip <span>→</span>
                   </div>
                 </div>
@@ -219,32 +205,27 @@ function App() {
               {/* Visa Assistance */}
               <a
                 href="/visa-assistance"
-                className="group overflow-hidden rounded-3xl border border-violet-200/10 bg-[#21152f] shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-violet-300/50 hover:shadow-2xl hover:shadow-purple-950/40"
+                className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
               >
-                <div className="relative h-52 overflow-hidden">
+                <div className="h-52 overflow-hidden">
                   <img
                     src="/visa-assistance.jpeg"
                     alt="Passport and visa travel documents"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#21152f] via-[#21152f]/20 to-transparent" />
                 </div>
 
                 <div className="p-6">
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-400/15 text-violet-300">
-                    <ShieldCheck size={24} />
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="text-xl font-bold text-slate-900">
                     Visa Assistance
                   </h3>
 
-                  <p className="mt-3 text-sm leading-6 text-slate-300">
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
                     Get guidance on visa application requirements and the
                     documents you may need for your destination.
                   </p>
 
-                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-violet-300 transition-all group-hover:gap-3">
+                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
                     Get Assistance <span>→</span>
                   </div>
                 </div>
@@ -253,32 +234,27 @@ function App() {
               {/* Travel Insurance */}
               <a
                 href="/travel-insurance"
-                className="group overflow-hidden rounded-3xl border border-violet-200/10 bg-[#21152f] shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-violet-300/50 hover:shadow-2xl hover:shadow-purple-950/40"
+                className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
               >
-                <div className="relative h-52 overflow-hidden">
+                <div className="h-52 overflow-hidden">
                   <img
                     src="/travel-insurance.jpeg"
                     alt="Travel documents and insurance preparation"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#21152f] via-[#21152f]/20 to-transparent" />
                 </div>
 
                 <div className="p-6">
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-400/15 text-violet-300">
-                    <ShieldCheck size={24} />
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="text-xl font-bold text-slate-900">
                     Travel Insurance
                   </h3>
 
-                  <p className="mt-3 text-sm leading-6 text-slate-300">
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
                     Explore travel insurance options to help you prepare for
                     unexpected events during your journey.
                   </p>
 
-                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-violet-300 transition-all group-hover:gap-3">
+                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
                     Explore Coverage <span>→</span>
                   </div>
                 </div>
@@ -286,7 +262,7 @@ function App() {
             </div>
           </div>
         </section>
-        ```
+
         {/* WHY CHOOSE US */}
         <section className="bg-white px-6 py-24 lg:px-8">
           <div className="mx-auto max-w-7xl">

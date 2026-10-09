@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -26,20 +25,67 @@ export default function TravelInsurance() {
     additionalRequirements: "",
   });
 
-  const [isSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const updateField = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    toast.info("The request form is being prepared. Backend connection is the next step.");
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/insurance-requests`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...form,
+            travelers: Number(form.travelers),
+          }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to submit insurance request.");
+      }
+
+      toast.success(
+        "Your travel insurance request has been submitted successfully!",
+      );
+
+      setForm({
+        fullName: "",
+        email: "",
+        phone: "",
+        destination: "",
+        departureDate: "",
+        returnDate: "",
+        travelers: "1",
+        coverageType: "Comprehensive travel insurance",
+        additionalRequirements: "",
+      });
+    } catch (error) {
+      console.error("Travel insurance submission error:", error);
+
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unable to submit your request. Please try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -87,16 +133,14 @@ export default function TravelInsurance() {
 
             <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
               A little more
-              <span className="block text-violet-300">
-                peace of mind
-              </span>
+              <span className="block text-violet-300">peace of mind</span>
               for every journey.
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">
               Let Voyage Travel Mansion help you explore travel insurance
-              options for your next trip. Tell us about your journey and
-              our team will guide you through the next steps.
+              options for your next trip. Tell us about your journey and our
+              team will guide you through the next steps.
             </p>
 
             <a
@@ -108,8 +152,8 @@ export default function TravelInsurance() {
             </a>
 
             <p className="mt-4 text-xs leading-6 text-slate-400">
-              Coverage, eligibility and policy terms depend on the
-              insurance provider and selected policy.
+              Coverage, eligibility and policy terms depend on the insurance
+              provider and selected policy.
             </p>
           </div>
 
@@ -193,8 +237,8 @@ export default function TravelInsurance() {
             </h2>
 
             <p className="mt-4 leading-7 text-slate-400">
-              Share a few details about your trip. Our team can then
-              review your request and discuss the available options.
+              Share a few details about your trip. Our team can then review your
+              request and discuss the available options.
             </p>
           </div>
 
@@ -216,7 +260,10 @@ export default function TravelInsurance() {
 
             <div className="grid gap-6 sm:grid-cols-2">
               <div>
-                <label htmlFor="insurance-name" className="mb-2 block text-sm font-medium text-slate-200">
+                <label
+                  htmlFor="insurance-name"
+                  className="mb-2 block text-sm font-medium text-slate-200"
+                >
                   Full Name *
                 </label>
                 <input
@@ -232,7 +279,10 @@ export default function TravelInsurance() {
               </div>
 
               <div>
-                <label htmlFor="insurance-email" className="mb-2 block text-sm font-medium text-slate-200">
+                <label
+                  htmlFor="insurance-email"
+                  className="mb-2 block text-sm font-medium text-slate-200"
+                >
                   Email Address *
                 </label>
                 <input
@@ -249,7 +299,10 @@ export default function TravelInsurance() {
               </div>
 
               <div>
-                <label htmlFor="insurance-phone" className="mb-2 block text-sm font-medium text-slate-200">
+                <label
+                  htmlFor="insurance-phone"
+                  className="mb-2 block text-sm font-medium text-slate-200"
+                >
                   Phone / WhatsApp *
                 </label>
                 <input
@@ -266,7 +319,10 @@ export default function TravelInsurance() {
               </div>
 
               <div>
-                <label htmlFor="insurance-destination" className="mb-2 block text-sm font-medium text-slate-200">
+                <label
+                  htmlFor="insurance-destination"
+                  className="mb-2 block text-sm font-medium text-slate-200"
+                >
                   Destination *
                 </label>
                 <input
@@ -281,11 +337,17 @@ export default function TravelInsurance() {
               </div>
 
               <div>
-                <label htmlFor="insurance-departure" className="mb-2 block text-sm font-medium text-slate-200">
+                <label
+                  htmlFor="insurance-departure"
+                  className="mb-2 block text-sm font-medium text-slate-200"
+                >
                   Departure Date
                 </label>
                 <div className="relative">
-                  <CalendarDays className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-violet-300" size={18} />
+                  <CalendarDays
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-violet-300"
+                    size={18}
+                  />
                   <input
                     id="insurance-departure"
                     type="date"
@@ -298,11 +360,17 @@ export default function TravelInsurance() {
               </div>
 
               <div>
-                <label htmlFor="insurance-return" className="mb-2 block text-sm font-medium text-slate-200">
+                <label
+                  htmlFor="insurance-return"
+                  className="mb-2 block text-sm font-medium text-slate-200"
+                >
                   Return Date
                 </label>
                 <div className="relative">
-                  <CalendarDays className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-violet-300" size={18} />
+                  <CalendarDays
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-violet-300"
+                    size={18}
+                  />
                   <input
                     id="insurance-return"
                     type="date"
@@ -316,11 +384,17 @@ export default function TravelInsurance() {
               </div>
 
               <div>
-                <label htmlFor="insurance-travelers" className="mb-2 block text-sm font-medium text-slate-200">
+                <label
+                  htmlFor="insurance-travelers"
+                  className="mb-2 block text-sm font-medium text-slate-200"
+                >
                   Number of Travelers *
                 </label>
                 <div className="relative">
-                  <Users className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-violet-300" size={18} />
+                  <Users
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-violet-300"
+                    size={18}
+                  />
                   <select
                     id="insurance-travelers"
                     name="travelers"
@@ -329,17 +403,26 @@ export default function TravelInsurance() {
                     required
                     className="w-full appearance-none rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 pl-11 text-white outline-none transition focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
                   >
-                    {Array.from({ length: 10 }, (_, index) => index + 1).map((number) => (
-                      <option key={number} value={number} className="bg-[#21152f]">
-                        {number} {number === 1 ? "traveler" : "travelers"}
-                      </option>
-                    ))}
+                    {Array.from({ length: 10 }, (_, index) => index + 1).map(
+                      (number) => (
+                        <option
+                          key={number}
+                          value={number}
+                          className="bg-[#21152f]"
+                        >
+                          {number} {number === 1 ? "traveler" : "travelers"}
+                        </option>
+                      ),
+                    )}
                   </select>
                 </div>
               </div>
 
               <div>
-                <label htmlFor="insurance-coverage" className="mb-2 block text-sm font-medium text-slate-200">
+                <label
+                  htmlFor="insurance-coverage"
+                  className="mb-2 block text-sm font-medium text-slate-200"
+                >
                   Type of Assistance *
                 </label>
                 <select
@@ -350,16 +433,25 @@ export default function TravelInsurance() {
                   required
                   className="w-full rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 text-white outline-none transition focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
                 >
-                  <option className="bg-[#21152f]">Comprehensive travel insurance</option>
-                  <option className="bg-[#21152f]">Emergency medical coverage</option>
+                  <option className="bg-[#21152f]">
+                    Comprehensive travel insurance
+                  </option>
+                  <option className="bg-[#21152f]">
+                    Emergency medical coverage
+                  </option>
                   <option className="bg-[#21152f]">Single-trip coverage</option>
                   <option className="bg-[#21152f]">Multi-trip coverage</option>
-                  <option className="bg-[#21152f]">Not sure — need guidance</option>
+                  <option className="bg-[#21152f]">
+                    Not sure — need guidance
+                  </option>
                 </select>
               </div>
 
               <div className="sm:col-span-2">
-                <label htmlFor="insurance-requirements" className="mb-2 block text-sm font-medium text-slate-200">
+                <label
+                  htmlFor="insurance-requirements"
+                  className="mb-2 block text-sm font-medium text-slate-200"
+                >
                   Additional Information (Optional)
                 </label>
                 <textarea
@@ -380,11 +472,16 @@ export default function TravelInsurance() {
               className="mt-8 flex w-full items-center justify-center gap-3 rounded-xl bg-violet-300 px-6 py-4 font-semibold text-[#21152f] transition hover:bg-violet-200 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
             >
               <ShieldCheck size={20} />
-              {isSubmitting ? "Submitting Request..." : "Request Insurance Assistance"}
+              {isSubmitting
+                ? "Submitting Request..."
+                : "Request Insurance Assistance"}
             </button>
 
             <div className="mt-6 flex items-start gap-3 rounded-xl border border-violet-300/10 bg-violet-300/5 p-4 text-sm leading-6 text-slate-400">
-              <CheckCircle2 className="mt-0.5 shrink-0 text-violet-300" size={19} />
+              <CheckCircle2
+                className="mt-0.5 shrink-0 text-violet-300"
+                size={19}
+              />
               <p>
                 Submitting this form requests assistance only. It does not
                 purchase a policy or guarantee coverage. Policy availability,
@@ -406,7 +503,8 @@ export default function TravelInsurance() {
           561travelsandtours@gmail.com
         </a>
         <p className="mt-5 text-xs">
-          © {new Date().getFullYear()} Voyage Travel Mansion. All rights reserved.
+          © {new Date().getFullYear()} Voyage Travel Mansion. All rights
+          reserved.
         </p>
       </footer>
     </main>

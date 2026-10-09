@@ -37,8 +37,17 @@ function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [deleteFlightConfirm, setDeleteFlightConfirm] = useState(false);
   const [deleteVisaConfirm, setDeleteVisaConfirm] = useState(false);
+  const [deleteInternationalConfirm, setDeleteInternationalConfirm] =
+    useState(false);
+  const [deleteInsuranceConfirm, setDeleteInsuranceConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState("");
+  const [recentInternational, setRecentInternational] = useState<any[]>([]);
+  const [recentInsurance, setRecentInsurance] = useState<any[]>([]);
+  const [selectedInternational, setSelectedInternational] = useState<
+    any | null
+  >(null);
+  const [selectedInsurance, setSelectedInsurance] = useState<any | null>(null);
   const filteredFlights = recentFlights.filter((request) => {
     const search = searchTerm.trim().toLowerCase();
 
@@ -91,6 +100,57 @@ function AdminDashboard() {
     );
   });
 
+  const filteredInternational = recentInternational.filter((request) => {
+    const search = searchTerm.trim().toLowerCase();
+
+    if (!search) return true;
+
+    return (
+      String(request.fullName || "")
+        .toLowerCase()
+        .includes(search) ||
+      String(request.email || "")
+        .toLowerCase()
+        .includes(search) ||
+      String(request.departure || "")
+        .toLowerCase()
+        .includes(search) ||
+      String(request.destination || "")
+        .toLowerCase()
+        .includes(search) ||
+      String(request.tripPurpose || "")
+        .toLowerCase()
+        .includes(search) ||
+      String(request.status || "")
+        .toLowerCase()
+        .includes(search)
+    );
+  });
+
+  const filteredInsurance = recentInsurance.filter((request) => {
+    const search = searchTerm.trim().toLowerCase();
+
+    if (!search) return true;
+
+    return (
+      String(request.fullName || "")
+        .toLowerCase()
+        .includes(search) ||
+      String(request.email || "")
+        .toLowerCase()
+        .includes(search) ||
+      String(request.destination || "")
+        .toLowerCase()
+        .includes(search) ||
+      String(request.insuranceType || "")
+        .toLowerCase()
+        .includes(search) ||
+      String(request.status || "")
+        .toLowerCase()
+        .includes(search)
+    );
+  });
+
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
 
@@ -100,22 +160,32 @@ function AdminDashboard() {
 
     const fetchRequests = async () => {
       try {
-        const [flightResponse, visaResponse] = await Promise.all([
-          fetch(`${import.meta.env.VITE_API_URL}/api/flight-requests`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
+        const baseUrl = import.meta.env.VITE_API_URL;
 
-          fetch(`${import.meta.env.VITE_API_URL}/api/visa-requests`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const [
+          flightResponse,
+          visaResponse,
+          internationalResponse,
+          insuranceResponse,
+        ] = await Promise.all([
+          fetch(`${baseUrl}/api/flight-requests`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${baseUrl}/api/visa-requests`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${baseUrl}/api/international-travel-requests`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${baseUrl}/api/insurance-requests`, {
+            headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
 
         const flightData = await flightResponse.json();
         const visaData = await visaResponse.json();
+        const internationalData = await internationalResponse.json();
+        const insuranceData = await insuranceResponse.json();
 
         if (!flightResponse.ok) {
           throw new Error(
@@ -127,26 +197,58 @@ function AdminDashboard() {
           throw new Error(visaData.message || "Unable to fetch visa requests");
         }
 
-        const flights = flightData.requests || [];
-        const visas = visaData.requests || [];
+        if (!internationalResponse.ok) {
+          throw new Error(
+            internationalData.message ||
+              "Unable to fetch international travel requests",
+          );
+        }
+
+        if (!insuranceResponse.ok) {
+          throw new Error(
+            insuranceData.message ||
+              "Unable to fetch travel insurance requests",
+          );
+        }
+
+        const flights = Array.isArray(flightData)
+          ? flightData
+          : flightData.requests || [];
+
+        const visas = Array.isArray(visaData)
+          ? visaData
+          : visaData.requests || [];
+
+        const internationalRequests = Array.isArray(internationalData)
+          ? internationalData
+          : internationalData.requests || [];
+
+        const insuranceRequests = Array.isArray(insuranceData)
+          ? insuranceData
+          : insuranceData.requests || [];
 
         setRecentFlights(flights);
         setRecentVisas(visas);
-        console.log("VISA REQUESTS FROM API:", visas);
-        console.log("FLIGHT REQUESTS FROM API:", flights);
+        setRecentInternational(internationalRequests);
+        setRecentInsurance(insuranceRequests);
+
+        const allRequests = [
+          ...flights,
+          ...visas,
+          ...internationalRequests,
+          ...insuranceRequests,
+        ];
 
         setFlightCount(flights.length);
         setVisaCount(visas.length);
 
         setNewCount(
-          [...flights, ...visas].filter((request) => request.status === "New")
-            .length,
+          allRequests.filter((request) => request.status === "New").length,
         );
 
         setCompletedCount(
-          [...flights, ...visas].filter(
-            (request) => request.status === "Completed",
-          ).length,
+          allRequests.filter((request) => request.status === "Completed")
+            .length,
         );
 
         setLastUpdated(
@@ -155,10 +257,14 @@ function AdminDashboard() {
             minute: "2-digit",
           }),
         );
-
-        setIsLoading(false);
       } catch (error) {
         console.error("Dashboard fetch error:", error);
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "Unable to load dashboard requests.",
+        );
+      } finally {
         setIsLoading(false);
       }
     };
@@ -396,6 +502,92 @@ function AdminDashboard() {
               )}
             </div>
           </div>
+
+          {/* Recent International Travel Requests */}
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <div className="mb-6">
+              <p className="text-sm font-medium text-cyan-400">Recent</p>
+              <h3 className="mt-1 text-xl font-bold">
+                International Travel Planning
+              </h3>
+            </div>
+
+            <div className="space-y-3">
+              {filteredInternational.length === 0 ? (
+                <p className="py-4 text-sm text-slate-400">
+                  No matching international travel requests found.
+                </p>
+              ) : (
+                filteredInternational.map((request) => (
+                  <button
+                    key={request._id}
+                    type="button"
+                    onClick={() => setSelectedInternational(request)}
+                    className="w-full rounded-xl border border-white/10 bg-slate-900/60 p-4 text-left transition duration-300 hover:-translate-y-0.5 hover:border-cyan-400/30 hover:bg-slate-900"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="font-semibold">{request.fullName}</p>
+                        <p className="mt-1 text-sm text-slate-400">
+                          {request.departure} → {request.destination}
+                        </p>
+                        <p className="mt-1 text-xs text-slate-500">
+                          {request.tripPurpose || "Travel planning"}
+                        </p>
+                      </div>
+
+                      <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-400">
+                        {request.status || "New"}
+                      </span>
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Recent Travel Insurance Requests */}
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <div className="mb-6">
+              <p className="text-sm font-medium text-cyan-400">Recent</p>
+              <h3 className="mt-1 text-xl font-bold">
+                Travel Insurance Requests
+              </h3>
+            </div>
+
+            <div className="space-y-3">
+              {filteredInsurance.length === 0 ? (
+                <p className="py-4 text-sm text-slate-400">
+                  No matching travel insurance requests found.
+                </p>
+              ) : (
+                filteredInsurance.map((request) => (
+                  <button
+                    key={request._id}
+                    type="button"
+                    onClick={() => setSelectedInsurance(request)}
+                    className="w-full rounded-xl border border-white/10 bg-slate-900/60 p-4 text-left transition duration-300 hover:-translate-y-0.5 hover:border-cyan-400/30 hover:bg-slate-900"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="font-semibold">{request.fullName}</p>
+                        <p className="mt-1 text-sm text-slate-400">
+                          {request.destination}
+                        </p>
+                        <p className="mt-1 text-xs text-slate-500">
+                          {request.insuranceType || "Travel insurance"}
+                        </p>
+                      </div>
+
+                      <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-400">
+                        {request.status || "New"}
+                      </span>
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
         </section>
 
         {selectedFlight && (
@@ -495,7 +687,7 @@ function AdminDashboard() {
 
                       try {
                         const response = await adminFetch(
-                         `${import.meta.env.VITE_API_URL}/api/flight-requests/${selectedFlight._id}`,
+                          `${import.meta.env.VITE_API_URL}/api/flight-requests/${selectedFlight._id}`,
                           {
                             method: "PATCH",
                             headers: {
@@ -606,7 +798,7 @@ function AdminDashboard() {
                   onClick={async () => {
                     try {
                       const response = await adminFetch(
-                      `${import.meta.env.VITE_API_URL}/api/flight-requests/${selectedFlight._id}`,  
+                        `${import.meta.env.VITE_API_URL}/api/flight-requests/${selectedFlight._id}`,
                         {
                           method: "PATCH",
                           headers: {
@@ -833,7 +1025,7 @@ function AdminDashboard() {
 
                       try {
                         const response = await adminFetch(
-                          `${import.meta.env.VITE_API_URL}/api/visa-requests/${selectedVisa._id}`,  
+                          `${import.meta.env.VITE_API_URL}/api/visa-requests/${selectedVisa._id}`,
                           {
                             method: "PATCH",
                             headers: {
@@ -1068,6 +1260,591 @@ function AdminDashboard() {
                       console.error("Visa delete error:", error);
 
                       toast.error("Unable to delete visa request.");
+                    }
+                  }}
+                  className="rounded-xl bg-red-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-400"
+                >
+                  Delete Request
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {selectedInternational && (
+          <section className="px-6 pb-8 lg:px-8">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-medium text-cyan-400">
+                    International Travel Planning
+                  </p>
+                  <h3 className="mt-1 text-2xl font-bold">
+                    {selectedInternational.fullName}
+                  </h3>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setDeleteInternationalConfirm(true)}
+                    className="rounded-full border border-red-400/20 px-4 py-2 text-sm font-semibold text-red-400 transition hover:bg-red-400/10"
+                  >
+                    Delete
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedInternational(null)}
+                    className="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:bg-white/10"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div>
+                  <p className="text-xs text-slate-500">Email</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInternational.email}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Phone / WhatsApp</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInternational.phone}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Departure</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInternational.departure}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Destination</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInternational.destination}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Travel Date</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInternational.travelDate || "Not provided"}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Return Date</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInternational.returnDate || "Not provided"}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Number of Travelers</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInternational.travelers}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Trip Purpose</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInternational.tripPurpose || "Not provided"}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Status</p>
+                  <select
+                    value={selectedInternational.status || "New"}
+                    onChange={async (e) => {
+                      const newStatus = e.target.value;
+
+                      try {
+                        const response = await adminFetch(
+                          `${import.meta.env.VITE_API_URL}/api/international-travel-requests/${selectedInternational._id}`,
+                          {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                              status: newStatus,
+                              notes: selectedInternational.notes || "",
+                            }),
+                          },
+                        );
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                          throw new Error(
+                            data.message || "Failed to update status",
+                          );
+                        }
+
+                        const updatedRequest = data.request || data;
+
+                        setSelectedInternational(updatedRequest);
+                        setRecentInternational((current) =>
+                          current.map((request) =>
+                            request._id === updatedRequest._id
+                              ? updatedRequest
+                              : request,
+                          ),
+                        );
+
+                        toast.success("International travel request updated!");
+                      } catch (error) {
+                        console.error(
+                          "International status update error:",
+                          error,
+                        );
+                        toast.error(
+                          "Unable to update international travel request.",
+                        );
+                      }
+                    }}
+                    className="mt-2 rounded-lg border border-white/10 bg-slate-900 px-3 py-2 text-sm text-white outline-none focus:border-cyan-400/50"
+                  >
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <p className="text-xs text-slate-500">
+                  Additional Requirements
+                </p>
+                <p className="mt-2 text-sm leading-6 text-slate-300">
+                  {selectedInternational.additionalRequirements ||
+                    "No additional requirements provided."}
+                </p>
+              </div>
+
+              <div className="mt-6">
+                <p className="text-xs text-slate-500">Internal Notes</p>
+                <textarea
+                  value={selectedInternational.notes || ""}
+                  onChange={(e) =>
+                    setSelectedInternational({
+                      ...selectedInternational,
+                      notes: e.target.value,
+                    })
+                  }
+                  placeholder="Add an internal note about this request..."
+                  rows={4}
+                  className="mt-2 w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-cyan-400/50"
+                />
+
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      const response = await adminFetch(
+                        `${import.meta.env.VITE_API_URL}/api/international-travel-requests/${selectedInternational._id}`,
+                        {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            status: selectedInternational.status || "New",
+                            notes: selectedInternational.notes || "",
+                          }),
+                        },
+                      );
+
+                      const data = await response.json();
+
+                      if (!response.ok) {
+                        throw new Error(data.message || "Failed to save notes");
+                      }
+
+                      const updatedRequest = data.request || data;
+
+                      setSelectedInternational(updatedRequest);
+                      setRecentInternational((current) =>
+                        current.map((request) =>
+                          request._id === updatedRequest._id
+                            ? updatedRequest
+                            : request,
+                        ),
+                      );
+
+                      toast.success("Internal notes saved successfully!");
+                    } catch (error) {
+                      console.error("International notes error:", error);
+                      toast.error("Unable to save internal notes.");
+                    }
+                  }}
+                  className="mt-3 rounded-xl bg-cyan-400 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+                >
+                  Save Notes
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {selectedInsurance && (
+          <section className="px-6 pb-8 lg:px-8">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-medium text-cyan-400">
+                    Travel Insurance
+                  </p>
+                  <h3 className="mt-1 text-2xl font-bold">
+                    {selectedInsurance.fullName}
+                  </h3>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setDeleteInsuranceConfirm(true)}
+                    className="rounded-full border border-red-400/20 px-4 py-2 text-sm font-semibold text-red-400 transition hover:bg-red-400/10"
+                  >
+                    Delete
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedInsurance(null)}
+                    className="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:bg-white/10"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div>
+                  <p className="text-xs text-slate-500">Email</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInsurance.email}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Phone / WhatsApp</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInsurance.phone}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Destination</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInsurance.destination}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Departure Date</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInsurance.departureDate || "Not provided"}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Return Date</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInsurance.returnDate || "Not provided"}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Number of Travelers</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInsurance.travelers}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Insurance Type</p>
+                  <p className="mt-1 text-sm text-slate-200">
+                    {selectedInsurance.insuranceType || "Not provided"}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Status</p>
+                  <select
+                    value={selectedInsurance.status || "New"}
+                    onChange={async (e) => {
+                      const newStatus = e.target.value;
+
+                      try {
+                        const response = await adminFetch(
+                          `${import.meta.env.VITE_API_URL}/api/insurance-requests/${selectedInsurance._id}`,
+                          {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                              status: newStatus,
+                              notes: selectedInsurance.notes || "",
+                            }),
+                          },
+                        );
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                          throw new Error(
+                            data.message || "Failed to update status",
+                          );
+                        }
+
+                        const updatedRequest = data.request || data;
+
+                        setSelectedInsurance(updatedRequest);
+                        setRecentInsurance((current) =>
+                          current.map((request) =>
+                            request._id === updatedRequest._id
+                              ? updatedRequest
+                              : request,
+                          ),
+                        );
+
+                        toast.success("Travel insurance request updated!");
+                      } catch (error) {
+                        console.error("Insurance status update error:", error);
+                        toast.error("Unable to update insurance request.");
+                      }
+                    }}
+                    className="mt-2 rounded-lg border border-white/10 bg-slate-900 px-3 py-2 text-sm text-white outline-none focus:border-cyan-400/50"
+                  >
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <p className="text-xs text-slate-500">
+                  Additional Requirements
+                </p>
+                <p className="mt-2 text-sm leading-6 text-slate-300">
+                  {selectedInsurance.additionalRequirements ||
+                    "No additional requirements provided."}
+                </p>
+              </div>
+
+              <div className="mt-6">
+                <p className="text-xs text-slate-500">Internal Notes</p>
+                <textarea
+                  value={selectedInsurance.notes || ""}
+                  onChange={(e) =>
+                    setSelectedInsurance({
+                      ...selectedInsurance,
+                      notes: e.target.value,
+                    })
+                  }
+                  placeholder="Add an internal note about this insurance request..."
+                  rows={4}
+                  className="mt-2 w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-cyan-400/50"
+                />
+
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      const response = await adminFetch(
+                        `${import.meta.env.VITE_API_URL}/api/insurance-requests/${selectedInsurance._id}`,
+                        {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            status: selectedInsurance.status || "New",
+                            notes: selectedInsurance.notes || "",
+                          }),
+                        },
+                      );
+
+                      const data = await response.json();
+
+                      if (!response.ok) {
+                        throw new Error(data.message || "Failed to save notes");
+                      }
+
+                      const updatedRequest = data.request || data;
+
+                      setSelectedInsurance(updatedRequest);
+                      setRecentInsurance((current) =>
+                        current.map((request) =>
+                          request._id === updatedRequest._id
+                            ? updatedRequest
+                            : request,
+                        ),
+                      );
+
+                      toast.success("Internal notes saved successfully!");
+                    } catch (error) {
+                      console.error("Insurance notes error:", error);
+                      toast.error("Unable to save insurance notes.");
+                    }
+                  }}
+                  className="mt-3 rounded-xl bg-cyan-400 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+                >
+                  Save Notes
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Delete International Travel Confirmation */}
+        {deleteInternationalConfirm && selectedInternational && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm">
+            <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-950 p-6 shadow-2xl">
+              <h3 className="text-xl font-bold text-white">
+                Delete International Travel Request?
+              </h3>
+
+              <p className="mt-3 text-sm leading-6 text-slate-400">
+                Are you sure you want to delete the request from{" "}
+                <span className="font-semibold text-white">
+                  {selectedInternational.fullName}
+                </span>
+                ? This action cannot be undone.
+              </p>
+
+              <div className="mt-6 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setDeleteInternationalConfirm(false)}
+                  className="rounded-xl border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:bg-white/10"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      const response = await adminFetch(
+                        `${import.meta.env.VITE_API_URL}/api/international-travel-requests/${selectedInternational._id}`,
+                        { method: "DELETE" },
+                      );
+
+                      const data = await response.json();
+
+                      if (!response.ok) {
+                        throw new Error(
+                          data.message || "Failed to delete request",
+                        );
+                      }
+
+                      setRecentInternational((current) =>
+                        current.filter(
+                          (request) =>
+                            request._id !== selectedInternational._id,
+                        ),
+                      );
+
+                      if (selectedInternational.status === "New") {
+                        setNewCount((count) => Math.max(0, count - 1));
+                      }
+
+                      if (selectedInternational.status === "Completed") {
+                        setCompletedCount((count) => Math.max(0, count - 1));
+                      }
+
+                      setDeleteInternationalConfirm(false);
+                      setSelectedInternational(null);
+                      toast.success(
+                        "International travel request deleted successfully!",
+                      );
+                    } catch (error) {
+                      console.error("International delete error:", error);
+                      toast.error(
+                        "Unable to delete international travel request.",
+                      );
+                    }
+                  }}
+                  className="rounded-xl bg-red-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-400"
+                >
+                  Delete Request
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Travel Insurance Confirmation */}
+        {deleteInsuranceConfirm && selectedInsurance && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm">
+            <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-950 p-6 shadow-2xl">
+              <h3 className="text-xl font-bold text-white">
+                Delete Travel Insurance Request?
+              </h3>
+
+              <p className="mt-3 text-sm leading-6 text-slate-400">
+                Are you sure you want to delete the request from{" "}
+                <span className="font-semibold text-white">
+                  {selectedInsurance.fullName}
+                </span>
+                ? This action cannot be undone.
+              </p>
+
+              <div className="mt-6 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setDeleteInsuranceConfirm(false)}
+                  className="rounded-xl border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:bg-white/10"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      const response = await adminFetch(
+                        `${import.meta.env.VITE_API_URL}/api/insurance-requests/${selectedInsurance._id}`,
+                        { method: "DELETE" },
+                      );
+
+                      const data = await response.json();
+
+                      if (!response.ok) {
+                        throw new Error(
+                          data.message || "Failed to delete request",
+                        );
+                      }
+
+                      setRecentInsurance((current) =>
+                        current.filter(
+                          (request) => request._id !== selectedInsurance._id,
+                        ),
+                      );
+
+                      if (selectedInsurance.status === "New") {
+                        setNewCount((count) => Math.max(0, count - 1));
+                      }
+
+                      if (selectedInsurance.status === "Completed") {
+                        setCompletedCount((count) => Math.max(0, count - 1));
+                      }
+
+                      setDeleteInsuranceConfirm(false);
+                      setSelectedInsurance(null);
+                      toast.success(
+                        "Travel insurance request deleted successfully!",
+                      );
+                    } catch (error) {
+                      console.error("Insurance delete error:", error);
+                      toast.error("Unable to delete travel insurance request.");
                     }
                   }}
                   className="rounded-xl bg-red-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-400"
