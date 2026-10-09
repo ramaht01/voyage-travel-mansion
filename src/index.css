@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-
-
 * {
   box-sizing: border-box;
 }
@@ -68,111 +66,89 @@ a {
   }
 }
 
-
 /* ========================================
-   VOYAGE TRAVEL MANSION — TOASTIFY
-   Compact Purple + Lavender Theme
+   VOYAGE TRAVEL MANSION — TOAST NOTIFICATIONS
 ======================================== */
 
-/* Base notification */
-.voyage-toast {
-  border-radius: 13px !important;
-  padding: 10px 12px !important;
-  margin-bottom: 8px !important;
+.Toastify__toast-container {
   font-family: inherit;
-  box-shadow: 0 8px 24px rgba(30, 15, 50, 0.16) !important;
-  overflow: hidden;
+  width: min(380px, calc(100vw - 32px));
 }
 
-/* Notification message */
-.voyage-toast .Toastify__toast-body {
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.45;
-  padding: 2px 4px;
+.Toastify__toast {
+  background: #0d1a2b !important;
+  color: #eaf7ff !important;
+  border: 1px solid rgba(103, 213, 255, 0.3);
+  border-radius: 14px !important;
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.3),
+    0 0 18px rgba(56, 189, 248, 0.08);
+  padding: 14px 16px;
+  backdrop-filter: blur(12px);
 }
 
-/* SUCCESS — Light lavender */
-.Toastify__toast--success.voyage-toast {
-  background: linear-gradient(
-    135deg,
-    #f5f0ff,
-    #e9ddff
-  ) !important;
-
-  color: #392454 !important;
-  border: 1px solid #d5c1ff !important;
-  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.13) !important;
-}
-
-.Toastify__toast--success.voyage-toast
 .Toastify__toast-body {
-  color: #392454 !important;
+  color: #eaf7ff !important;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.Toastify__toast--success.voyage-toast
+.Toastify__toast-icon {
+  width: 22px;
+}
+
 .Toastify__toast-icon svg {
-  fill: #8054c7 !important;
+  fill: #38bdf8;
 }
 
-/* ERROR — Dark plum */
-.Toastify__toast--error.voyage-toast {
-  background: linear-gradient(
-    135deg,
-    #211329,
-    #30203f
-  ) !important;
-
-  color: #f5edff !important;
-  border: 1px solid #674780 !important;
-  box-shadow: 0 8px 24px rgba(20, 8, 30, 0.28) !important;
+.Toastify__toast--success {
+  border-color: rgba(34, 211, 238, 0.45);
 }
 
-.Toastify__toast--error.voyage-toast
-.Toastify__toast-body {
-  color: #f5edff !important;
+.Toastify__toast--success .Toastify__toast-icon svg {
+  fill: #22d3ee;
 }
 
-.Toastify__toast--error.voyage-toast
-.Toastify__toast-icon svg {
-  fill: #d8b4fe !important;
+.Toastify__toast--error {
+  border-color: rgba(96, 165, 250, 0.5);
 }
 
-/* Close button */
-.voyage-toast .Toastify__close-button {
-  opacity: 0.75;
-  transition: opacity 0.2s ease;
+.Toastify__toast--error .Toastify__toast-icon svg {
+  fill: #60a5fa;
 }
 
-.voyage-toast .Toastify__close-button:hover {
+.Toastify__toast--info {
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.Toastify__toast--info .Toastify__toast-icon svg {
+  fill: #38bdf8;
+}
+
+.Toastify__progress-bar {
+  background: linear-gradient(90deg, #38bdf8, #22d3ee, #2563eb) !important;
+}
+
+.Toastify__close-button {
+  color: #bae6fd !important;
+  opacity: 0.8;
+}
+
+.Toastify__close-button:hover {
+  color: #ffffff !important;
   opacity: 1;
 }
 
-/* Lavender progress bar */
-.voyage-toast-progress {
-  height: 3px !important;
-  background: linear-gradient(
-    90deg,
-    #a78bfa,
-    #c4b5fd
-  ) !important;
+.Toastify__close-button > svg {
+  fill: currentColor;
 }
 
-/* Compact mobile layout */
 @media (max-width: 480px) {
   .Toastify__toast-container {
-    width: calc(100% - 24px) !important;
-    left: 12px !important;
-    right: 12px !important;
-    top: 12px !important;
+    padding: 8px;
   }
 
-  .voyage-toast {
-    padding: 8px 10px !important;
-    border-radius: 11px !important;
-  }
-
-  .voyage-toast .Toastify__toast-body {
-    font-size: 12px;
+  .Toastify__toast {
+    border-radius: 12px !important;
   }
 }

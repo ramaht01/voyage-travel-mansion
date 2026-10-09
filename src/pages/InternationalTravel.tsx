@@ -64,19 +64,28 @@ const InternationalTravel = () => {
       return;
     }
 
-    if (form.estimatedBudget.trim() && Number(form.estimatedBudget) <= 0) {
+    if (
+      form.estimatedBudget.trim() &&
+      (!Number.isFinite(Number(form.estimatedBudget)) ||
+        Number(form.estimatedBudget) <= 0)
+    ) {
       toast.error("Please enter a valid travel budget.");
       return;
     }
 
+    if (form.budgetCurrency === "Other" && !form.otherCurrency.trim()) {
+      toast.error("Please specify your budget currency.");
+      return;
+    }
+
     const planningDetails = [
-     form.estimatedBudget
-  ? `Estimated travel budget: ${
-      form.budgetCurrency === "Other"
-        ? form.otherCurrency.trim()
-        : form.budgetCurrency
-    } ${form.estimatedBudget}`
-  : "",
+      form.estimatedBudget
+        ? `Estimated travel budget: ${
+            form.budgetCurrency === "Other"
+              ? form.otherCurrency.trim()
+              : form.budgetCurrency
+          } ${form.estimatedBudget}`
+        : "",
       form.planningServices.length
         ? `Planning services requested: ${form.planningServices.join(", ")}`
         : "",
@@ -150,9 +159,9 @@ const InternationalTravel = () => {
   };
 
   const inputClass =
-    "w-full rounded-xl border border-violet-200/10 bg-[#1c1428] px-4 py-3.5 text-white placeholder:text-violet-200/40 outline-none transition duration-300 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20";
+    "w-full rounded-xl border border-cyan-300/15 bg-[#101c2e] px-4 py-3.5 text-white placeholder:text-slate-400 outline-none transition duration-300 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20";
 
-  const labelClass = "mb-2 block text-sm font-semibold text-violet-50";
+  const labelClass = "mb-2 block text-sm font-semibold text-slate-100";
 
   const services = [
     {
@@ -180,16 +189,15 @@ const InternationalTravel = () => {
       label: "Complete travel plan",
       description: "Help organising multiple trip arrangements",
     },
-
     {
-  value: "Other",
-  label: "Other",
-  description: "Something else you need help with",
-},
+      value: "Other",
+      label: "Other",
+      description: "Something else you need help with",
+    },
   ];
 
   return (
-    <main className="min-h-screen bg-[#100b18] px-4 py-6 text-white sm:px-6 sm:py-10">
+    <main className="min-h-screen bg-[#07111f] px-4 py-6 text-white sm:px-6 sm:py-10">
       <div className="mx-auto max-w-6xl">
         {/* Top Navigation */}
         <header className="mb-12 flex items-center justify-between gap-4">
@@ -197,48 +205,48 @@ const InternationalTravel = () => {
             href="/"
             className="text-lg font-extrabold tracking-tight text-white sm:text-xl"
           >
-            Voyage <span className="text-violet-400">Travel Mansion</span>
+            Voyage <span className="text-cyan-400">Travel Mansion</span>
           </a>
 
           <a
             href="/"
-            className="rounded-full border border-violet-200/15 px-4 py-2.5 text-sm font-semibold text-violet-100 transition hover:border-violet-400/60 hover:bg-violet-400/10"
+            className="rounded-full border border-cyan-300/20 px-4 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-cyan-400/60 hover:bg-cyan-400/10"
           >
             ← Back to Home
           </a>
         </header>
 
         {/* Hero Section */}
-        <section className="relative mb-10 overflow-hidden rounded-[2rem] border border-violet-300/10 bg-gradient-to-br from-[#211331] via-[#181022] to-[#100b18] px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
-          <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-violet-600/15 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 left-1/3 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />
+        <section className="relative mb-10 overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-gradient-to-br from-[#142b43] via-[#0d1c30] to-[#07111f] px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 left-1/3 h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
 
           <div className="relative max-w-3xl">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-violet-300 sm:text-sm">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-cyan-300 sm:text-sm">
               International Travel Planning
             </p>
 
             <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
               Your world is waiting.
-              <span className="block text-violet-400">
+              <span className="block text-cyan-400">
                 Let's plan the journey.
               </span>
             </h1>
 
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-violet-100/70 sm:text-base sm:leading-8">
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
               Planning a holiday, studying abroad, visiting family, or
               travelling for business? Tell us about your plans and the support
               you need. We'll help you explore the next steps.
             </p>
 
-            <div className="mt-7 flex flex-wrap gap-3 text-sm text-violet-100/80">
-              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+            <div className="mt-7 flex flex-wrap gap-3 text-sm text-slate-200">
+              <span className="rounded-full border border-cyan-300/15 bg-white/5 px-4 py-2">
                 Tailored travel planning
               </span>
-              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+              <span className="rounded-full border border-cyan-300/15 bg-white/5 px-4 py-2">
                 Business & holidays
               </span>
-              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+              <span className="rounded-full border border-cyan-300/15 bg-white/5 px-4 py-2">
                 Personal assistance
               </span>
             </div>
@@ -246,9 +254,9 @@ const InternationalTravel = () => {
         </section>
 
         {/* International Travel Planning Form */}
-        <section className="overflow-hidden rounded-[2rem] border border-violet-200/10 bg-[#181120] shadow-2xl shadow-black/20">
-          <div className="border-b border-violet-200/10 px-6 py-7 sm:px-8 lg:px-10">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-violet-400">
+        <section className="overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-[#0d1a2b] shadow-2xl shadow-black/20">
+          <div className="border-b border-cyan-300/15 px-6 py-7 sm:px-8 lg:px-10">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-cyan-400">
               Designed around your journey
             </p>
 
@@ -256,7 +264,7 @@ const InternationalTravel = () => {
               Let's Plan Your Trip
             </h2>
 
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-violet-100/60">
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300">
               Tell us where you're going, why you're travelling, and which
               arrangements you'd like our team to help with.
             </p>
@@ -271,7 +279,7 @@ const InternationalTravel = () => {
               <h3 className="text-lg font-bold text-white">
                 01. Your Contact Details
               </h3>
-              <p className="mt-1 text-sm text-violet-100/50">
+              <p className="mt-1 text-sm text-slate-400">
                 So our team knows how to reach you.
               </p>
             </div>
@@ -332,7 +340,7 @@ const InternationalTravel = () => {
               <h3 className="text-lg font-bold text-white">
                 02. Tell Us About Your Trip
               </h3>
-              <p className="mt-1 text-sm text-violet-100/50">
+              <p className="mt-1 text-sm text-slate-400">
                 The destination, purpose, and timing of your journey.
               </p>
             </div>
@@ -439,53 +447,51 @@ const InternationalTravel = () => {
               <h3 className="text-lg font-bold text-white">
                 03. Your Estimated Budget
               </h3>
-              <p className="mt-1 text-sm text-violet-100/50">
+              <p className="mt-1 text-sm text-slate-400">
                 This helps us understand the type of arrangements that may suit
                 your trip. You can leave this blank.
               </p>
             </div>
 
-            
-<div>
-  <label htmlFor="budgetCurrency" className={labelClass}>
-    Budget Currency
-  </label>
+            <div>
+              <label htmlFor="budgetCurrency" className={labelClass}>
+                Budget Currency
+              </label>
 
-  <select
-    id="budgetCurrency"
-    name="budgetCurrency"
-    value={form.budgetCurrency}
-    onChange={handleChange}
-    className={inputClass}
-  >
-    <option value="USD">USD — US Dollar</option>
-    <option value="ZAR">ZAR — South African Rand</option>
-    <option value="NGN">NGN — Nigerian Naira</option>
-    <option value="GBP">GBP — British Pound</option>
-    <option value="EUR">EUR — Euro</option>
-    <option value="Other">Other currency</option>
-  </select>
+              <select
+                id="budgetCurrency"
+                name="budgetCurrency"
+                value={form.budgetCurrency}
+                onChange={handleChange}
+                className={inputClass}
+              >
+                <option value="USD">USD — US Dollar</option>
+                <option value="ZAR">ZAR — South African Rand</option>
+                <option value="NGN">NGN — Nigerian Naira</option>
+                <option value="GBP">GBP — British Pound</option>
+                <option value="EUR">EUR — Euro</option>
+                <option value="Other">Other currency</option>
+              </select>
 
-  {form.budgetCurrency === "Other" && (
-    <div className="mt-4">
-      <label htmlFor="otherCurrency" className={labelClass}>
-        Specify Your Currency *
-      </label>
+              {form.budgetCurrency === "Other" && (
+                <div className="mt-4">
+                  <label htmlFor="otherCurrency" className={labelClass}>
+                    Specify Your Currency *
+                  </label>
 
-      <input
-        id="otherCurrency"
-        name="otherCurrency"
-        type="text"
-        required
-        value={form.otherCurrency}
-        onChange={handleChange}
-        placeholder="e.g. CAD, AUD, AED"
-        className={inputClass}
-      />
-    </div>
-  )}
-</div>
-
+                  <input
+                    id="otherCurrency"
+                    name="otherCurrency"
+                    type="text"
+                    required
+                    value={form.otherCurrency}
+                    onChange={handleChange}
+                    placeholder="e.g. CAD, AUD, AED"
+                    className={inputClass}
+                  />
+                </div>
+              )}
+            </div>
 
             <div>
               <label htmlFor="estimatedBudget" className={labelClass}>
@@ -509,7 +515,7 @@ const InternationalTravel = () => {
               <h3 className="text-lg font-bold text-white">
                 04. What Would You Like Help With?
               </h3>
-              <p className="mt-1 text-sm text-violet-100/50">
+              <p className="mt-1 text-sm text-slate-400">
                 Select all the services you're interested in.
               </p>
             </div>
@@ -520,8 +526,8 @@ const InternationalTravel = () => {
                   key={service.value}
                   className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition duration-300 ${
                     form.planningServices.includes(service.value)
-                      ? "border-violet-400/70 bg-violet-500/10"
-                      : "border-violet-200/10 bg-[#1c1428] hover:border-violet-400/40"
+                      ? "border-cyan-400/70 bg-cyan-500/10"
+                      : "border-cyan-300/15 bg-[#101c2e] hover:border-cyan-400/40"
                   }`}
                 >
                   <input
@@ -530,14 +536,14 @@ const InternationalTravel = () => {
                     onChange={(e) =>
                       handleServiceChange(service.value, e.target.checked)
                     }
-                    className="mt-1 h-4 w-4 shrink-0 accent-violet-500"
+                    className="mt-1 h-4 w-4 shrink-0 accent-cyan-500"
                   />
 
                   <span>
                     <span className="block text-sm font-semibold text-white">
                       {service.label}
                     </span>
-                    <span className="mt-1 block text-xs leading-5 text-violet-100/50">
+                    <span className="mt-1 block text-xs leading-5 text-slate-400">
                       {service.description}
                     </span>
                   </span>
@@ -550,7 +556,7 @@ const InternationalTravel = () => {
               <h3 className="text-lg font-bold text-white">
                 05. Anything Else We Should Know?
               </h3>
-              <p className="mt-1 text-sm text-violet-100/50">
+              <p className="mt-1 text-sm text-slate-400">
                 Share special requests, preferences, or questions.
               </p>
             </div>
@@ -558,7 +564,7 @@ const InternationalTravel = () => {
             <div className="lg:col-span-2">
               <label htmlFor="additionalRequirements" className={labelClass}>
                 Additional Information
-                <span className="ml-2 font-normal text-violet-200/50">
+                <span className="ml-2 font-normal text-slate-400">
                   (Optional)
                 </span>
               </label>
@@ -577,7 +583,7 @@ const InternationalTravel = () => {
             <div className="pt-2 lg:col-span-2">
               <button
                 type="submit"
-                className="group flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-violet-950/30 transition duration-300 hover:-translate-y-0.5 hover:from-violet-400 hover:to-fuchsia-400 hover:shadow-violet-500/20 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:ring-offset-2 focus:ring-offset-[#181120] sm:w-auto sm:min-w-64"
+                className="group flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-cyan-950/30 transition duration-300 hover:-translate-y-0.5 hover:from-cyan-400 hover:to-blue-500 hover:shadow-cyan-500/20 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#0d1a2b] sm:w-auto sm:min-w-64"
               >
                 Plan My International Trip
                 <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
@@ -585,7 +591,7 @@ const InternationalTravel = () => {
                 </span>
               </button>
 
-              <p className="mt-4 text-xs leading-6 text-violet-100/50">
+              <p className="mt-4 text-xs leading-6 text-slate-400">
                 Our team will review your enquiry and contact you about the next
                 steps. Submitting this form does not confirm a booking or
                 guarantee visa approval.
@@ -595,7 +601,7 @@ const InternationalTravel = () => {
         </section>
 
         {/* Footer */}
-        <footer className="py-8 text-center text-xs text-violet-100/40">
+        <footer className="py-8 text-center text-xs text-slate-500">
           Voyage Travel Mansion · Your trusted partner for better journeys.
         </footer>
       </div>

@@ -41,9 +41,7 @@ const VisaAssistance = () => {
       return;
     }
 
-    if (
-      !/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(visaForm.email)
-    ) {
+    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(visaForm.email)) {
       setVisaEmailError(
         "Please enter a valid Gmail address ending with @gmail.com."
       );
@@ -125,13 +123,13 @@ const VisaAssistance = () => {
   };
 
   const inputClass =
-    "w-full rounded-xl border border-violet-200/10 bg-[#1c1428] px-4 py-3.5 text-white placeholder:text-violet-200/40 outline-none transition duration-300 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20";
+    "w-full rounded-xl border border-cyan-300/15 bg-[#101c2e] px-4 py-3.5 text-white placeholder:text-slate-400 outline-none transition duration-300 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20";
 
   const labelClass =
-    "mb-2 block text-sm font-semibold text-violet-50";
+    "mb-2 block text-sm font-semibold text-slate-100";
 
   return (
-    <main className="min-h-screen bg-[#100b18] px-4 py-6 text-white sm:px-6 sm:py-10">
+    <main className="min-h-screen bg-[#07111f] px-4 py-6 text-white sm:px-6 sm:py-10">
       <div className="mx-auto max-w-6xl">
         {/* Top Navigation */}
         <header className="mb-12 flex items-center justify-between gap-4">
@@ -139,48 +137,48 @@ const VisaAssistance = () => {
             href="/"
             className="text-lg font-extrabold tracking-tight text-white sm:text-xl"
           >
-            Voyage <span className="text-violet-400">Travel Mansion</span>
+            Voyage <span className="text-cyan-400">Travel Mansion</span>
           </a>
 
           <a
             href="/"
-            className="rounded-full border border-violet-200/15 px-4 py-2.5 text-sm font-semibold text-violet-100 transition hover:border-violet-400/60 hover:bg-violet-400/10"
+            className="rounded-full border border-cyan-300/20 px-4 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-cyan-400/60 hover:bg-cyan-400/10"
           >
             ← Back to Home
           </a>
         </header>
 
         {/* Hero Section */}
-        <section className="relative mb-10 overflow-hidden rounded-[2rem] border border-violet-300/10 bg-gradient-to-br from-[#211331] via-[#181022] to-[#100b18] px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
-          <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-violet-600/15 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 left-1/3 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />
+        <section className="relative mb-10 overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-gradient-to-br from-[#142b43] via-[#0d1c30] to-[#07111f] px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 left-1/3 h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
 
           <div className="relative max-w-3xl">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-violet-300 sm:text-sm">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-cyan-300 sm:text-sm">
               Visa Assistance
             </p>
 
             <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
               Your visa journey,
-              <span className="block text-violet-400">
+              <span className="block text-cyan-400">
                 guided with care.
               </span>
             </h1>
 
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-violet-100/70 sm:text-base sm:leading-8">
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
               Whether you're planning a holiday, studying abroad, visiting
               family, or travelling for business, tell us about your visa
               needs so our team can guide you through the next steps.
             </p>
 
-            <div className="mt-7 flex flex-wrap gap-3 text-sm text-violet-100/80">
-              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+            <div className="mt-7 flex flex-wrap gap-3 text-sm text-slate-200">
+              <span className="rounded-full border border-cyan-300/15 bg-white/5 px-4 py-2">
                 Personal guidance
               </span>
-              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+              <span className="rounded-full border border-cyan-300/15 bg-white/5 px-4 py-2">
                 Multiple visa types
               </span>
-              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+              <span className="rounded-full border border-cyan-300/15 bg-white/5 px-4 py-2">
                 Application support
               </span>
             </div>
@@ -188,9 +186,9 @@ const VisaAssistance = () => {
         </section>
 
         {/* Visa Request Form */}
-        <section className="overflow-hidden rounded-[2rem] border border-violet-200/10 bg-[#181120] shadow-2xl shadow-black/20">
-          <div className="border-b border-violet-200/10 px-6 py-7 sm:px-8 lg:px-10">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-violet-400">
+        <section className="overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-[#0d1a2b] shadow-2xl shadow-black/20">
+          <div className="border-b border-cyan-300/15 px-6 py-7 sm:px-8 lg:px-10">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-cyan-400">
               Your application starts here
             </p>
 
@@ -198,7 +196,7 @@ const VisaAssistance = () => {
               Let's Understand Your Visa Needs
             </h2>
 
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-violet-100/60">
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300">
               Answer a few questions about your circumstances and travel
               plans so our team can understand what assistance you need.
             </p>
@@ -213,7 +211,7 @@ const VisaAssistance = () => {
               <h3 className="text-lg font-bold text-white">
                 01. Applicant Details
               </h3>
-              <p className="mt-1 text-sm text-violet-100/50">
+              <p className="mt-1 text-sm text-slate-400">
                 Tell us who is applying and how we can contact you.
               </p>
             </div>
@@ -342,7 +340,7 @@ const VisaAssistance = () => {
               <h3 className="text-lg font-bold text-white">
                 02. Destination & Visa Requirements
               </h3>
-              <p className="mt-1 text-sm text-violet-100/50">
+              <p className="mt-1 text-sm text-slate-400">
                 Help us understand where you're going and why.
               </p>
             </div>
@@ -445,7 +443,7 @@ const VisaAssistance = () => {
               <h3 className="text-lg font-bold text-white">
                 03. Your Application Progress
               </h3>
-              <p className="mt-1 text-sm text-violet-100/50">
+              <p className="mt-1 text-sm text-slate-400">
                 This helps us understand the stage you're at.
               </p>
             </div>
@@ -514,7 +512,7 @@ const VisaAssistance = () => {
               <h3 className="text-lg font-bold text-white">
                 04. Intended Travel Date
               </h3>
-              <p className="mt-1 text-sm text-violet-100/50">
+              <p className="mt-1 text-sm text-slate-400">
                 When are you hoping to travel? This helps us understand
                 your intended timeline.
               </p>
@@ -545,7 +543,7 @@ const VisaAssistance = () => {
               <h3 className="text-lg font-bold text-white">
                 05. Additional Information
               </h3>
-              <p className="mt-1 text-sm text-violet-100/50">
+              <p className="mt-1 text-sm text-slate-400">
                 Share any questions or relevant details you'd like
                 our team to know.
               </p>
@@ -554,7 +552,7 @@ const VisaAssistance = () => {
             <div className="lg:col-span-2">
               <label htmlFor="visa-information" className={labelClass}>
                 Tell Us More
-                <span className="ml-2 font-normal text-violet-200/50">
+                <span className="ml-2 font-normal text-slate-400">
                   (Optional)
                 </span>
               </label>
@@ -577,7 +575,7 @@ const VisaAssistance = () => {
             <div className="pt-2 lg:col-span-2">
               <button
                 type="submit"
-                className="group flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-violet-950/30 transition duration-300 hover:-translate-y-0.5 hover:from-violet-400 hover:to-fuchsia-400 hover:shadow-violet-500/20 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:ring-offset-2 focus:ring-offset-[#181120] sm:w-auto sm:min-w-64"
+                className="group flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-cyan-950/30 transition duration-300 hover:-translate-y-0.5 hover:from-cyan-400 hover:to-blue-500 hover:shadow-cyan-500/20 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#0d1a2b] sm:w-auto sm:min-w-64"
               >
                 Submit Visa Assistance Request
                 <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
@@ -585,7 +583,7 @@ const VisaAssistance = () => {
                 </span>
               </button>
 
-              <p className="mt-4 text-xs leading-6 text-violet-100/50">
+              <p className="mt-4 text-xs leading-6 text-slate-400">
                 Our team will review your enquiry and guide you on the
                 next steps. Submitting this form does not guarantee visa
                 approval or replace official immigration advice.
@@ -595,7 +593,7 @@ const VisaAssistance = () => {
         </section>
 
         {/* Footer */}
-        <footer className="py-8 text-center text-xs text-violet-100/40">
+        <footer className="py-8 text-center text-xs text-slate-500">
           Voyage Travel Mansion · Your trusted partner for better journeys.
         </footer>
       </div>

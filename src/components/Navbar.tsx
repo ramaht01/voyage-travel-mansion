@@ -24,7 +24,6 @@ function Navbar() {
               className="group relative text-sm font-semibold text-white transition duration-300 hover:text-white"
             >
               Home
-              <span className="absolute -bottom-2 left-0 h-0.5 w-0 rounded-full bg-cyan-400 transition-all duration-300 group-hover:w-full" />
             </a>
 
             <a
@@ -32,7 +31,6 @@ function Navbar() {
               className="group relative text-sm font-semibold text-white transition duration-300 hover:text-white"
             >
               About
-              <span className="absolute -bottom-2 left-0 h-0.5 w-0 rounded-full bg-cyan-400 transition-all duration-300 group-hover:w-full" />
             </a>
 
             <a
@@ -40,29 +38,26 @@ function Navbar() {
               className="group relative text-sm font-semibold text-white transition duration-300 hover:text-white"
             >
               Services
-              <span className="absolute -bottom-2 left-0 h-0.5 w-0 rounded-full bg-cyan-400 transition-all duration-300 group-hover:w-full" />
             </a>
 
             <a
-            onClick={() => {
-                    window.location.href = "/flight-booking";
-                  }}
+              onClick={() => {
+                window.location.href = "/flight-booking";
+              }}
               href="#flight-booking"
               className="group relative text-sm font-semibold text-white transition duration-300 hover:text-white"
             >
               Flight Booking
-              <span className="absolute -bottom-2 left-0 h-0.5 w-0 rounded-full bg-cyan-400 transition-all duration-300 group-hover:w-full" />
             </a>
 
             <a
-             onClick={() => {
-                    window.location.href = "/visa-assistance";
-                  }}
+              onClick={() => {
+                window.location.href = "/visa-assistance";
+              }}
               href="#visa"
               className="group relative text-sm font-semibold text-white transition duration-300 hover:text-white"
             >
               Visa Assistance
-              <span className="absolute -bottom-2 left-0 h-0.5 w-0 rounded-full bg-cyan-400 transition-all duration-300 group-hover:w-full" />
             </a>
 
             <a
@@ -70,7 +65,6 @@ function Navbar() {
               className="group relative text-sm font-semibold text-white transition duration-300 hover:text-white"
             >
               Contact
-              <span className="absolute -bottom-2 left-0 h-0.5 w-0 rounded-full bg-cyan-400 transition-all duration-300 group-hover:w-full" />
             </a>
           </div>
 

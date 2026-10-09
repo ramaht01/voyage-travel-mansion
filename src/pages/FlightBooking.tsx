@@ -35,9 +35,7 @@ const FlightBooking = () => {
         `${import.meta.env.VITE_API_URL}/api/flight-requests`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...flightForm,
             passengers: Number(flightForm.passengers),
@@ -54,8 +52,6 @@ const FlightBooking = () => {
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
-
-      console.log("Flight request submitted:", data);
 
       toast.success("Flight request submitted successfully!");
 
@@ -78,63 +74,59 @@ const FlightBooking = () => {
   };
 
   const inputClass =
-    "w-full rounded-xl border border-violet-200/10 bg-[#1c1428] px-4 py-3.5 text-white placeholder:text-violet-200/40 outline-none transition duration-300 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20";
+    "w-full rounded-xl border border-cyan-300/15 bg-[#101c2e] px-4 py-3.5 text-white placeholder:text-slate-400 outline-none transition duration-300 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20";
 
-  const labelClass =
-    "mb-2 block text-sm font-semibold text-violet-50";
+  const labelClass = "mb-2 block text-sm font-semibold text-slate-100";
 
   return (
-    <main className="min-h-screen bg-[#100b18] px-4 py-6 text-white sm:px-6 sm:py-10">
+    <main className="min-h-screen bg-[#07111f] px-4 py-6 text-white sm:px-6 sm:py-10">
       <div className="mx-auto max-w-6xl">
-
         {/* Top Navigation */}
         <header className="mb-12 flex items-center justify-between gap-4">
           <a
             href="/"
             className="text-lg font-extrabold tracking-tight text-white sm:text-xl"
           >
-            Voyage <span className="text-violet-400">Travel Mansion</span>
+            Voyage <span className="text-cyan-400">Travel Mansion</span>
           </a>
 
           <a
             href="/"
-            className="rounded-full border border-violet-200/15 px-4 py-2.5 text-sm font-semibold text-violet-100 transition hover:border-violet-400/60 hover:bg-violet-400/10"
+            className="rounded-full border border-cyan-300/20 px-4 py-2.5 text-sm font-semibold text-slate-100 transition hover:border-cyan-400 hover:bg-cyan-400/10"
           >
             ← Back to Home
           </a>
         </header>
 
         {/* Hero Section */}
-        <section className="relative mb-10 overflow-hidden rounded-[2rem] border border-violet-300/10 bg-gradient-to-br from-[#211331] via-[#181022] to-[#100b18] px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
-          <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-violet-600/15 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 left-1/3 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />
+        <section className="relative mb-10 overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-gradient-to-br from-[#142b43] via-[#0d1c30] to-[#07111f] px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 left-1/3 h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
 
           <div className="relative max-w-3xl">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-violet-300 sm:text-sm">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-cyan-300 sm:text-sm">
               Flight Booking
             </p>
 
             <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
               Your next journey
-              <span className="block text-violet-400">
-                starts here.
-              </span>
+              <span className="block text-cyan-400">starts here.</span>
             </h1>
 
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-violet-100/70 sm:text-base sm:leading-8">
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
               Tell us where you are travelling from and where you would
               love to go. Our team will review your request and help you
               plan your flight with greater peace of mind.
             </p>
 
-            <div className="mt-7 flex flex-wrap gap-3 text-sm text-violet-100/80">
-              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+            <div className="mt-7 flex flex-wrap gap-3 text-sm text-slate-200">
+              <span className="rounded-full border border-cyan-300/15 bg-white/5 px-4 py-2">
                 Personal assistance
               </span>
-              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+              <span className="rounded-full border border-cyan-300/15 bg-white/5 px-4 py-2">
                 One-way & return flights
               </span>
-              <span className="rounded-full border border-violet-200/10 bg-white/5 px-4 py-2">
+              <span className="rounded-full border border-cyan-300/15 bg-white/5 px-4 py-2">
                 International travel
               </span>
             </div>
@@ -142,9 +134,9 @@ const FlightBooking = () => {
         </section>
 
         {/* Flight Request Form */}
-        <section className="overflow-hidden rounded-[2rem] border border-violet-200/10 bg-[#181120] shadow-2xl shadow-black/20">
-          <div className="border-b border-violet-200/10 px-6 py-7 sm:px-8 lg:px-10">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-violet-400">
+        <section className="overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-[#0d1a2b] shadow-2xl shadow-black/30">
+          <div className="border-b border-cyan-300/15 px-6 py-7 sm:px-8 lg:px-10">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-cyan-400">
               Let's plan your trip
             </p>
 
@@ -152,7 +144,7 @@ const FlightBooking = () => {
               Flight Booking Request
             </h2>
 
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-violet-100/60">
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300">
               Complete the details below. Our team will review your
               request and get back to you.
             </p>
@@ -162,7 +154,6 @@ const FlightBooking = () => {
             onSubmit={handleFlightSubmit}
             className="grid gap-x-6 gap-y-6 px-6 py-8 sm:px-8 lg:grid-cols-2 lg:px-10 lg:py-10"
           >
-            {/* Full Name */}
             <div>
               <label htmlFor="flight-name" className={labelClass}>
                 Full Name
@@ -174,17 +165,13 @@ const FlightBooking = () => {
                 required
                 value={flightForm.fullName}
                 onChange={(e) =>
-                  setFlightForm({
-                    ...flightForm,
-                    fullName: e.target.value,
-                  })
+                  setFlightForm({ ...flightForm, fullName: e.target.value })
                 }
                 placeholder="Enter your full name"
                 className={inputClass}
               />
             </div>
 
-            {/* Email */}
             <div>
               <label htmlFor="flight-email" className={labelClass}>
                 Email Address
@@ -199,11 +186,7 @@ const FlightBooking = () => {
                 value={flightForm.email}
                 onChange={(e) => {
                   const value = e.target.value;
-
-                  setFlightForm({
-                    ...flightForm,
-                    email: value,
-                  });
+                  setFlightForm({ ...flightForm, email: value });
 
                   if (
                     value &&
@@ -237,7 +220,6 @@ const FlightBooking = () => {
               )}
             </div>
 
-            {/* Phone */}
             <div>
               <label htmlFor="flight-phone" className={labelClass}>
                 Phone / WhatsApp
@@ -249,17 +231,13 @@ const FlightBooking = () => {
                 required
                 value={flightForm.phone}
                 onChange={(e) =>
-                  setFlightForm({
-                    ...flightForm,
-                    phone: e.target.value,
-                  })
+                  setFlightForm({ ...flightForm, phone: e.target.value })
                 }
                 placeholder="+27..."
                 className={inputClass}
               />
             </div>
 
-            {/* Departure */}
             <div>
               <label htmlFor="flight-departure" className={labelClass}>
                 Departure Location
@@ -270,17 +248,13 @@ const FlightBooking = () => {
                 required
                 value={flightForm.departure}
                 onChange={(e) =>
-                  setFlightForm({
-                    ...flightForm,
-                    departure: e.target.value,
-                  })
+                  setFlightForm({ ...flightForm, departure: e.target.value })
                 }
                 placeholder="e.g. Johannesburg"
                 className={inputClass}
               />
             </div>
 
-            {/* Destination */}
             <div>
               <label htmlFor="flight-destination" className={labelClass}>
                 Destination
@@ -291,17 +265,13 @@ const FlightBooking = () => {
                 required
                 value={flightForm.destination}
                 onChange={(e) =>
-                  setFlightForm({
-                    ...flightForm,
-                    destination: e.target.value,
-                  })
+                  setFlightForm({ ...flightForm, destination: e.target.value })
                 }
                 placeholder="e.g. London"
                 className={inputClass}
               />
             </div>
 
-            {/* Departure Date */}
             <div>
               <label htmlFor="flight-departure-date" className={labelClass}>
                 Departure Date
@@ -327,11 +297,10 @@ const FlightBooking = () => {
               />
             </div>
 
-            {/* Return Date */}
             <div>
               <label htmlFor="flight-return-date" className={labelClass}>
                 Return Date
-                <span className="ml-2 font-normal text-violet-200/50">
+                <span className="ml-2 font-normal text-slate-400">
                   (Optional)
                 </span>
               </label>
@@ -344,16 +313,12 @@ const FlightBooking = () => {
                 }
                 value={flightForm.returnDate}
                 onChange={(e) =>
-                  setFlightForm({
-                    ...flightForm,
-                    returnDate: e.target.value,
-                  })
+                  setFlightForm({ ...flightForm, returnDate: e.target.value })
                 }
                 className={inputClass}
               />
             </div>
 
-            {/* Passengers */}
             <div>
               <label htmlFor="flight-passengers" className={labelClass}>
                 Passengers
@@ -363,10 +328,7 @@ const FlightBooking = () => {
                 required
                 value={flightForm.passengers}
                 onChange={(e) =>
-                  setFlightForm({
-                    ...flightForm,
-                    passengers: e.target.value,
-                  })
+                  setFlightForm({ ...flightForm, passengers: e.target.value })
                 }
                 className={inputClass}
               >
@@ -379,7 +341,6 @@ const FlightBooking = () => {
               </select>
             </div>
 
-            {/* Trip Type */}
             <div>
               <label htmlFor="flight-trip-type" className={labelClass}>
                 Trip Type
@@ -389,10 +350,7 @@ const FlightBooking = () => {
                 required
                 value={flightForm.tripType}
                 onChange={(e) =>
-                  setFlightForm({
-                    ...flightForm,
-                    tripType: e.target.value,
-                  })
+                  setFlightForm({ ...flightForm, tripType: e.target.value })
                 }
                 className={inputClass}
               >
@@ -402,11 +360,10 @@ const FlightBooking = () => {
               </select>
             </div>
 
-            {/* Additional Requirements */}
             <div className="lg:col-span-2">
               <label htmlFor="flight-requirements" className={labelClass}>
                 Additional Requirements
-                <span className="ml-2 font-normal text-violet-200/50">
+                <span className="ml-2 font-normal text-slate-400">
                   (Optional)
                 </span>
               </label>
@@ -425,19 +382,16 @@ const FlightBooking = () => {
               />
             </div>
 
-            {/* Submit */}
             <div className="pt-2 lg:col-span-2">
               <button
                 type="submit"
-                className="w-full rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-violet-950/30 transition duration-300 hover:-translate-y-0.5 hover:from-violet-400 hover:to-fuchsia-400 hover:shadow-violet-500/20 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:ring-offset-2 focus:ring-offset-[#181120] sm:w-auto sm:min-w-64"
+                className="w-full rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-cyan-950/30 transition duration-300 hover:-translate-y-0.5 hover:from-cyan-400 hover:to-blue-500 hover:shadow-cyan-500/20 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#0d1a2b] sm:w-auto sm:min-w-64"
               >
                 Submit Flight Request
-                <span className="ml-2" aria-hidden="true">
-                  →
-                </span>
+                <span className="ml-2" aria-hidden="true">→</span>
               </button>
 
-              <p className="mt-4 text-xs leading-6 text-violet-100/50">
+              <p className="mt-4 text-xs leading-6 text-slate-400">
                 Your request will be sent to our team for review. Submitting
                 this form does not confirm a flight booking.
               </p>
@@ -445,8 +399,7 @@ const FlightBooking = () => {
           </form>
         </section>
 
-        {/* Footer */}
-        <footer className="py-8 text-center text-xs text-violet-100/40">
+        <footer className="py-8 text-center text-xs text-slate-500">
           Voyage Travel Mansion · Your trusted partner for better journeys.
         </footer>
       </div>

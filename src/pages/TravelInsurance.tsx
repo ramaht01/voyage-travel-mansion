@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -32,11 +33,38 @@ export default function TravelInsurance() {
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >,
   ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setForm((previous) => ({
+      ...previous,
+      [name]: value,
+      ...(name === "departureDate" &&
+      previous.returnDate &&
+      value &&
+      previous.returnDate < value
+        ? { returnDate: "" }
+        : {}),
+    }));
   };
+
+  const inputClass =
+    "w-full rounded-xl border border-cyan-300/15 bg-[#101c2e] px-4 py-3.5 text-white placeholder:text-slate-400 outline-none transition duration-300 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20";
+
+  const labelClass =
+    "mb-2 block text-sm font-semibold text-slate-100";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (
+      form.departureDate &&
+      form.returnDate &&
+      form.returnDate < form.departureDate
+    ) {
+      toast.error("Return date cannot be earlier than departure date.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -57,7 +85,9 @@ export default function TravelInsurance() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Unable to submit insurance request.");
+        throw new Error(
+          data.message || "Unable to submit insurance request.",
+        );
       }
 
       toast.success(
@@ -89,20 +119,21 @@ export default function TravelInsurance() {
   };
 
   return (
-    <main className="min-h-screen bg-[#100b18] text-white">
+    <main className="min-h-screen overflow-hidden bg-[#07111f] text-white">
       {/* Navigation */}
-      <nav className="border-b border-white/10 bg-[#100b18]/90">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
+      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#07111f]/90 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
           <a
             href="/"
-            className="flex items-center gap-3 font-bold tracking-wide"
+            className="group flex items-center gap-3 font-bold tracking-wide"
           >
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-400/15 text-violet-300">
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-400/10 text-cyan-300 transition duration-300 group-hover:bg-cyan-400/20">
               <ShieldCheck size={25} />
             </span>
+
             <span>
               VOYAGE
-              <span className="block text-xs font-medium tracking-[0.25em] text-violet-300">
+              <span className="block text-xs font-medium tracking-[0.25em] text-cyan-300">
                 TRAVEL MANSION
               </span>
             </span>
@@ -110,7 +141,7 @@ export default function TravelInsurance() {
 
           <a
             href="/"
-            className="flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm text-violet-100 transition hover:border-violet-300/60 hover:bg-violet-400/10"
+            className="flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm text-slate-200 transition duration-300 hover:border-cyan-300/50 hover:bg-cyan-400/10 hover:text-cyan-200"
           >
             <ArrowLeft size={16} />
             <span className="hidden sm:inline">Back to Home</span>
@@ -120,47 +151,50 @@ export default function TravelInsurance() {
       </nav>
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute -right-32 -top-20 h-96 w-96 rounded-full bg-violet-600/15 blur-3xl" />
-        <div className="pointer-events-none absolute -left-32 top-40 h-80 w-80 rounded-full bg-purple-500/10 blur-3xl" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#142b43] via-[#0d1c30] to-[#07111f]">
+        <div className="pointer-events-none absolute -right-32 -top-20 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-blue-600/10 blur-3xl" />
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 sm:px-8 md:py-24 lg:grid-cols-2">
           <div>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-violet-300/20 bg-violet-300/10 px-4 py-2 text-sm text-violet-200">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm text-cyan-200">
               <ShieldCheck size={16} />
               Travel with greater peace of mind
             </div>
 
             <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
               A little more
-              <span className="block text-violet-300">peace of mind</span>
+              <span className="block bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
+                peace of mind
+              </span>
               for every journey.
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">
-              Let Voyage Travel Mansion help you explore travel insurance
-              options for your next trip. Tell us about your journey and our
-              team will guide you through the next steps.
+              Let Voyage Travel Mansion help you explore travel
+              insurance options for your next trip. Tell us about
+              your journey and our team will guide you through the
+              next steps.
             </p>
 
             <a
               href="#insurance-request"
-              className="mt-8 inline-flex items-center gap-3 rounded-full bg-violet-300 px-7 py-4 font-semibold text-[#21152f] shadow-lg shadow-violet-500/15 transition duration-300 hover:-translate-y-1 hover:bg-violet-200"
+              className="mt-8 inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-7 py-4 font-semibold text-white shadow-lg shadow-cyan-950/30 transition duration-300 hover:-translate-y-1 hover:from-cyan-400 hover:to-blue-500 hover:shadow-cyan-500/20"
             >
               Request Insurance Assistance
               <span aria-hidden="true">→</span>
             </a>
 
             <p className="mt-4 text-xs leading-6 text-slate-400">
-              Coverage, eligibility and policy terms depend on the insurance
-              provider and selected policy.
+              Coverage, eligibility and policy terms depend on the
+              insurance provider and selected policy.
             </p>
           </div>
 
-          {/* Feature card */}
+          {/* Feature Card */}
           <div className="relative">
-            <div className="rounded-[2rem] border border-violet-200/15 bg-gradient-to-br from-[#30203f] to-[#1b1327] p-7 shadow-2xl shadow-black/20 sm:p-9">
-              <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-300/15 text-violet-200">
+            <div className="rounded-[2rem] border border-cyan-300/15 bg-gradient-to-br from-[#14283e] to-[#0d1a2b] p-7 shadow-2xl shadow-black/30 sm:p-9">
+              <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-300/15 bg-cyan-400/10 text-cyan-300">
                 <ShieldCheck size={34} />
               </div>
 
@@ -169,8 +203,9 @@ export default function TravelInsurance() {
               </h2>
 
               <p className="mt-4 leading-7 text-slate-300">
-                Understand your options before you travel, with guidance
-                tailored to your destination and travel plans.
+                Understand your options before you travel, with
+                guidance tailored to your destination and travel
+                plans.
               </p>
 
               <div className="mt-8 space-y-5">
@@ -198,7 +233,7 @@ export default function TravelInsurance() {
 
                   return (
                     <div key={item.title} className="flex gap-4">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-300/10 text-violet-200">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-300/10 bg-cyan-400/10 text-cyan-300">
                         <Icon size={21} />
                       </div>
 
@@ -216,19 +251,19 @@ export default function TravelInsurance() {
               </div>
             </div>
 
-            <div className="absolute -bottom-5 -right-3 -z-10 h-40 w-40 rounded-full bg-violet-500/20 blur-3xl" />
+            <div className="absolute -bottom-5 -right-3 -z-10 h-40 w-40 rounded-full bg-cyan-500/15 blur-3xl" />
           </div>
         </div>
       </section>
 
-      {/* Request form */}
+      {/* Insurance Request Form */}
       <section
         id="insurance-request"
-        className="border-t border-white/10 bg-[#171020] px-5 py-16 sm:px-8 md:py-24"
+        className="scroll-mt-24 border-t border-white/10 bg-[#07111f] px-5 py-16 sm:px-8 md:py-24"
       >
         <div className="mx-auto max-w-4xl">
           <div className="mx-auto mb-10 max-w-2xl text-center">
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-300">
+            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">
               Your next step
             </span>
 
@@ -237,19 +272,21 @@ export default function TravelInsurance() {
             </h2>
 
             <p className="mt-4 leading-7 text-slate-400">
-              Share a few details about your trip. Our team can then review your
-              request and discuss the available options.
+              Share a few details about your trip. Our team can
+              then review your request and discuss the available
+              options.
             </p>
           </div>
 
           <form
             onSubmit={handleSubmit}
-            className="rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-xl shadow-black/10 sm:p-8 md:p-10"
+            className="rounded-3xl border border-cyan-300/10 bg-[#0d1a2b] p-5 shadow-2xl shadow-black/20 sm:p-8 md:p-10"
           >
             <div className="mb-8 flex items-center gap-3 border-b border-white/10 pb-5">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-300/10 text-violet-200">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/10 bg-cyan-400/10 text-cyan-300">
                 <Plane size={23} />
               </div>
+
               <div>
                 <h3 className="font-semibold">Your travel details</h3>
                 <p className="mt-1 text-sm text-slate-400">
@@ -259,11 +296,9 @@ export default function TravelInsurance() {
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2">
+              {/* Full Name */}
               <div>
-                <label
-                  htmlFor="insurance-name"
-                  className="mb-2 block text-sm font-medium text-slate-200"
-                >
+                <label htmlFor="insurance-name" className={labelClass}>
                   Full Name *
                 </label>
                 <input
@@ -274,15 +309,13 @@ export default function TravelInsurance() {
                   autoComplete="name"
                   required
                   placeholder="Enter your full name"
-                  className="w-full rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 text-white outline-none transition placeholder:text-slate-500 focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
+                  className={inputClass}
                 />
               </div>
 
+              {/* Email */}
               <div>
-                <label
-                  htmlFor="insurance-email"
-                  className="mb-2 block text-sm font-medium text-slate-200"
-                >
+                <label htmlFor="insurance-email" className={labelClass}>
                   Email Address *
                 </label>
                 <input
@@ -294,15 +327,13 @@ export default function TravelInsurance() {
                   autoComplete="email"
                   required
                   placeholder="you@example.com"
-                  className="w-full rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 text-white outline-none transition placeholder:text-slate-500 focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
+                  className={inputClass}
                 />
               </div>
 
+              {/* Phone */}
               <div>
-                <label
-                  htmlFor="insurance-phone"
-                  className="mb-2 block text-sm font-medium text-slate-200"
-                >
+                <label htmlFor="insurance-phone" className={labelClass}>
                   Phone / WhatsApp *
                 </label>
                 <input
@@ -314,14 +345,15 @@ export default function TravelInsurance() {
                   autoComplete="tel"
                   required
                   placeholder="Your contact number"
-                  className="w-full rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 text-white outline-none transition placeholder:text-slate-500 focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
+                  className={inputClass}
                 />
               </div>
 
+              {/* Destination */}
               <div>
                 <label
                   htmlFor="insurance-destination"
-                  className="mb-2 block text-sm font-medium text-slate-200"
+                  className={labelClass}
                 >
                   Destination *
                 </label>
@@ -332,20 +364,21 @@ export default function TravelInsurance() {
                   onChange={updateField}
                   required
                   placeholder="e.g. United Kingdom"
-                  className="w-full rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 text-white outline-none transition placeholder:text-slate-500 focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
+                  className={inputClass}
                 />
               </div>
 
+              {/* Departure Date */}
               <div>
                 <label
                   htmlFor="insurance-departure"
-                  className="mb-2 block text-sm font-medium text-slate-200"
+                  className={labelClass}
                 >
                   Departure Date
                 </label>
                 <div className="relative">
                   <CalendarDays
-                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-violet-300"
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-cyan-300"
                     size={18}
                   />
                   <input
@@ -354,21 +387,22 @@ export default function TravelInsurance() {
                     name="departureDate"
                     value={form.departureDate}
                     onChange={updateField}
-                    className="w-full rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 pl-11 text-white outline-none transition focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
+                    className={`${inputClass} pl-11`}
                   />
                 </div>
               </div>
 
+              {/* Return Date */}
               <div>
                 <label
                   htmlFor="insurance-return"
-                  className="mb-2 block text-sm font-medium text-slate-200"
+                  className={labelClass}
                 >
                   Return Date
                 </label>
                 <div className="relative">
                   <CalendarDays
-                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-violet-300"
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-cyan-300"
                     size={18}
                   />
                   <input
@@ -378,21 +412,22 @@ export default function TravelInsurance() {
                     value={form.returnDate}
                     onChange={updateField}
                     min={form.departureDate || undefined}
-                    className="w-full rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 pl-11 text-white outline-none transition focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
+                    className={`${inputClass} pl-11`}
                   />
                 </div>
               </div>
 
+              {/* Travelers */}
               <div>
                 <label
                   htmlFor="insurance-travelers"
-                  className="mb-2 block text-sm font-medium text-slate-200"
+                  className={labelClass}
                 >
                   Number of Travelers *
                 </label>
                 <div className="relative">
                   <Users
-                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-violet-300"
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-cyan-300"
                     size={18}
                   />
                   <select
@@ -401,27 +436,29 @@ export default function TravelInsurance() {
                     value={form.travelers}
                     onChange={updateField}
                     required
-                    className="w-full appearance-none rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 pl-11 text-white outline-none transition focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
+                    className={`${inputClass} appearance-none pl-11`}
                   >
-                    {Array.from({ length: 10 }, (_, index) => index + 1).map(
-                      (number) => (
-                        <option
-                          key={number}
-                          value={number}
-                          className="bg-[#21152f]"
-                        >
-                          {number} {number === 1 ? "traveler" : "travelers"}
-                        </option>
-                      ),
-                    )}
+                    {Array.from(
+                      { length: 10 },
+                      (_, index) => index + 1,
+                    ).map((number) => (
+                      <option
+                        key={number}
+                        value={number}
+                        className="bg-[#101c2e]"
+                      >
+                        {number} {number === 1 ? "traveler" : "travelers"}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
 
+              {/* Coverage Type */}
               <div>
                 <label
                   htmlFor="insurance-coverage"
-                  className="mb-2 block text-sm font-medium text-slate-200"
+                  className={labelClass}
                 >
                   Type of Assistance *
                 </label>
@@ -431,26 +468,31 @@ export default function TravelInsurance() {
                   value={form.coverageType}
                   onChange={updateField}
                   required
-                  className="w-full rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 text-white outline-none transition focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
+                  className={inputClass}
                 >
-                  <option className="bg-[#21152f]">
+                  <option className="bg-[#101c2e]">
                     Comprehensive travel insurance
                   </option>
-                  <option className="bg-[#21152f]">
+                  <option className="bg-[#101c2e]">
                     Emergency medical coverage
                   </option>
-                  <option className="bg-[#21152f]">Single-trip coverage</option>
-                  <option className="bg-[#21152f]">Multi-trip coverage</option>
-                  <option className="bg-[#21152f]">
+                  <option className="bg-[#101c2e]">
+                    Single-trip coverage
+                  </option>
+                  <option className="bg-[#101c2e]">
+                    Multi-trip coverage
+                  </option>
+                  <option className="bg-[#101c2e]">
                     Not sure — need guidance
                   </option>
                 </select>
               </div>
 
+              {/* Additional Requirements */}
               <div className="sm:col-span-2">
                 <label
                   htmlFor="insurance-requirements"
-                  className="mb-2 block text-sm font-medium text-slate-200"
+                  className={labelClass}
                 >
                   Additional Information (Optional)
                 </label>
@@ -461,15 +503,16 @@ export default function TravelInsurance() {
                   onChange={updateField}
                   rows={4}
                   placeholder="Tell us about any particular travel insurance requirements..."
-                  className="w-full resize-y rounded-xl border border-white/10 bg-[#100b18] px-4 py-3.5 text-white outline-none transition placeholder:text-slate-500 focus:border-violet-300 focus:ring-2 focus:ring-violet-300/10"
+                  className={`${inputClass} resize-y`}
                 />
               </div>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-8 flex w-full items-center justify-center gap-3 rounded-xl bg-violet-300 px-6 py-4 font-semibold text-[#21152f] transition hover:bg-violet-200 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+              className="group mt-8 flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-cyan-950/30 transition duration-300 hover:-translate-y-0.5 hover:from-cyan-400 hover:to-blue-500 hover:shadow-cyan-500/20 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#0d1a2b] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:min-w-64"
             >
               <ShieldCheck size={20} />
               {isSubmitting
@@ -477,15 +520,17 @@ export default function TravelInsurance() {
                 : "Request Insurance Assistance"}
             </button>
 
-            <div className="mt-6 flex items-start gap-3 rounded-xl border border-violet-300/10 bg-violet-300/5 p-4 text-sm leading-6 text-slate-400">
+            {/* Important Notice */}
+            <div className="mt-6 flex items-start gap-3 rounded-xl border border-cyan-300/10 bg-cyan-400/5 p-4 text-sm leading-6 text-slate-400">
               <CheckCircle2
-                className="mt-0.5 shrink-0 text-violet-300"
+                className="mt-0.5 shrink-0 text-cyan-300"
                 size={19}
               />
               <p>
-                Submitting this form requests assistance only. It does not
-                purchase a policy or guarantee coverage. Policy availability,
-                terms and eligibility are subject to the insurance provider.
+                Submitting this form requests assistance only. It
+                does not purchase a policy or guarantee coverage.
+                Policy availability, terms and eligibility are
+                subject to the insurance provider.
               </p>
             </div>
           </form>
@@ -493,18 +538,25 @@ export default function TravelInsurance() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 bg-[#100b18] px-5 py-8 text-center text-sm text-slate-400">
-        <p className="font-semibold text-white">Voyage Travel Mansion</p>
-        <p className="mt-2">Your trusted partner for better journeys.</p>
+      <footer className="border-t border-white/10 bg-[#07111f] px-5 py-8 text-center text-sm text-slate-400">
+        <p className="font-semibold text-white">
+          Voyage Travel Mansion
+        </p>
+
+        <p className="mt-2">
+          Your trusted partner for better journeys.
+        </p>
+
         <a
           href="mailto:561travelsandtours@gmail.com"
-          className="mt-3 inline-block text-violet-300 transition hover:text-violet-200"
+          className="mt-3 inline-block text-cyan-300 transition hover:text-cyan-200"
         >
           561travelsandtours@gmail.com
         </a>
+
         <p className="mt-5 text-xs">
-          © {new Date().getFullYear()} Voyage Travel Mansion. All rights
-          reserved.
+          © {new Date().getFullYear()} Voyage Travel Mansion. All
+          rights reserved.
         </p>
       </footer>
     </main>
