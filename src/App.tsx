@@ -61,6 +61,7 @@ function App() {
       <main className="min-h-screen bg-white text-slate-900">
         <Navbar />
       
+
 {/* HERO */}
 <section
   id="home"
@@ -73,19 +74,26 @@ function App() {
     className="absolute inset-0 h-full w-full object-cover animate-[heroZoom_18s_ease-out_forwards] bg-cover bg-center"
   />
 
-  {/* Premium animated gradient — subtle atmosphere */}
-  <div className="pointer-events-none absolute inset-0 z-[1] opacity-25">
-    {/* <PremiumGradient /> */}
-  </div>
-
   {/* Dark overlay */}
   <div className="pointer-events-none absolute inset-0 z-[2] bg-slate-950/55" />
 
   {/* Left-side dark gradient */}
   <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/20" />
 
+  {/* Lightweight atmospheric cyan glow */}
+  <div
+    aria-hidden="true"
+    className="pointer-events-none absolute -right-40 top-1/4 z-[4] h-[450px] w-[450px] rounded-full bg-cyan-400/10 blur-[100px] sm:h-[600px] sm:w-[600px]"
+  />
+
+  {/* Subtle secondary glow */}
+  <div
+    aria-hidden="true"
+    className="pointer-events-none absolute -bottom-40 right-1/4 z-[4] h-[350px] w-[350px] rounded-full bg-blue-500/10 blur-[100px]"
+  />
+
   {/* Top dark gradient for navbar */}
-  <div className="pointer-events-none absolute left-0 right-0 top-0 z-[4] h-32 bg-gradient-to-b from-slate-950/80 to-transparent" />
+  <div className="pointer-events-none absolute left-0 right-0 top-0 z-[5] h-32 bg-gradient-to-b from-slate-950/80 to-transparent" />
 
   {/* HERO CONTENT */}
   <div className="relative z-20 mx-auto w-full max-w-7xl px-6 py-32 lg:px-8">
@@ -102,7 +110,9 @@ function App() {
       {/* Heading */}
       <h1 className="text-5xl animate-[heroText_1.2s_ease-out_0.2s_both] font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
         Your Journey
-        <span className="block text-cyan-400">Begins With Us.</span>
+        <span className="block text-cyan-400">
+          Begins With Us.
+        </span>
       </h1>
 
       {/* Description */}
@@ -126,6 +136,7 @@ function App() {
   {/* Smooth transition into next section */}
   <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-12 bg-gradient-to-t from-white via-white/70 to-transparent" />
 </section>
+
 
 
         {/* START YOUR JOURNEY */}
