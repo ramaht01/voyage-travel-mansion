@@ -8,7 +8,7 @@ import VisaAssistance from "./pages/VisaAssistance";
 import InternationalTravel from "./pages/InternationalTravel";
 import TravelInsurance from "./pages/TravelInsurance";
 import "react-toastify/dist/ReactToastify.css";
-import PremiumGradient from "./components/PremiumGradient";
+// import PremiumGradient from "./components/PremiumGradient";
 
 import {
   Plane,
@@ -75,7 +75,7 @@ function App() {
 
   {/* Premium animated gradient — subtle atmosphere */}
   <div className="pointer-events-none absolute inset-0 z-[1] opacity-25">
-    <PremiumGradient />
+    {/* <PremiumGradient /> */}
   </div>
 
   {/* Dark overlay */}
