@@ -28,6 +28,8 @@ function AdminDashboard() {
 
   const [flightCount, setFlightCount] = useState(0);
   const [visaCount, setVisaCount] = useState(0);
+  const [internationalTravelCount, setInternationalTravelCount] = useState(0);
+  const [insuranceCount, setInsuranceCount] = useState(0);
   const [newCount, setNewCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
   const [recentFlights, setRecentFlights] = useState<any[]>([]);
@@ -241,6 +243,8 @@ function AdminDashboard() {
 
         setFlightCount(flights.length);
         setVisaCount(visas.length);
+        setInternationalTravelCount(internationalRequests.length);
+        setInsuranceCount(insuranceRequests.length);
 
         setNewCount(
           allRequests.filter((request) => request.status === "New").length,
@@ -277,23 +281,23 @@ function AdminDashboard() {
       {/* Sidebar */}
       <aside className="fixed left-0 top-0 hidden h-screen w-64 border-r border-white/10 bg-slate-900 md:block">
         <div className="border-b border-white/10 px-6 py-6">
-          <h1 className="text-xl font-bold tracking-tight">Voyage Travel</h1>
+          <h1 className="text-xl font-bold tracking-tight lg:ml-6">Voyage Travel</h1>
 
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-2 text-xs text-slate-500 lg:ml-6">
             Secure administration portal
           </p>
 
-          <div className="flex flex-col gap-5 px-6 pt-8 sm:flex-row sm:items-start sm:justify-between lg:px-8">
+          <div className="flex flex-col gap-9 px-6 pt-8 sm:flex-row sm:items-start sm:justify-between lg:px-5">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight text-white">
+              <h1 className="text-3xl font-bold tracking-tight mb-5 text-white">
                 Admin Dashboard
               </h1>
 
-              <p className="mt-2 text-sm text-slate-400">
+              <p className="mt-2 text-sm text-slate-400 mb-2">
                 Manage flight and visa requests for Voyage Travel Mansion.
               </p>
 
-              <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5">
+              <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 mb-3 bg-emerald-400/10 px-3 py-1.5">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
                 <span className="text-xs font-semibold text-emerald-300">
                   Admin portal active
@@ -357,16 +361,16 @@ function AdminDashboard() {
               window.location.reload();
             }, 500);
           }}
-          className="w-full rounded-xl border mt-7 lg:ml-8 border-red-400/20 px-5 py-2.5 text-sm font-semibold text-red-400 transition hover:border-red-400/40 hover:bg-red-400/10 hover:text-red-300 sm:w-auto"
+          className="w-full rounded-xl border mt-7 sm:ml-8 lg:ml-8 border-red-400/20 px-5 py-2.5 text-sm font-semibold text-red-400 transition hover:border-red-400/40 hover:bg-red-400/10 hover:text-red-300 sm:w-auto"
         >
           Logout
         </button>
 
         <header className="border-b border-white/10 bg-slate-950/80 px-6 py-6 backdrop-blur-xl lg:px-8">
-          <div className="mt-6 max-w-xl">
+          <div className="mt-2 max-w-xl">
             <label
               htmlFor="request-search"
-              className="mb-2 block text-sm font-medium text-slate-300"
+              className="mb-5 block text-sm font-medium text-slate-300"
             >
               Search Requests
             </label>
@@ -377,11 +381,11 @@ function AdminDashboard() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by client name, email, destination..."
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 transition focus:border-cyan-400/50 focus:bg-white/10"
+              className="w-full rounded-xl border mb-4 border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 transition focus:border-cyan-400/50 focus:bg-white/10"
             />
           </div>
 
-          <p className="text-sm font-medium text-cyan-400">Welcome back</p>
+          <p className="text-sm font-medium text-cyan-400 mb-3">Welcome back</p>
 
           <h2 className="mt-1 text-3xl font-bold tracking-tight">Dashboard</h2>
 
@@ -390,35 +394,60 @@ function AdminDashboard() {
           </p>
         </header>
 
-        <section className="grid gap-5 p-6 sm:grid-cols-2 lg:grid-cols-4 lg:p-8">
-          {/* Flight Requests */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <p className="text-sm text-slate-400">Flight Requests</p>
+       
+<section className="grid gap-5 p-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 lg:p-8">
+  {/* Flight Requests */}
+  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+    <p className="text-sm text-slate-400">Flight Requests</p>
+    <p className="mt-3 text-3xl font-bold text-white">
+      {flightCount}
+    </p>
+  </div>
 
-            <p className="mt-3 text-3xl font-bold">{flightCount}</p>
-          </div>
+  {/* Visa Requests */}
+  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+    <p className="text-sm text-slate-400">Visa Requests</p>
+    <p className="mt-3 text-3xl font-bold text-white">
+      {visaCount}
+    </p>
+  </div>
 
-          {/* Visa Requests */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <p className="text-sm text-slate-400">Visa Requests</p>
+  {/* International Travel Requests */}
+  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+    <p className="text-sm text-slate-400">
+      International Travel Requests
+    </p>
+    <p className="mt-3 text-3xl font-bold text-white">
+      {internationalTravelCount}
+    </p>
+  </div>
 
-            <p className="mt-3 text-3xl font-bold">{visaCount}</p>
-          </div>
+  {/* Travel Insurance Requests */}
+  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+    <p className="text-sm text-slate-400">
+      Travel Insurance Requests
+    </p>
+    <p className="mt-3 text-3xl font-bold text-white">
+      {insuranceCount}
+    </p>
+  </div>
 
-          {/* New Requests */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <p className="text-sm text-slate-400">New Requests</p>
+  {/* New Requests */}
+  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+    <p className="text-sm text-slate-400">New Requests</p>
+    <p className="mt-3 text-3xl font-bold text-cyan-300">
+      {newCount}
+    </p>
+  </div>
 
-            <p className="mt-3 text-3xl font-bold">{newCount}</p>
-          </div>
-
-          {/* Completed */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <p className="text-sm text-slate-400">Completed</p>
-
-            <p className="mt-3 text-3xl font-bold">{completedCount}</p>
-          </div>
-        </section>
+  {/* Completed */}
+  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+    <p className="text-sm text-slate-400">Completed</p>
+    <p className="mt-3 text-3xl font-bold text-cyan-300">
+      {completedCount}
+    </p>
+  </div>
+</section>
 
         <section className="grid gap-6 p-6 lg:grid-cols-2 lg:p-8">
           {/* Recent Flight Requests */}

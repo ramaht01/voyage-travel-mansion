@@ -152,3 +152,15 @@ a {
     border-radius: 12px !important;
   }
 }
+
+/* Smooth scrolling between homepage sections */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Respect visitors who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
