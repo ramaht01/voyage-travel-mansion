@@ -5,6 +5,8 @@ dns.setDefaultResultOrder("ipv4first");
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const helmet = require("helmet");
+const { rateLimit } = require("express-rate-limit");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -13,8 +15,30 @@ const { sendEmail } = require("./emailService");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Trust the first reverse proxy (Render)
+app.set("trust proxy", 1);
+
+// Add security-related HTTP headers
+app.use(helmet());
+
+// Existing CORS configuration
 app.use(cors());
-app.use(express.json());
+
+// Limit the size of incoming JSON requests
+app.use(express.json({ limit: "20kb" }));
+
+
+const adminLoginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: {
+    message: "Too many login attempts. Please try again in 15 minutes.",
+  },
+});
+
+
 
 function requireAdmin(req, res, next) {
   const authorization = req.headers.authorization || "";
@@ -40,7 +64,7 @@ function requireAdmin(req, res, next) {
   }
 }
 
-app.post("/api/admin/login", async (req, res) => {
+app.post("/api/admin/login", adminLoginLimiter, async (req, res) => {
   console.log("ADMIN LOGIN ROUTE HIT");
   try {
     const { email, password } = req.body;
