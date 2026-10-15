@@ -20,13 +20,21 @@ const sendEmail = async ({ to, subject, htmlContent }) => {
       htmlContent,
     });
   } catch (error) {
-    console.error("BREVO ERROR STATUS:", error.statusCode);
-    console.error("BREVO ERROR MESSAGE:", error.message);
-    console.error("BREVO ERROR DETAILS:", error.body);
-    console.error("BREVO RAW RESPONSE:", error.rawResponse?.body);
+    console.error("Brevo email delivery failed", {
+      statusCode: error.statusCode ?? "unknown",
+    });
 
     throw error;
   }
 };
 
-module.exports = { sendEmail };
+const escapeHtml = (value) => {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+};
+
+module.exports = { sendEmail, escapeHtml };
