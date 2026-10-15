@@ -60,84 +60,79 @@ function App() {
     <>
       <main className="min-h-screen bg-white text-slate-900">
         <Navbar />
-      
 
-{/* HERO */}
-<section
-  id="home"
-  className="relative flex min-h-screen items-center overflow-hidden bg-slate-950"
->
-  {/* Background Image */}
-  <img
-    src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=2200&q=90"
-    alt="Beautiful travel destination"
-    className="absolute inset-0 h-full w-full object-cover animate-[heroZoom_18s_ease-out_forwards] bg-cover bg-center"
-  />
+        {/* HERO */}
+        <section
+          id="home"
+          className="relative flex min-h-screen items-center overflow-hidden bg-slate-950"
+        >
+          {/* Background Image */}
+          <img
+            src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=2200&q=90"
+            alt="Beautiful travel destination"
+            className="absolute inset-0 h-full w-full object-cover animate-[heroZoom_18s_ease-out_forwards] bg-cover bg-center"
+          />
 
-  {/* Dark overlay */}
-  <div className="pointer-events-none absolute inset-0 z-[2] bg-slate-950/55" />
+          {/* Dark overlay */}
+          <div className="pointer-events-none absolute inset-0 z-[2] bg-slate-950/55" />
 
-  {/* Left-side dark gradient */}
-  <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/20" />
+          {/* Left-side dark gradient */}
+          <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/20" />
 
-  {/* Lightweight atmospheric cyan glow */}
-  <div
-    aria-hidden="true"
-    className="pointer-events-none absolute -right-40 top-1/4 z-[4] h-[450px] w-[450px] rounded-full bg-cyan-400/10 blur-[100px] sm:h-[600px] sm:w-[600px]"
-  />
+          {/* Lightweight atmospheric cyan glow */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-40 top-1/4 z-[4] h-[450px] w-[450px] rounded-full bg-cyan-400/10 blur-[100px] sm:h-[600px] sm:w-[600px]"
+          />
 
-  {/* Subtle secondary glow */}
-  <div
-    aria-hidden="true"
-    className="pointer-events-none absolute -bottom-40 right-1/4 z-[4] h-[350px] w-[350px] rounded-full bg-blue-500/10 blur-[100px]"
-  />
+          {/* Subtle secondary glow */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-40 right-1/4 z-[4] h-[350px] w-[350px] rounded-full bg-blue-500/10 blur-[100px]"
+          />
 
-  {/* Top dark gradient for navbar */}
-  <div className="pointer-events-none absolute left-0 right-0 top-0 z-[5] h-32 bg-gradient-to-b from-slate-950/80 to-transparent" />
+          {/* Top dark gradient for navbar */}
+          <div className="pointer-events-none absolute left-0 right-0 top-0 z-[5] h-32 bg-gradient-to-b from-slate-950/80 to-transparent" />
 
-  {/* HERO CONTENT */}
-  <div className="relative z-20 mx-auto w-full max-w-7xl px-6 py-32 lg:px-8">
-    <div className="max-w-3xl">
-      {/* Eyebrow */}
-      <div className="mb-6 flex items-center gap-4">
-        <span className="h-1 w-12 rounded-full bg-cyan-400" />
+          {/* HERO CONTENT */}
+          <div className="relative z-20 mx-auto w-full max-w-7xl px-6 py-32 lg:px-8">
+            <div className="max-w-3xl">
+              {/* Eyebrow */}
+              <div className="mb-6 flex items-center gap-4">
+                <span className="h-1 w-12 rounded-full bg-cyan-400" />
 
-        <p className="text-sm font-bold uppercase tracking-[0.3em] text-cyan-400">
-          Voyage Travel Mansion
-        </p>
-      </div>
+                <p className="text-sm font-bold uppercase tracking-[0.3em] text-cyan-400">
+                  Voyage Travel Mansion
+                </p>
+              </div>
 
-      {/* Heading */}
-      <h1 className="text-5xl animate-[heroText_1.2s_ease-out_0.2s_both] font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
-        Your Journey
-        <span className="block text-cyan-400">
-          Begins With Us.
-        </span>
-      </h1>
+              {/* Heading */}
+              <h1 className="text-5xl animate-[heroText_1.2s_ease-out_0.2s_both] font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
+                Your Journey
+                <span className="block text-cyan-400">Begins With Us.</span>
+              </h1>
 
-      {/* Description */}
-      <p className="mt-7 max-w-2xl text-lg leading-8 text-white sm:text-xl animate-[heroText_1.2s_ease-out_0.45s_both]">
-        Professional travel solutions for flights, visas, tours,
-        business travel, student travel and unforgettable journeys
-        around the world.
-      </p>
+              {/* Description */}
+              <p className="mt-7 max-w-2xl text-lg leading-8 text-white sm:text-xl animate-[heroText_1.2s_ease-out_0.45s_both]">
+                Professional travel solutions for flights, visas, tours,
+                business travel, student travel and unforgettable journeys
+                around the world.
+              </p>
 
-      {/* Experience */}
-      <div className="mt-7 flex items-center gap-3">
-        <span className="h-3 w-3 rounded-full bg-cyan-400 shadow-lg shadow-cyan-400/40" />
+              {/* Experience */}
+              <div className="mt-7 flex items-center gap-3">
+                <span className="h-3 w-3 rounded-full bg-cyan-400 shadow-lg shadow-cyan-400/40" />
 
-        <span className="text-sm font-medium text-white">
-          8 years of travel experience
-        </span>
-      </div>
-    </div>
-  </div>
+                <span className="text-sm font-medium text-white">
+                  8 years of travel experience
+                </span>
+              </div>
+            </div>
+          </div>
 
-  {/* Smooth transition into next section */}
-  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-12 bg-gradient-to-t from-white via-white/70 to-transparent" />
-</section>
-
-
+          {/* Smooth transition into next section */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-12 bg-gradient-to-t from-white via-white/70 to-transparent" />
+        </section>
 
         {/* START YOUR JOURNEY */}
         <section
@@ -163,128 +158,124 @@ function App() {
               </p>
             </div>
 
-          
+            {/* Service cards */}
+            <div className="grid gap-7 sm:grid-cols-2 xl:grid-cols-4">
+              {/* Flight Booking */}
+              <a
+                href="/flight-booking"
+                className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
+              >
+                <div className="h-52 overflow-hidden">
+                  <img
+                    src="/flight-card.jpeg"
+                    alt="Airplane flying above the clouds"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
 
-{/* Service cards */}
-<div className="grid gap-7 sm:grid-cols-2 xl:grid-cols-4">
-  {/* Flight Booking */}
-  <a
-    href="/flight-booking"
-    className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
-  >
-    <div className="h-52 overflow-hidden">
-      <img
-        src="/flight-card.jpeg"
-        alt="Airplane flying above the clouds"
-        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-    </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-slate-900">
+                    Flight Booking
+                  </h3>
 
-    <div className="p-6">
-      <h3 className="text-xl font-bold text-slate-900">
-        Flight Booking
-      </h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                    Find convenient flight options for your next trip with
+                    support throughout your booking request.
+                  </p>
 
-      <p className="mt-3 text-sm leading-6 text-slate-600">
-        Find convenient flight options for your next trip with
-        support throughout your booking request.
-      </p>
+                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
+                    Start a Request <span>→</span>
+                  </div>
+                </div>
+              </a>
 
-      <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
-        Start a Request <span>→</span>
-      </div>
-    </div>
-  </a>
+              {/* International Travel Planning */}
+              <a
+                href="/international-travel"
+                className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
+              >
+                <div className="h-52 overflow-hidden">
+                  <img
+                    src="/international-travel.jpeg"
+                    alt="Travel documents prepared for an international journey"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
 
-  {/* International Travel Planning */}
-  <a
-    href="/international-travel"
-    className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
-  >
-    <div className="h-52 overflow-hidden">
-      <img
-        src="/international-travel.jpeg"
-        alt="Travel documents prepared for an international journey"
-        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-    </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-slate-900">
+                    International Travel Planning
+                  </h3>
 
-    <div className="p-6">
-      <h3 className="text-xl font-bold text-slate-900">
-        International Travel Planning
-      </h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                    Get help organizing international journeys, destinations and
+                    important travel arrangements.
+                  </p>
 
-      <p className="mt-3 text-sm leading-6 text-slate-600">
-        Get help organizing international journeys, destinations and
-        important travel arrangements.
-      </p>
+                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
+                    Plan Your Trip <span>→</span>
+                  </div>
+                </div>
+              </a>
 
-      <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
-        Plan Your Trip <span>→</span>
-      </div>
-    </div>
-  </a>
+              {/* Visa Assistance */}
+              <a
+                href="/visa-assistance"
+                className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
+              >
+                <div className="h-52 overflow-hidden">
+                  <img
+                    src="/visa-assistance.jpeg"
+                    alt="Passport and visa travel documents"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
 
-  {/* Visa Assistance */}
-  <a
-    href="/visa-assistance"
-    className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
-  >
-    <div className="h-52 overflow-hidden">
-      <img
-        src="/visa-assistance.jpeg"
-        alt="Passport and visa travel documents"
-        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-    </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-slate-900">
+                    Visa Assistance
+                  </h3>
 
-    <div className="p-6">
-      <h3 className="text-xl font-bold text-slate-900">
-        Visa Assistance
-      </h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                    Get guidance on visa application requirements and the
+                    documents you may need for your destination.
+                  </p>
 
-      <p className="mt-3 text-sm leading-6 text-slate-600">
-        Get guidance on visa application requirements and the
-        documents you may need for your destination.
-      </p>
+                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
+                    Get Assistance <span>→</span>
+                  </div>
+                </div>
+              </a>
 
-      <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
-        Get Assistance <span>→</span>
-      </div>
-    </div>
-  </a>
+              {/* Travel Insurance */}
+              <a
+                href="/travel-insurance"
+                className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
+              >
+                <div className="h-52 overflow-hidden">
+                  <img
+                    src="/travel-insurance.jpeg"
+                    alt="Travel documents and insurance preparation"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
 
-  {/* Travel Insurance */}
-  <a
-    href="/travel-insurance"
-    className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-xl hover:shadow-cyan-900/10"
-  >
-    <div className="h-52 overflow-hidden">
-      <img
-        src="/travel-insurance.jpeg"
-        alt="Travel documents and insurance preparation"
-        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-    </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-slate-900">
+                    Travel Insurance
+                  </h3>
 
-    <div className="p-6">
-      <h3 className="text-xl font-bold text-slate-900">
-        Travel Insurance
-      </h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                    Explore travel insurance options to help you prepare for
+                    unexpected events during your journey.
+                  </p>
 
-      <p className="mt-3 text-sm leading-6 text-slate-600">
-        Explore travel insurance options to help you prepare for
-        unexpected events during your journey.
-      </p>
-
-      <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
-        Explore Coverage <span>→</span>
-      </div>
-    </div>
-  </a>
-</div>
-
-
+                  <div className="mt-6 inline-flex items-center gap-2 font-semibold text-cyan-700 transition-all group-hover:gap-3">
+                    Explore Coverage <span>→</span>
+                  </div>
+                </div>
+              </a>
+            </div>
           </div>
         </section>
 

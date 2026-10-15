@@ -14,11 +14,14 @@ function AdminLogin() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        },
+      );
       const data = await response.json();
 
       if (!response.ok) {
@@ -63,65 +66,62 @@ function AdminLogin() {
           className="mt-2 w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-white outline-none focus:border-cyan-400"
         />
 
-   <label 
-  className="mt-5 block text-sm font-medium text-slate-300" 
-  htmlFor="admin-password" 
->
-  Password 
-</label>
+        <label
+          className="mt-5 block text-sm font-medium text-slate-300"
+          htmlFor="admin-password"
+        >
+          Password
+        </label>
 
-<div className="relative mt-2">
-  <input 
-    id="admin-password" 
-    type={showPassword ? "text" : "password"} 
-    required 
-    value={password} 
-    onChange={(event) => setPassword(event.target.value)} 
-    className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 pr-20 text-white outline-none focus:border-cyan-400" 
-  />
+        <div className="relative mt-2">
+          <input
+            id="admin-password"
+            type={showPassword ? "text" : "password"}
+            required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 pr-20 text-white outline-none focus:border-cyan-400"
+          />
 
-  <button
-    type="button"
-    onClick={() => setShowPassword(!showPassword)}
-    className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 transition hover:text-cyan-400"
-  >
-    {showPassword ? "Hide" : "Show"}
-  </button>
-</div>
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 transition hover:text-cyan-400"
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
 
-{error && (
-  <div className="mt-4 rounded-xl border border-rose-400/20 bg-rose-400/10 px-4 py-3">
-    <p className="text-sm font-medium text-rose-300">
-      {error}
-    </p>
-  </div>
-)}
-      <button 
-  type="submit" 
-  disabled={isSubmitting} 
-  className="mt-6 w-full rounded-xl bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition-all duration-300 hover:-translate-y-0.5 hover:bg-cyan-300 hover:shadow-lg hover:shadow-cyan-400/20 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:bg-cyan-400 disabled:hover:shadow-none"
->
-{isSubmitting ? (
-  <span className="flex items-center justify-center gap-2">
-    <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-950/30 border-t-slate-950" />
-    Signing in...
-  </span>
-) : (
-  "Sign in"
-)}
-</button>
+        {error && (
+          <div className="mt-4 rounded-xl border border-rose-400/20 bg-rose-400/10 px-4 py-3">
+            <p className="text-sm font-medium text-rose-300">{error}</p>
+          </div>
+        )}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="mt-6 w-full rounded-xl bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition-all duration-300 hover:-translate-y-0.5 hover:bg-cyan-300 hover:shadow-lg hover:shadow-cyan-400/20 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:bg-cyan-400 disabled:hover:shadow-none"
+        >
+          {isSubmitting ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-950/30 border-t-slate-950" />
+              Signing in...
+            </span>
+          ) : (
+            "Sign in"
+          )}
+        </button>
 
-<p className="mt-5 text-center text-xs font-medium tracking-wide text-slate-500">
-  Secure Admin Portal · Voyage Travel Mansion
-</p>
+        <p className="mt-5 text-center text-xs font-medium tracking-wide text-slate-500">
+          Secure Admin Portal · Voyage Travel Mansion
+        </p>
 
-<a
-  href="/"
-  className="mt-4 block text-center text-sm font-medium text-slate-400 transition hover:text-cyan-400"
->
-  ← Back to website
-</a>
-
+        <a
+          href="/"
+          className="mt-4 block text-center text-sm font-medium text-slate-400 transition hover:text-cyan-400"
+        >
+          ← Back to website
+        </a>
       </form>
     </main>
   );

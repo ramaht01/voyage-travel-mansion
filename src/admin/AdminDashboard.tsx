@@ -281,7 +281,9 @@ function AdminDashboard() {
       {/* Sidebar */}
       <aside className="fixed left-0 top-0 hidden h-screen w-64 border-r border-white/10 bg-slate-900 md:block">
         <div className="border-b border-white/10 px-6 py-6">
-          <h1 className="text-xl font-bold tracking-tight lg:ml-6">Voyage Travel</h1>
+          <h1 className="text-xl font-bold tracking-tight lg:ml-6">
+            Voyage Travel
+          </h1>
 
           <p className="mt-2 text-xs text-slate-500 lg:ml-6">
             Secure administration portal
@@ -394,60 +396,51 @@ function AdminDashboard() {
           </p>
         </header>
 
-       
-<section className="grid gap-5 p-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 lg:p-8">
-  {/* Flight Requests */}
-  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
-    <p className="text-sm text-slate-400">Flight Requests</p>
-    <p className="mt-3 text-3xl font-bold text-white">
-      {flightCount}
-    </p>
-  </div>
+        <section className="grid gap-5 p-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 lg:p-8">
+          {/* Flight Requests */}
+          <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+            <p className="text-sm text-slate-400">Flight Requests</p>
+            <p className="mt-3 text-3xl font-bold text-white">{flightCount}</p>
+          </div>
 
-  {/* Visa Requests */}
-  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
-    <p className="text-sm text-slate-400">Visa Requests</p>
-    <p className="mt-3 text-3xl font-bold text-white">
-      {visaCount}
-    </p>
-  </div>
+          {/* Visa Requests */}
+          <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+            <p className="text-sm text-slate-400">Visa Requests</p>
+            <p className="mt-3 text-3xl font-bold text-white">{visaCount}</p>
+          </div>
 
-  {/* International Travel Requests */}
-  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
-    <p className="text-sm text-slate-400">
-      International Travel Requests
-    </p>
-    <p className="mt-3 text-3xl font-bold text-white">
-      {internationalTravelCount}
-    </p>
-  </div>
+          {/* International Travel Requests */}
+          <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+            <p className="text-sm text-slate-400">
+              International Travel Requests
+            </p>
+            <p className="mt-3 text-3xl font-bold text-white">
+              {internationalTravelCount}
+            </p>
+          </div>
 
-  {/* Travel Insurance Requests */}
-  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
-    <p className="text-sm text-slate-400">
-      Travel Insurance Requests
-    </p>
-    <p className="mt-3 text-3xl font-bold text-white">
-      {insuranceCount}
-    </p>
-  </div>
+          {/* Travel Insurance Requests */}
+          <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+            <p className="text-sm text-slate-400">Travel Insurance Requests</p>
+            <p className="mt-3 text-3xl font-bold text-white">
+              {insuranceCount}
+            </p>
+          </div>
 
-  {/* New Requests */}
-  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
-    <p className="text-sm text-slate-400">New Requests</p>
-    <p className="mt-3 text-3xl font-bold text-cyan-300">
-      {newCount}
-    </p>
-  </div>
+          {/* New Requests */}
+          <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+            <p className="text-sm text-slate-400">New Requests</p>
+            <p className="mt-3 text-3xl font-bold text-cyan-300">{newCount}</p>
+          </div>
 
-  {/* Completed */}
-  <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
-    <p className="text-sm text-slate-400">Completed</p>
-    <p className="mt-3 text-3xl font-bold text-cyan-300">
-      {completedCount}
-    </p>
-  </div>
-</section>
+          {/* Completed */}
+          <div className="rounded-2xl border border-cyan-300/15 bg-gradient-to-br from-[#142b43] to-[#0d1a2b] p-6 transition duration-300 hover:border-cyan-300/40">
+            <p className="text-sm text-slate-400">Completed</p>
+            <p className="mt-3 text-3xl font-bold text-cyan-300">
+              {completedCount}
+            </p>
+          </div>
+        </section>
 
         <section className="grid gap-6 p-6 lg:grid-cols-2 lg:p-8">
           {/* Recent Flight Requests */}
