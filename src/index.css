@@ -164,3 +164,51 @@ html {
     scroll-behavior: auto;
   }
 }
+
+
+/* VOYAGE TRAVEL MANSION — TOAST NOTIFICATIONS */
+
+.Toastify__toast--success {
+  background: #082e3d !important;
+  color: #ecfeff !important;
+  border: 1px solid #22d3ee;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+.Toastify__toast--error {
+  background: #30151d !important;
+  color: #fff1f2 !important;
+  border: 1px solid #f87171;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+}
+
+.Toastify__toast--info {
+  background: #102b43 !important;
+  color: #e0f2fe !important;
+  border: 1px solid #38bdf8;
+  border-radius: 14px !important;
+}
+
+.Toastify__toast--success .Toastify__toast-icon svg {
+  fill: #22d3ee !important;
+}
+
+.Toastify__toast--error .Toastify__toast-icon svg {
+  fill: #f87171 !important;
+}
+
+.Toastify__toast--success .Toastify__progress-bar {
+  background: #22d3ee !important;
+}
+
+.Toastify__toast--error .Toastify__progress-bar {
+  background: #f87171 !important;
+}
+
+.Toastify__toast .Toastify__close-button {
+  color: #ffffff !important;
+  opacity: 0.8;
+}
+
