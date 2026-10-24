@@ -485,45 +485,55 @@ function AdminDashboard() {
             </div>
           </div>
 
-          {/* Recent Visa Requests */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <div className="mb-6">
-              <p className="text-sm font-medium text-cyan-400">Recent</p>
+     
+{/* Recent Visa Requests */}
+<div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+  <div className="mb-6">
+    <p className="text-sm font-medium text-cyan-400">Recent</p>
 
-              <h3 className="mt-1 text-xl font-bold">Visa Requests</h3>
+    <h3 className="mt-1 text-xl font-bold">Visa Requests</h3>
+  </div>
+
+  <div className="space-y-3">
+    {filteredVisas.length === 0 ? (
+      <p className="py-4 text-sm text-slate-400">
+        No matching visa requests found.
+      </p>
+    ) : (
+      filteredVisas.map((request) => (
+        <button
+          key={request._id}
+          type="button"
+          onClick={() => setSelectedVisa(request)}
+          className="w-full rounded-xl border border-white/10 bg-slate-900/60 p-4 text-left transition duration-300 hover:-translate-y-0.5 hover:border-cyan-400/30 hover:bg-slate-900"
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="font-semibold">{request.fullName}</p>
+
+              <p className="mt-1 text-sm text-slate-400">
+                {request.destinationCountry} · {request.visaType}
+              </p>
+
+              {/* Number of Applicants */}
+              <p className="mt-2 text-sm font-medium text-cyan-300">
+                Applicants:{" "}
+                {request.numberOfApplicants != null
+                  ? request.numberOfApplicants
+                  : "Not recorded"}
+              </p>
             </div>
 
-            <div className="space-y-3">
-              {filteredVisas.length === 0 ? (
-                <p className="py-4 text-sm text-slate-400">
-                  No matching visa requests found.
-                </p>
-              ) : (
-                filteredVisas.map((request) => (
-                  <button
-                    key={request._id}
-                    type="button"
-                    onClick={() => setSelectedVisa(request)}
-                    className="w-full rounded-xl border border-white/10 bg-slate-900/60 p-4 text-left transition duration-300 hover:-translate-y-0.5 hover:border-cyan-400/30 hover:bg-slate-900"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="font-semibold">{request.fullName}</p>
-
-                        <p className="mt-1 text-sm text-slate-400">
-                          {request.destinationCountry} · {request.visaType}
-                        </p>
-                      </div>
-
-                      <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-400">
-                        {request.status}
-                      </span>
-                    </div>
-                  </button>
-                ))
-              )}
-            </div>
+            <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-400">
+              {request.status}
+            </span>
           </div>
+        </button>
+      ))
+    )}
+  </div>
+</div>
+ 
 
           {/* Recent International Travel Requests */}
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
@@ -1029,6 +1039,11 @@ function AdminDashboard() {
                     {selectedVisa.purpose}
                   </p>
                 </div>
+
+                <p>
+  <strong>Number of Applicants:</strong>{" "}
+  {selectedVisa.numberOfApplicants ?? "Not recorded"}
+</p>
 
                 <div>
                   <p className="text-xs text-slate-500">Intended Travel Date</p>

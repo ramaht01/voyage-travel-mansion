@@ -1,5 +1,9 @@
-
 import { useState } from "react";
+import { getTodayDate } from "../utils/dateHelpers";
+import { useRef } from "react";
+import type { TurnstileInstance } from "@marsidev/react-turnstile";
+import SecurityVerification from "../components/SecurityVerification";
+
 import { toast } from "react-toastify";
 import {
   ShieldCheck,
@@ -14,6 +18,7 @@ import {
 } from "lucide-react";
 
 export default function TravelInsurance() {
+  const turnstileRef = useRef<TurnstileInstance>(null);
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -50,11 +55,17 @@ export default function TravelInsurance() {
   const inputClass =
     "w-full rounded-xl border border-cyan-300/15 bg-[#101c2e] px-4 py-3.5 text-white placeholder:text-slate-400 outline-none transition duration-300 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20";
 
-  const labelClass =
-    "mb-2 block text-sm font-semibold text-slate-100";
+  const labelClass = "mb-2 block text-sm font-semibold text-slate-100";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const turnstileToken = turnstileRef.current?.getResponse();
+
+    if (!turnstileToken) {
+      toast.error("Please complete the security verification.");
+      return;
+    }
 
     if (
       form.departureDate &&
@@ -78,17 +89,28 @@ export default function TravelInsurance() {
           body: JSON.stringify({
             ...form,
             travelers: Number(form.travelers),
+            turnstileToken,
           }),
         },
       );
 
-      const data = await response.json();
+  
+const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data.message || "Unable to submit insurance request.",
-        );
-      }
+if (!response.ok) {
+  console.error("Insurance API error:", {
+    status: response.status,
+    message: data.message,
+    error: data.error,
+  });
+
+  throw new Error(
+    data.message || "Unable to submit travel insurance request"
+  );
+}
+
+
+
 
       toast.success(
         "Your travel insurance request has been submitted successfully!",
@@ -116,6 +138,9 @@ export default function TravelInsurance() {
     } finally {
       setIsSubmitting(false);
     }
+
+turnstileRef.current?.reset();
+
   };
 
   return (
@@ -171,10 +196,9 @@ export default function TravelInsurance() {
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">
-              Let Voyage Travel Mansion help you explore travel
-              insurance options for your next trip. Tell us about
-              your journey and our team will guide you through the
-              next steps.
+              Let Voyage Travel Mansion help you explore travel insurance
+              options for your next trip. Tell us about your journey and our
+              team will guide you through the next steps.
             </p>
 
             <a
@@ -186,8 +210,8 @@ export default function TravelInsurance() {
             </a>
 
             <p className="mt-4 text-xs leading-6 text-slate-400">
-              Coverage, eligibility and policy terms depend on the
-              insurance provider and selected policy.
+              Coverage, eligibility and policy terms depend on the insurance
+              provider and selected policy.
             </p>
           </div>
 
@@ -203,9 +227,8 @@ export default function TravelInsurance() {
               </h2>
 
               <p className="mt-4 leading-7 text-slate-300">
-                Understand your options before you travel, with
-                guidance tailored to your destination and travel
-                plans.
+                Understand your options before you travel, with guidance
+                tailored to your destination and travel plans.
               </p>
 
               <div className="mt-8 space-y-5">
@@ -272,9 +295,8 @@ export default function TravelInsurance() {
             </h2>
 
             <p className="mt-4 leading-7 text-slate-400">
-              Share a few details about your trip. Our team can
-              then review your request and discuss the available
-              options.
+              Share a few details about your trip. Our team can then review your
+              request and discuss the available options.
             </p>
           </div>
 
@@ -351,10 +373,7 @@ export default function TravelInsurance() {
 
               {/* Destination */}
               <div>
-                <label
-                  htmlFor="insurance-destination"
-                  className={labelClass}
-                >
+                <label htmlFor="insurance-destination" className={labelClass}>
                   Destination *
                 </label>
                 <input
@@ -370,10 +389,7 @@ export default function TravelInsurance() {
 
               {/* Departure Date */}
               <div>
-                <label
-                  htmlFor="insurance-departure"
-                  className={labelClass}
-                >
+                <label htmlFor="insurance-departure" className={labelClass}>
                   Departure Date
                 </label>
                 <div className="relative">
@@ -385,6 +401,7 @@ export default function TravelInsurance() {
                     id="insurance-departure"
                     type="date"
                     name="departureDate"
+                   min={getTodayDate()}
                     value={form.departureDate}
                     onChange={updateField}
                     className={`${inputClass} pl-11`}
@@ -394,10 +411,7 @@ export default function TravelInsurance() {
 
               {/* Return Date */}
               <div>
-                <label
-                  htmlFor="insurance-return"
-                  className={labelClass}
-                >
+                <label htmlFor="insurance-return" className={labelClass}>
                   Return Date
                 </label>
                 <div className="relative">
@@ -411,7 +425,7 @@ export default function TravelInsurance() {
                     name="returnDate"
                     value={form.returnDate}
                     onChange={updateField}
-                    min={form.departureDate || undefined}
+                   min={form.departureDate || getTodayDate()}
                     className={`${inputClass} pl-11`}
                   />
                 </div>
@@ -419,10 +433,7 @@ export default function TravelInsurance() {
 
               {/* Travelers */}
               <div>
-                <label
-                  htmlFor="insurance-travelers"
-                  className={labelClass}
-                >
+                <label htmlFor="insurance-travelers" className={labelClass}>
                   Number of Travelers *
                 </label>
                 <div className="relative">
@@ -438,28 +449,26 @@ export default function TravelInsurance() {
                     required
                     className={`${inputClass} appearance-none pl-11`}
                   >
-                    {Array.from(
-                      { length: 10 },
-                      (_, index) => index + 1,
-                    ).map((number) => (
-                      <option
-                        key={number}
-                        value={number}
-                        className="bg-[#101c2e]"
-                      >
-                        {number} {number === 1 ? "traveler" : "travelers"}
-                      </option>
-                    ))}
+                  
+{Array.from({ length: 50 }, (_, index) => index + 1).map(
+  (number) => (
+    <option
+      key={number}
+      value={number}
+      className="bg-[#101c2e]"
+    >
+      {number} {number === 1 ? "traveler" : "travelers"}
+    </option>
+  ),
+)}
+
                   </select>
                 </div>
               </div>
 
               {/* Coverage Type */}
               <div>
-                <label
-                  htmlFor="insurance-coverage"
-                  className={labelClass}
-                >
+                <label htmlFor="insurance-coverage" className={labelClass}>
                   Type of Assistance *
                 </label>
                 <select
@@ -476,12 +485,8 @@ export default function TravelInsurance() {
                   <option className="bg-[#101c2e]">
                     Emergency medical coverage
                   </option>
-                  <option className="bg-[#101c2e]">
-                    Single-trip coverage
-                  </option>
-                  <option className="bg-[#101c2e]">
-                    Multi-trip coverage
-                  </option>
+                  <option className="bg-[#101c2e]">Single-trip coverage</option>
+                  <option className="bg-[#101c2e]">Multi-trip coverage</option>
                   <option className="bg-[#101c2e]">
                     Not sure — need guidance
                   </option>
@@ -490,10 +495,7 @@ export default function TravelInsurance() {
 
               {/* Additional Requirements */}
               <div className="sm:col-span-2">
-                <label
-                  htmlFor="insurance-requirements"
-                  className={labelClass}
-                >
+                <label htmlFor="insurance-requirements" className={labelClass}>
                   Additional Information (Optional)
                 </label>
                 <textarea
@@ -508,6 +510,10 @@ export default function TravelInsurance() {
               </div>
             </div>
 
+                 <div className="md:col-span-2">
+  <SecurityVerification turnstileRef={turnstileRef} />
+</div>
+
             {/* Submit Button */}
             <button
               type="submit"
@@ -520,6 +526,8 @@ export default function TravelInsurance() {
                 : "Request Insurance Assistance"}
             </button>
 
+     
+
             {/* Important Notice */}
             <div className="mt-6 flex items-start gap-3 rounded-xl border border-cyan-300/10 bg-cyan-400/5 p-4 text-sm leading-6 text-slate-400">
               <CheckCircle2
@@ -527,10 +535,9 @@ export default function TravelInsurance() {
                 size={19}
               />
               <p>
-                Submitting this form requests assistance only. It
-                does not purchase a policy or guarantee coverage.
-                Policy availability, terms and eligibility are
-                subject to the insurance provider.
+                Submitting this form requests assistance only. It does not
+                purchase a policy or guarantee coverage. Policy availability,
+                terms and eligibility are subject to the insurance provider.
               </p>
             </div>
           </form>
@@ -539,13 +546,9 @@ export default function TravelInsurance() {
 
       {/* Footer */}
       <footer className="border-t border-white/10 bg-[#07111f] px-5 py-8 text-center text-sm text-slate-400">
-        <p className="font-semibold text-white">
-          Voyage Travel Mansion
-        </p>
+        <p className="font-semibold text-white">Voyage Travel Mansion</p>
 
-        <p className="mt-2">
-          Your trusted partner for better journeys.
-        </p>
+        <p className="mt-2">Your trusted partner for better journeys.</p>
 
         <a
           href="mailto:561travelsandtours@gmail.com"
@@ -555,8 +558,8 @@ export default function TravelInsurance() {
         </a>
 
         <p className="mt-5 text-xs">
-          © {new Date().getFullYear()} Voyage Travel Mansion. All
-          rights reserved.
+          © {new Date().getFullYear()} Voyage Travel Mansion. All rights
+          reserved.
         </p>
       </footer>
     </main>

@@ -1,8 +1,11 @@
-
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
+import type { TurnstileInstance } from "@marsidev/react-turnstile";
+import SecurityVerification from "../components/SecurityVerification";
 import { toast } from "react-toastify";
+import { getTodayDate } from "../utils/dateHelpers";
 
 const FlightBooking = () => {
+  const turnstileRef = useRef<TurnstileInstance>(null);
   const [flightEmailError, setFlightEmailError] = useState("");
 
   const [flightForm, setFlightForm] = useState({
@@ -21,9 +24,16 @@ const FlightBooking = () => {
   const handleFlightSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const turnstileToken = turnstileRef.current?.getResponse();
+
+    if (!turnstileToken) {
+      toast.error("Please complete the security verification.");
+      return;
+    }
+
     if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(flightForm.email)) {
       setFlightEmailError(
-        "Please enter a valid Gmail address ending with @gmail.com."
+        "Please enter a valid Gmail address ending with @gmail.com.",
       );
       return;
     }
@@ -36,6 +46,7 @@ const FlightBooking = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+
           body: JSON.stringify({
             ...flightForm,
             passengers: Number(flightForm.passengers),
@@ -43,8 +54,9 @@ const FlightBooking = () => {
               flightForm.tripType.toLowerCase() === "one way"
                 ? "One Way"
                 : "Round Trip",
+            turnstileToken,
           }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -70,6 +82,8 @@ const FlightBooking = () => {
     } catch (error) {
       console.error("Flight submission error:", error);
       toast.error("Something went wrong. Please try again.");
+    } finally {
+      turnstileRef.current?.reset();
     }
   };
 
@@ -114,9 +128,9 @@ const FlightBooking = () => {
             </h1>
 
             <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
-              Tell us where you are travelling from and where you would
-              love to go. Our team will review your request and help you
-              plan your flight with greater peace of mind.
+              Tell us where you are travelling from and where you would love to
+              go. Our team will review your request and help you plan your
+              flight with greater peace of mind.
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3 text-sm text-slate-200">
@@ -145,8 +159,8 @@ const FlightBooking = () => {
             </h2>
 
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300">
-              Complete the details below. Our team will review your
-              request and get back to you.
+              Complete the details below. Our team will review your request and
+              get back to you.
             </p>
           </div>
 
@@ -181,19 +195,16 @@ const FlightBooking = () => {
                 type="email"
                 autoComplete="email"
                 required
-                pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+                pattern=".+@gmail[.]com"
                 title="Please enter a valid Gmail address ending with @gmail.com"
                 value={flightForm.email}
                 onChange={(e) => {
                   const value = e.target.value;
                   setFlightForm({ ...flightForm, email: value });
 
-                  if (
-                    value &&
-                    !/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(value)
-                  ) {
+                  if (value && !/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(value)) {
                     setFlightEmailError(
-                      "Please enter a valid Gmail address ending with @gmail.com."
+                      "Please enter a valid Gmail address ending with @gmail.com.",
                     );
                   } else {
                     setFlightEmailError("");
@@ -280,7 +291,8 @@ const FlightBooking = () => {
                 id="flight-departure-date"
                 type="date"
                 required
-                min={new Date().toISOString().split("T")[0]}
+              
+                min={getTodayDate()}
                 value={flightForm.departureDate}
                 onChange={(e) =>
                   setFlightForm({
@@ -307,10 +319,7 @@ const FlightBooking = () => {
               <input
                 id="flight-return-date"
                 type="date"
-                min={
-                  flightForm.departureDate ||
-                  new Date().toISOString().split("T")[0]
-                }
+                min={flightForm.departureDate || getTodayDate()}
                 value={flightForm.returnDate}
                 onChange={(e) =>
                   setFlightForm({ ...flightForm, returnDate: e.target.value })
@@ -388,13 +397,19 @@ const FlightBooking = () => {
                 className="w-full rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-cyan-950/30 transition duration-300 hover:-translate-y-0.5 hover:from-cyan-400 hover:to-blue-500 hover:shadow-cyan-500/20 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#0d1a2b] sm:w-auto sm:min-w-64"
               >
                 Submit Flight Request
-                <span className="ml-2" aria-hidden="true">→</span>
+                <span className="ml-2" aria-hidden="true">
+                  →
+                </span>
               </button>
 
               <p className="mt-4 text-xs leading-6 text-slate-400">
                 Your request will be sent to our team for review. Submitting
                 this form does not confirm a flight booking.
               </p>
+            </div>
+
+            <div className="lg:col-span-2">
+              <SecurityVerification turnstileRef={turnstileRef} />
             </div>
           </form>
         </section>

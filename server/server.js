@@ -24,6 +24,59 @@ const safeEmailValue = (value, fallback = "Not provided") => {
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const verifyTurnstile = async (req, res, next) => {
+  try {
+    const token = req.body?.turnstileToken;
+
+    if (!process.env.TURNSTILE_SECRET_KEY) {
+      console.error("Turnstile secret key is missing");
+
+      return res.status(503).json({
+        message: "Verification is temporarily unavailable.",
+      });
+    }
+
+    if (typeof token !== "string" || !token || token.length > 2048) {
+      return res.status(400).json({
+        message: "Please complete the security verification.",
+      });
+    }
+
+    const formData = new URLSearchParams();
+    formData.append("secret", process.env.TURNSTILE_SECRET_KEY);
+    formData.append("response", token);
+
+    const response = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        body: formData,
+        signal: AbortSignal.timeout(5000),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Turnstile verification service unavailable");
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      return res.status(403).json({
+        message: "Security verification failed. Please try again.",
+      });
+    }
+
+    next();
+  } catch (error) {
+    console.error("Turnstile verification request failed");
+
+    return res.status(503).json({
+      message: "Unable to verify your request. Please try again.",
+    });
+  }
+};
+
 // Trust the first reverse proxy (Render)
 app.set("trust proxy", 3);
 
@@ -262,6 +315,7 @@ app.delete("/api/insurance-requests/:id", requireAdmin, async (req, res) => {
 app.post(
   "/api/international-travel-requests",
   customerRequestLimiter,
+  verifyTurnstile,
   async (req, res) => {
     try {
       const {
@@ -413,11 +467,12 @@ app.post(
 app.post(
   "/api/insurance-requests",
   customerRequestLimiter,
+  verifyTurnstile,
   async (req, res) => {
     try {
       const {
         fullName,
-        // email,
+        email,
         phone,
         destination,
         departureDate,
@@ -490,7 +545,7 @@ app.post(
   },
 );
 
-app.post("/api/visa-requests", customerRequestLimiter, async (req, res) => {
+app.post("/api/visa-requests", customerRequestLimiter, verifyTurnstile, async (req, res) => {
   try {
     const {
       fullName,
@@ -501,7 +556,23 @@ app.post("/api/visa-requests", customerRequestLimiter, async (req, res) => {
       purpose,
       intendedTravelDate,
       additionalInformation,
+        numberOfApplicants,
     } = req.body;
+
+
+const applicants = Number(numberOfApplicants);
+
+if (
+  !Number.isInteger(applicants) ||
+  applicants < 1 ||
+  applicants > 50
+) {
+  return res.status(400).json({
+    message: "Number of applicants must be between 1 and 50.",
+  });
+}
+
+    
 
     const visaRequest = new VisaRequest({
       fullName,
@@ -512,6 +583,7 @@ app.post("/api/visa-requests", customerRequestLimiter, async (req, res) => {
       purpose,
       intendedTravelDate,
       additionalInformation,
+      numberOfApplicants: applicants,
     });
 
     const savedRequest = await visaRequest.save();
@@ -550,6 +622,9 @@ app.post("/api/visa-requests", customerRequestLimiter, async (req, res) => {
       This request was submitted through the
       Voyage Travel Mansion website.
     </p>
+
+<p><strong>Number of Applicants:</strong> ${savedRequest.numberOfApplicants}</p>
+
   `,
       });
 
@@ -601,6 +676,9 @@ app.post("/api/visa-requests", customerRequestLimiter, async (req, res) => {
       561travelsandtours@gmail.com<br>
       +27 69 587 7716
     </p>
+
+<p><strong>Number of Applicants:</strong> ${savedRequest.numberOfApplicants}</p>
+
   `,
       });
     } catch (emailError) {
@@ -618,6 +696,11 @@ app.post("/api/visa-requests", customerRequestLimiter, async (req, res) => {
       error: error.message,
     });
   }
+
+
+
+
+
 });
 
 app.get("/api/visa-requests", requireAdmin, async (req, res) => {
@@ -763,7 +846,7 @@ app.delete(
   },
 );
 
-app.post("/api/flight-requests", customerRequestLimiter, async (req, res) => {
+app.post("/api/flight-requests", customerRequestLimiter, verifyTurnstile, async (req, res) => {
   try {
     const {
       fullName,

@@ -1,10 +1,15 @@
 
 import { useState, type FormEvent } from "react";
 import { toast } from "react-toastify";
+import { useRef } from "react";
+import type { TurnstileInstance } from "@marsidev/react-turnstile";
+import SecurityVerification from "../components/SecurityVerification";
+import { getTodayDate } from "../utils/dateHelpers";
 
 const VisaAssistance = () => {
   const [visaEmailError, setVisaEmailError] = useState("");
-
+  const turnstileRef = useRef<TurnstileInstance>(null);
+  const [numberOfApplicants, setNumberOfApplicants] = useState("1");
   const [visaForm, setVisaForm] = useState({
     fullName: "",
     email: "",
@@ -23,6 +28,15 @@ const VisaAssistance = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    
+const turnstileToken = turnstileRef.current?.getResponse();
+
+if (!turnstileToken) {
+  toast.error("Please complete the security verification.");
+  return;
+}
+
 
     if (
       !visaForm.fullName.trim() ||
@@ -82,6 +96,8 @@ const VisaAssistance = () => {
             purpose: visaForm.purpose,
             intendedTravelDate: visaForm.intendedTravelDate,
             additionalInformation: visaDetails,
+            turnstileToken,
+            numberOfApplicants: Number(numberOfApplicants),
           }),
         }
       );
@@ -120,6 +136,11 @@ const VisaAssistance = () => {
           : "Something went wrong. Please try again."
       );
     }
+
+finally {
+  turnstileRef.current?.reset();
+}
+
   };
 
   const inputClass =
@@ -365,6 +386,34 @@ const VisaAssistance = () => {
               />
             </div>
 
+            
+{/* Number of Visa Applicants */}
+<div>
+  <label
+    htmlFor="visa-applicants"
+    className="mb-2 block text-sm font-semibold text-white"
+  >
+    Number of Applicants *
+  </label>
+
+  <select
+    id="visa-applicants"
+    value={numberOfApplicants}
+    onChange={(e) => setNumberOfApplicants(e.target.value)}
+    required
+    className="w-full rounded-xl border border-white/10 bg-[#101c2e] px-4 py-3.5 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+  >
+    {Array.from({ length: 50 }, (_, index) => index + 1).map(
+      (number) => (
+        <option key={number} value={number}>
+          {number} {number === 1 ? "applicant" : "applicants"}
+        </option>
+      )
+    )}
+  </select>
+</div>
+
+
             <div>
               <label htmlFor="visa-type" className={labelClass}>
                 Type of Visa Required *
@@ -526,7 +575,7 @@ const VisaAssistance = () => {
                 id="visa-travel-date"
                 type="date"
                 required
-                min={new Date().toISOString().split("T")[0]}
+               min={getTodayDate()}
                 value={visaForm.intendedTravelDate}
                 onChange={(e) =>
                   setVisaForm({
@@ -589,6 +638,14 @@ const VisaAssistance = () => {
                 approval or replace official immigration advice.
               </p>
             </div>
+
+
+<div className="md:col-span-2">
+  <SecurityVerification turnstileRef={turnstileRef} />
+</div>
+
+
+
           </form>
         </section>
 

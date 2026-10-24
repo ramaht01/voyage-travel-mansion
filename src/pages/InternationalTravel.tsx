@@ -1,7 +1,13 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { getTodayDate } from "../utils/dateHelpers";
+import { useRef } from "react";
+import type { TurnstileInstance } from "@marsidev/react-turnstile";
+import SecurityVerification from "../components/SecurityVerification";
+
 import { toast } from "react-toastify";
 
 const InternationalTravel = () => {
+  const turnstileRef = useRef<TurnstileInstance>(null);
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -44,6 +50,13 @@ const InternationalTravel = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const turnstileToken = turnstileRef.current?.getResponse();
+
+    if (!turnstileToken) {
+      toast.error("Please complete the security verification.");
+      return;
+    }
 
     if (
       !form.fullName.trim() ||
@@ -155,6 +168,8 @@ const InternationalTravel = () => {
           ? error.message
           : "Unable to submit travel planning request.",
       );
+    } finally {
+      turnstileRef.current?.reset();
     }
   };
 
@@ -420,7 +435,7 @@ const InternationalTravel = () => {
                 id="travelDate"
                 name="travelDate"
                 type="date"
-                min={new Date().toISOString().split("T")[0]}
+                min={getTodayDate()}
                 value={form.travelDate}
                 onChange={handleChange}
                 className={inputClass}
@@ -435,7 +450,7 @@ const InternationalTravel = () => {
                 id="returnDate"
                 name="returnDate"
                 type="date"
-                min={form.travelDate || new Date().toISOString().split("T")[0]}
+              min={form.travelDate || getTodayDate()}
                 value={form.returnDate}
                 onChange={handleChange}
                 className={inputClass}
@@ -596,6 +611,10 @@ const InternationalTravel = () => {
                 steps. Submitting this form does not confirm a booking or
                 guarantee visa approval.
               </p>
+
+              <div className="md:col-span-2">
+                <SecurityVerification turnstileRef={turnstileRef} />
+              </div>
             </div>
           </form>
         </section>
