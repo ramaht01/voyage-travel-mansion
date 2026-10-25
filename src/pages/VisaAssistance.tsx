@@ -5,6 +5,7 @@ import { useRef } from "react";
 import type { TurnstileInstance } from "@marsidev/react-turnstile";
 import SecurityVerification from "../components/SecurityVerification";
 import { getTodayDate } from "../utils/dateHelpers";
+import PageSEO from "../components/PageSEO";
 
 const VisaAssistance = () => {
   const [visaEmailError, setVisaEmailError] = useState("");
@@ -168,6 +169,13 @@ finally {
             ← Back to Home
           </a>
         </header>
+
+       
+<PageSEO
+  title="Visa Application Assistance in Johannesburg | Voyage Travel Mansion"
+  description="Get professional visa application assistance, visa consultation and travel document guidance from Voyage Travel Mansion in Johannesburg, South Africa."
+/>
+
 
         {/* Hero Section */}
         <section className="relative mb-10 overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-gradient-to-br from-[#142b43] via-[#0d1c30] to-[#07111f] px-6 py-10 sm:px-10 sm:py-14 lg:px-14">

@@ -3,6 +3,7 @@ import { getTodayDate } from "../utils/dateHelpers";
 import { useRef } from "react";
 import type { TurnstileInstance } from "@marsidev/react-turnstile";
 import SecurityVerification from "../components/SecurityVerification";
+import PageSEO from "../components/PageSEO";
 
 import { toast } from "react-toastify";
 import {
@@ -278,6 +279,13 @@ turnstileRef.current?.reset();
           </div>
         </div>
       </section>
+
+      
+<PageSEO
+  title="Travel Insurance Assistance | Voyage Travel Mansion"
+  description="Get assistance with travel insurance for international trips, holidays and business travel through Voyage Travel Mansion in Johannesburg, South Africa."
+/>
+
 
       {/* Insurance Request Form */}
       <section

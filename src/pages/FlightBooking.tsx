@@ -3,6 +3,7 @@ import type { TurnstileInstance } from "@marsidev/react-turnstile";
 import SecurityVerification from "../components/SecurityVerification";
 import { toast } from "react-toastify";
 import { getTodayDate } from "../utils/dateHelpers";
+import PageSEO from "../components/PageSEO";
 
 const FlightBooking = () => {
   const turnstileRef = useRef<TurnstileInstance>(null);
@@ -111,6 +112,13 @@ const FlightBooking = () => {
             ← Back to Home
           </a>
         </header>
+
+        
+<PageSEO
+  title="Flight Booking Assistance in Johannesburg | Voyage Travel Mansion"
+  description="Get assistance with domestic and international flight bookings through Voyage Travel Mansion in Johannesburg, South Africa."
+/>
+
 
         {/* Hero Section */}
         <section className="relative mb-10 overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-gradient-to-br from-[#142b43] via-[#0d1c30] to-[#07111f] px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
