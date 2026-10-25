@@ -598,6 +598,18 @@ app.post(
         additionalRequirements,
       } = req.body;
 
+      const travelerCount = Number(travelers);
+
+if (
+  !Number.isInteger(travelerCount) ||
+  travelerCount < 1 ||
+  travelerCount > 50
+) {
+  return res.status(400).json({
+    message: "Number of travelers must be between 1 and 50.",
+  });
+}
+
       const insuranceRequest = new InsuranceRequest({
         fullName,
         email,
@@ -655,17 +667,7 @@ if (!isValidDate(returnDate) || returnDate < departureDate) {
 
 
       
-const travelerCount = Number(travelers);
 
-if (
-  !Number.isInteger(travelerCount) ||
-  travelerCount < 1 ||
-  travelerCount > 50
-) {
-  return res.status(400).json({
-    message: "Number of travelers must be between 1 and 50.",
-  });
-}
 
 
       const savedRequest = await insuranceRequest.save();
