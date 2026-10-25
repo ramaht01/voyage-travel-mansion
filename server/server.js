@@ -312,6 +312,57 @@ app.delete("/api/insurance-requests/:id", requireAdmin, async (req, res) => {
   }
 });
 
+
+function getTravelDateError(startDate, returnDate, dateLabel = "Departure date") {
+  const isValidDate = (value) => {
+    if (
+      typeof value !== "string" ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(value)
+    ) {
+      return false;
+    }
+
+    const date = new Date(`${value}T00:00:00Z`);
+
+    return (
+      !Number.isNaN(date.getTime()) &&
+      date.toISOString().slice(0, 10) === value
+    );
+  };
+
+  // Today's date in Johannesburg, South Africa
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Johannesburg",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+
+  const values = Object.fromEntries(
+    parts.map(({ type, value }) => [type, value])
+  );
+
+  const today = `${values.year}-${values.month}-${values.day}`;
+
+  if (!isValidDate(startDate) || startDate < today) {
+    return `${dateLabel} must be a valid date that is not in the past.`;
+  }
+
+  // Return date is optional, but must be valid if provided
+  if (
+    returnDate !== undefined &&
+    returnDate !== null &&
+    returnDate !== ""
+  ) {
+    if (!isValidDate(returnDate) || returnDate < startDate) {
+      return "Return date must be on or after the departure date.";
+    }
+  }
+
+  return null;
+}
+
+
 app.post(
   "/api/international-travel-requests",
   customerRequestLimiter,
@@ -343,6 +394,20 @@ app.post(
         tripPurpose,
         additionalRequirements,
       });
+
+      
+const internationalDateError = getTravelDateError(
+  req.body.travelDate,
+  req.body.returnDate,
+  "Travel date"
+);
+
+if (internationalDateError) {
+  return res.status(400).json({
+    message: internationalDateError,
+  });
+}
+
 
       const savedRequest = await internationalTravelRequest.save();
 
@@ -464,6 +529,57 @@ app.post(
   },
 );
 
+
+function getTravelDateError(startDate, returnDate, dateLabel = "Departure date") {
+  const isValidDate = (value) => {
+    if (
+      typeof value !== "string" ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(value)
+    ) {
+      return false;
+    }
+
+    const date = new Date(`${value}T00:00:00Z`);
+
+    return (
+      !Number.isNaN(date.getTime()) &&
+      date.toISOString().slice(0, 10) === value
+    );
+  };
+
+  // Today's date in Johannesburg, South Africa
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Johannesburg",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+
+  const values = Object.fromEntries(
+    parts.map(({ type, value }) => [type, value])
+  );
+
+  const today = `${values.year}-${values.month}-${values.day}`;
+
+  if (!isValidDate(startDate) || startDate < today) {
+    return `${dateLabel} must be a valid date that is not in the past.`;
+  }
+
+  // Return date is optional, but must be valid if provided
+  if (
+    returnDate !== undefined &&
+    returnDate !== null &&
+    returnDate !== ""
+  ) {
+    if (!isValidDate(returnDate) || returnDate < startDate) {
+      return "Return date must be on or after the departure date.";
+    }
+  }
+
+  return null;
+}
+
+
 app.post(
   "/api/insurance-requests",
   customerRequestLimiter,
@@ -489,10 +605,68 @@ app.post(
         destination,
         departureDate,
         returnDate,
-        travelers: Number(travelers),
+        travelers: travelerCount,
         insuranceType: coverageType,
         additionalRequirements,
       });
+
+      
+const isValidDate = (value) => {
+  if (
+    typeof value !== "string" ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(value)
+  ) {
+    return false;
+  }
+
+  const parsedDate = new Date(`${value}T00:00:00Z`);
+
+  return (
+    !Number.isNaN(parsedDate.getTime()) &&
+    parsedDate.toISOString().slice(0, 10) === value
+  );
+};
+
+// Today's date in the travel agency's timezone
+const dateParts = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Africa/Johannesburg",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+}).formatToParts(new Date());
+
+const dateValues = Object.fromEntries(
+  dateParts.map(({ type, value }) => [type, value])
+);
+
+const today = `${dateValues.year}-${dateValues.month}-${dateValues.day}`;
+
+if (!isValidDate(departureDate) || departureDate < today) {
+  return res.status(400).json({
+    message: "Please select a valid departure date that is not in the past.",
+  });
+}
+
+if (!isValidDate(returnDate) || returnDate < departureDate) {
+  return res.status(400).json({
+    message: "Return date must be on or after the departure date.",
+  });
+}
+
+
+      
+const travelerCount = Number(travelers);
+
+if (
+  !Number.isInteger(travelerCount) ||
+  travelerCount < 1 ||
+  travelerCount > 50
+) {
+  return res.status(400).json({
+    message: "Number of travelers must be between 1 and 50.",
+  });
+}
+
 
       const savedRequest = await insuranceRequest.save();
 
@@ -534,6 +708,9 @@ app.post(
       res.status(201).json({
         message: "Travel insurance request submitted successfully",
       });
+    
+
+    
     } catch (error) {
       console.error("Travel insurance request error:", error);
 
@@ -544,6 +721,58 @@ app.post(
     }
   },
 );
+
+
+function getTravelDateError(startDate, returnDate, dateLabel = "Departure date") {
+  const isValidDate = (value) => {
+    if (
+      typeof value !== "string" ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(value)
+    ) {
+      return false;
+    }
+
+    const date = new Date(`${value}T00:00:00Z`);
+
+    return (
+      !Number.isNaN(date.getTime()) &&
+      date.toISOString().slice(0, 10) === value
+    );
+  };
+
+  // Today's date in Johannesburg, South Africa
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Johannesburg",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+
+  const values = Object.fromEntries(
+    parts.map(({ type, value }) => [type, value])
+  );
+
+  const today = `${values.year}-${values.month}-${values.day}`;
+
+  if (!isValidDate(startDate) || startDate < today) {
+    return `${dateLabel} must be a valid date that is not in the past.`;
+  }
+
+  // Return date is optional, but must be valid if provided
+  if (
+    returnDate !== undefined &&
+    returnDate !== null &&
+    returnDate !== ""
+  ) {
+    if (!isValidDate(returnDate) || returnDate < startDate) {
+      return "Return date must be on or after the departure date.";
+    }
+  }
+
+  return null;
+}
+
+
 
 app.post("/api/visa-requests", customerRequestLimiter, verifyTurnstile, async (req, res) => {
   try {
@@ -585,6 +814,20 @@ if (
       additionalInformation,
       numberOfApplicants: applicants,
     });
+
+    
+const visaDateError = getTravelDateError(
+  req.body.intendedTravelDate,
+  undefined,
+  "Intended travel date"
+);
+
+if (visaDateError) {
+  return res.status(400).json({
+    message: visaDateError,
+  });
+}
+
 
     const savedRequest = await visaRequest.save();
 
@@ -846,6 +1089,57 @@ app.delete(
   },
 );
 
+
+function getTravelDateError(startDate, returnDate, dateLabel = "Departure date") {
+  const isValidDate = (value) => {
+    if (
+      typeof value !== "string" ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(value)
+    ) {
+      return false;
+    }
+
+    const date = new Date(`${value}T00:00:00Z`);
+
+    return (
+      !Number.isNaN(date.getTime()) &&
+      date.toISOString().slice(0, 10) === value
+    );
+  };
+
+  // Today's date in Johannesburg, South Africa
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Johannesburg",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+
+  const values = Object.fromEntries(
+    parts.map(({ type, value }) => [type, value])
+  );
+
+  const today = `${values.year}-${values.month}-${values.day}`;
+
+  if (!isValidDate(startDate) || startDate < today) {
+    return `${dateLabel} must be a valid date that is not in the past.`;
+  }
+
+  // Return date is optional, but must be valid if provided
+  if (
+    returnDate !== undefined &&
+    returnDate !== null &&
+    returnDate !== ""
+  ) {
+    if (!isValidDate(returnDate) || returnDate < startDate) {
+      return "Return date must be on or after the departure date.";
+    }
+  }
+
+  return null;
+}
+
+
 app.post("/api/flight-requests", customerRequestLimiter, verifyTurnstile, async (req, res) => {
   try {
     const {
@@ -873,6 +1167,20 @@ app.post("/api/flight-requests", customerRequestLimiter, verifyTurnstile, async 
       tripType,
       additionalRequirements,
     });
+
+    
+const flightDateError = getTravelDateError(
+  req.body.departureDate,
+  req.body.returnDate,
+  "Departure date"
+);
+
+if (flightDateError) {
+  return res.status(400).json({
+    message: flightDateError,
+  });
+}
+
 
     const savedRequest = await flightRequest.save();
 

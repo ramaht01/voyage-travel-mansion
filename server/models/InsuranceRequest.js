@@ -59,7 +59,7 @@ const insuranceRequestSchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: 1,
-      max: 100,
+      max: 50,
       validate: {
         validator: Number.isInteger,
         message: "Travelers must be a whole number",
