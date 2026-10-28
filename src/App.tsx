@@ -8,6 +8,17 @@ import VisaAssistance from "./pages/VisaAssistance";
 import InternationalTravel from "./pages/InternationalTravel";
 import TravelInsurance from "./pages/TravelInsurance";
 import "react-toastify/dist/ReactToastify.css";
+import officeImage1 from "./assets/voyage-office-1.jpg";
+import officeImage2 from "./assets/voyage-office-2.jpg";
+import officeImage3 from "./assets/voyage-office-3.jpg";
+
+const officePhotos = [
+  officeImage1,
+  officeImage2,
+  officeImage3,
+];
+
+
 // import PremiumGradient from "./components/PremiumGradient";
 
 import {
@@ -585,111 +596,191 @@ function App() {
             </div>
           </div>
         </section>
-        {/* ABOUT US */}
-        <section id="about" className="bg-white px-6 py-24 lg:px-8">
-          <div className="mx-auto max-w-7xl" />
 
-          <div className="grid items-center gap-14 lg:grid-cols-2">
-            {/* LEFT SIDE */}
+        
+{/* ABOUT US */}
+<section id="about" className="bg-white px-6 py-24 lg:px-8">
+  <div className="mx-auto max-w-7xl">
 
+    <div className="grid items-center gap-14 lg:grid-cols-2">
+
+      {/* LEFT — DIRECTOR */}
+      <div className="space-y-8">
+        <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+          <div className="relative shrink-0">
+            <div className="absolute -inset-2 rounded-full bg-cyan-400/10 blur-xl" />
+
+            <img
+              src={uncleImage}
+              alt="Amokunmosa Olawale Toheeb, Director of Voyage Travel Mansion"
+              className="relative h-40 w-40 rounded-full border-4 border-white object-cover shadow-xl transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
+            />
+          </div>
+
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-cyan-600">
+              Meet Our Director
+            </p>
+
+            <p className="mt-2 text-xl font-extrabold tracking-tight text-slate-950">
+              Amokunmosa Olawale Toheeb
+            </p>
+
+            <p className="mt-1 text-sm font-medium text-slate-500">
+              Director · Voyage Travel Mansion
+            </p>
+          </div>
+        </div>
+
+        <div className="max-w-lg">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-600">
+            About Voyage Travel Mansion
+          </p>
+
+          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+            Making Every Journey Easier
+          </h2>
+
+          <p className="mt-5 text-base leading-8 text-slate-600">
+            At Voyage Travel Mansion, we provide personalized
+            assistance with flight bookings, visa applications,
+            international travel planning and travel insurance.
+            Our team is committed to helping travelers plan
+            their journeys with confidence.
+          </p>
+        </div>
+      </div>
+
+      {/* RIGHT — EXPERIENCE CARD */}
+      <div className="relative">
+        <div className="relative rounded-[2rem] bg-slate-950 p-8 text-white shadow-2xl sm:p-10">
+
+          <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-6">
             <div>
-              <div className="mb-8 flex items-center gap-6">
-                <div className="relative shrink-0">
-                  <div className="absolute -inset-2 rounded-full bg-cyan-400/10 blur-xl" />
+              <p className="text-sm font-semibold uppercase tracking-widest text-cyan-400">
+                Our Experience
+              </p>
 
-                  <img
-                    src={uncleImage}
-                    alt="Amokunmosa Olawale Toheeb, Director of Voyage Travel Mansion"
-                    className="relative h-40 w-40 rounded-full border-4 border-white object-cover shadow-xl transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-1 hover:shadow-2xl"
-                  />
-                </div>
+              <p className="mt-2 text-4xl font-extrabold">
+                8 Years
+              </p>
+            </div>
 
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.25em] text-cyan-600">
-                    Meet Our Director
-                  </p>
-
-                  <p className="mt-2 text-xl font-extrabold tracking-tight text-slate-950">
-                    Amokunmosa Olawale Toheeb
-                  </p>
-
-                  <p className="mt-1 text-sm font-medium text-slate-500">
-                    Director · Voyage Travel Mansion
-                  </p>
-                </div>
-              </div>
-
-              {/* RIGHT SIDE */}
-              <div className="relative">
-                <div className="rounded-[2rem] bg-slate-950 p-8 text-white shadow-2xl sm:p-10">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-6">
-                    <div>
-                      <p className="text-sm font-semibold uppercase tracking-widest text-cyan-400">
-                        Our Experience
-                      </p>
-
-                      <p className="mt-2 text-4xl font-extrabold">8 Years</p>
-                    </div>
-
-                    <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 transition-all duration-300 group-hover:scale-110 group-hover:bg-cyan-600 group-hover:text-white">
-                      <Globe2 size={30} strokeWidth={1.8} />
-                    </div>
-                  </div>
-
-                  <div className="mt-8 space-y-6">
-                    <div className="flex gap-4">
-                      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 transition-all duration-300 hover:scale-110 hover:bg-cyan-600 hover:text-white">
-                        <Award size={30} strokeWidth={1.8} />
-                      </div>
-
-                      <div>
-                        <h3 className="font-bold">
-                          Professional Travel Assistance
-                        </h3>
-
-                        <p className="mt-1 text-sm leading-6 text-slate-400">
-                          Support designed around your travel requirements.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 transition-all duration-300 hover:scale-110 hover:bg-cyan-600 hover:text-white">
-                        <Users size={30} strokeWidth={1.8} />
-                      </div>
-
-                      <div>
-                        <h3 className="font-bold">Personalized Service</h3>
-
-                        <p className="mt-1 text-sm leading-6 text-slate-400">
-                          We take the time to understand your travel plans.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 transition-all duration-300 hover:scale-110 hover:bg-cyan-600 hover:text-white">
-                        <MapPinned size={30} strokeWidth={1.8} />
-                      </div>
-
-                      <div>
-                        <h3 className="font-bold">Travel Support</h3>
-
-                        <p className="mt-1 text-sm leading-6 text-slate-400">
-                          Assistance with flights, visas and travel
-                          documentation.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Decorative glow */}
-                <div className="absolute -bottom-6 -right-6 -z-10 h-40 w-40 rounded-full bg-cyan-400/20 blur-3xl" />
-              </div>
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600">
+              <Globe2 size={30} strokeWidth={1.8} />
             </div>
           </div>
-        </section>
+
+          <div className="mt-8 space-y-6">
+
+            <div className="flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 transition-all duration-300 hover:scale-110 hover:bg-cyan-600 hover:text-white">
+                <Award size={28} strokeWidth={1.8} />
+              </div>
+
+              <div>
+                <h3 className="font-bold">
+                  Professional Travel Assistance
+                </h3>
+
+                <p className="mt-1 text-sm leading-6 text-slate-400">
+                  Support designed around your travel requirements.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 transition-all duration-300 hover:scale-110 hover:bg-cyan-600 hover:text-white">
+                <Users size={28} strokeWidth={1.8} />
+              </div>
+
+              <div>
+                <h3 className="font-bold">
+                  Personalized Service
+                </h3>
+
+                <p className="mt-1 text-sm leading-6 text-slate-400">
+                  We take the time to understand your travel plans.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 transition-all duration-300 hover:scale-110 hover:bg-cyan-600 hover:text-white">
+                <MapPinned size={28} strokeWidth={1.8} />
+              </div>
+
+              <div>
+                <h3 className="font-bold">
+                  Travel Support
+                </h3>
+
+                <p className="mt-1 text-sm leading-6 text-slate-400">
+                  Assistance with flights, visas and travel documentation.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div className="pointer-events-none absolute -bottom-6 -right-6 -z-10 h-40 w-40 rounded-full bg-cyan-400/20 blur-3xl" />
+      </div>
+    </div>
+
+    {/* OFFICE GALLERY */}
+    <div className="mt-24 border-t border-slate-100 pt-16">
+      <div className="mx-auto max-w-2xl text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-cyan-600">
+          Our Location
+        </p>
+
+        <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+          Our Office in Johannesburg
+        </h2>
+
+        <p className="mt-4 text-base leading-7 text-slate-600">
+          A closer look at Voyage Travel Mansion's office,
+          where we assist clients with their travel arrangements.
+        </p>
+      </div>
+
+      <div
+        className={`mt-10 grid gap-5 ${
+          officePhotos.length === 1
+            ? "grid-cols-1"
+            : officePhotos.length === 2
+            ? "grid-cols-1 sm:grid-cols-2"
+            : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+        }`}
+      >
+        {officePhotos.map((photo, index) => (
+          <div
+            key={photo}
+            className="group overflow-hidden rounded-[1.75rem] border border-slate-100 bg-slate-50 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl"
+          >
+            <img
+              src={photo}
+              alt={`Voyage Travel Mansion Johannesburg office photo ${index + 1}`}
+              loading="lazy"
+              className="h-72 w-full object-cover transition-transform duration-700 group-hover:scale-105 sm:h-80"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 text-center">
+        <p className="text-sm leading-7 text-slate-500">
+          Office 206, 2nd Floor, 1572 Albertina Sisulu Street,
+          Johannesburg, South Africa
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+     
         {/* BUSINESS INFORMATION */}
         <section className="bg-slate-950 px-6 py-24 text-white lg:px-8">
           <div className="mx-auto max-w-7xl">
