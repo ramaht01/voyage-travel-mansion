@@ -151,23 +151,36 @@ function App() {
           className="relative mt-24 overflow-hidden bg-white px-6 py-24 text-slate-900"
         >
           <div className="mx-auto max-w-7xl">
-            {/* Section heading */}
-            <div className="mx-auto mb-14 max-w-3xl text-center">
-              <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-cyan-600">
-                START YOUR JOURNEY
-              </p>
+          
 
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-                Your next journey{" "}
-                <span className="text-cyan-600">starts here.</span>
-              </h2>
+            
+{/* SERVICES INTRODUCTION */}
+<div className="mx-auto mb-14 max-w-3xl text-center">
+  <p className="text-xs font-bold uppercase tracking-[0.25em] text-cyan-600">
+    What We Offer
+  </p>
 
-              <p className="mx-auto mt-5 max-w-2xl leading-7 text-slate-600">
-                From flight bookings to international travel planning, visa
-                assistance and travel insurance, we help make every journey
-                easier to plan.
-              </p>
-            </div>
+  <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
+    Explore Our{" "}
+    <span className="text-cyan-600">
+      Travel Services
+    </span>
+  </h2>
+
+  <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+    At Voyage Travel Mansion, we make planning your journey
+    simpler with personalized travel assistance. From flight
+    bookings and visa applications to international travel
+    planning and travel insurance, our services are designed
+    to help you prepare for your trip with confidence.
+  </p>
+
+  <p className="mt-5 text-sm font-semibold text-slate-700">
+    Choose a service below to learn more and submit your
+    travel request.
+  </p>
+</div>
+
 
             {/* Service cards */}
             <div className="grid gap-7 sm:grid-cols-2 xl:grid-cols-4">
